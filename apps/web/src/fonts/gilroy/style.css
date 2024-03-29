@@ -1,0 +1,48 @@
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Gilroy-Light.ttf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Gilroy-Regular.ttf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Gilroy-Medium.ttf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Gilroy-Bold.ttf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.text-xs {
+  @apply font-gilroy text-[12px] leading-[150%] transition-[font-size];
+}
+
+.text-sm {
+  @apply font-gilroy text-[14px] leading-[143%] transition-[font-size];
+}
+
+.text-md {
+  @apply font-gilroy text-[16px] leading-[150%] transition-[font-size];
+}
+
+.text-lg {
+  @apply font-gilroy text-[18px] leading-[165%] transition-[font-size];
+}
+
+.text-xl {
+  @apply font-gilroy text-[20px] leading-[150%] transition-[font-size];
+}
