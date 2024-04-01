@@ -1,0 +1,9 @@
+{
+  "name": "cms-types",
+  "version": "0.0.0",
+  "private": true,
+  "types": "./index.ts",
+  "devDependencies": {
+    "typescript": "^5.4.3"
+  }
+}
