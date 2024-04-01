@@ -7,9 +7,13 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
+  "dependencies": {
+    "@typescript-eslint/parser": "^7.4.0"
+  },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "prettier-plugin-tailwindcss": "^0.5.13",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
@@ -20,8 +24,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "dependencies": {
-    "@typescript-eslint/parser": "^7.4.0"
-  }
+  ]
 }

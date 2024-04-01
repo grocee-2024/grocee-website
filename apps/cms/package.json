@@ -1,38 +1,40 @@
 {
   "name": "cms",
-  "private": true,
-  "version": "0.1.0",
-  "description": "A Strapi application",
+  "version": "1.0.0",
+  "main": "dist/server.js",
+  "license": "MIT",
   "scripts": {
-    "dev": "strapi develop",
-    "start": "strapi start",
-    "build": "strapi build",
-    "strapi": "strapi"
+    "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts nodemon",
+    "build:payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload build",
+    "build:server": "tsc",
+    "build": "yarn copyfiles && yarn build:payload && yarn build:server",
+    "serve": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js NODE_ENV=production node dist/server.js",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist/",
+    "generate:types": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types",
+    "generate:graphQLSchema": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:graphQLSchema",
+    "payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload"
   },
-  "devDependencies": {},
   "dependencies": {
-    "@strapi/plugin-cloud": "4.21.1",
-    "@strapi/plugin-i18n": "4.21.1",
-    "@strapi/plugin-seo": "^1.9.8",
-    "@strapi/plugin-users-permissions": "4.21.1",
-    "@strapi/strapi": "4.21.1",
-    "better-sqlite3": "8.6.0",
-    "pg": "^8.11.3",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "5.3.4",
-    "strapi-provider-upload-supabase": "^1.0.0",
-    "styled-components": "5.3.3"
+    "@payloadcms/bundler-webpack": "^1.0.0",
+    "@payloadcms/plugin-cloud": "^3.0.0",
+    "@payloadcms/richtext-lexical": "^0.7.0",
+    "@payloadcms/plugin-seo": "^2.2.1",
+    "@payloadcms/plugin-stripe": "^0.0.19",
+    "@payloadcms/plugin-nested-docs": "^1.0.12",
+    "@payloadcms/plugin-redirects": "^1.0.1",
+    "@payloadcms/db-postgres": "^0.x",
+    "cross-env": "^7.0.3",
+    "cms-types": "*",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "payload": "^2.11.2"
   },
-  "author": {
-    "name": "A Strapi developer"
-  },
-  "strapi": {
-    "uuid": "8391fd75-d93d-48ac-a64a-372813cdeb2c"
-  },
-  "engines": {
-    "node": ">=18.0.0 <=20.x.x",
-    "npm": ">=6.0.0"
-  },
-  "license": "MIT"
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/mime": "^4.0.0",
+    "copyfiles": "^2.4.1",
+    "nodemon": "^2.0.6",
+    "ts-node": "^9.1.1",
+    "typescript": "^5.4.3"
+  }
 }
