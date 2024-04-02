@@ -1,8 +1,10 @@
 import express from 'express'
 import payload from 'payload'
 import path from 'path'
+import dotenv from 'dotenv'
 
-require('dotenv').config()
+dotenv.config({ path: path.resolve(__dirname, '../.env') })
+
 const app = express()
 
 app.get('/', (_, res) => {
