@@ -83,6 +83,9 @@ const config: Config = {
       tightest: '-2%',
     },
   },
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
 }
 
 export default config

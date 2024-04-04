@@ -5,9 +5,9 @@
 @tailwind utilities;
 
 :root {
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono', 'Roboto Mono',
+    'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro', 'Fira Mono', 'Droid Sans Mono',
+    'Courier New', monospace;
 
   min-height: 100vh;
 }
@@ -32,7 +32,8 @@ body.cancelScroll {
 
 a {
   color: inherit;
-  text-decoration: underline;
+  text-decoration: none;
+  outline: none;
 }
 
 picture {
@@ -76,4 +77,12 @@ video {
 
 .grid-desktop {
   @apply grid grid-cols-12 gap-x-[32px];
+}
+
+input,
+button {
+  outline: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
