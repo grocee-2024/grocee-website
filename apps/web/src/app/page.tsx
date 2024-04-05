@@ -1,3 +1,12 @@
+import { Input, Button } from 'ui'
+
 export default function Home() {
-  return <div>Homepage</div>
+  return (
+    <Input
+      type='text'
+      label='Label'
+      leadingComplex={{ startIcon: 'Search', end: { icon: 'ChevronDown', text: 'Text' } }}
+      trailingComplex={{ end: { icon: 'ChevronDown', text: 'Text' } }}
+    />
+  )
 }
