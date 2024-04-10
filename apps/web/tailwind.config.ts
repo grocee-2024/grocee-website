@@ -29,7 +29,9 @@ const config: Config = {
         800: '#393939',
         900: '#0B0B0B',
       },
-      primary: {
+
+      // secondary colors
+      success: {
         25: '#EEF5F3',
         50: '#CEE1DB',
         100: '#AECDC4',
@@ -42,8 +44,6 @@ const config: Config = {
         800: '#1F3E36',
         900: '#172D27',
       },
-
-      // secondary colors
       error: {
         25: '#FFFBFA',
         50: '#FFEFED',

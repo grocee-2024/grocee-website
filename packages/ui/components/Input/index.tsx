@@ -6,11 +6,12 @@ import { Complex, ComplexProps } from './Complex'
 import { clsx } from 'clsx'
 import { AriaTextFieldOptions, useTextField } from 'react-aria'
 
-type Props<T> = {
+type InputProps<T> = {
   type: 'text' | 'password' | 'date' | 'tel' | 'email' | 'time'
   status?: 'success' | 'error'
   isDisabled?: boolean
   label?: string
+  placeholder?: string
   errorMessage?: string
   leadingComplex?: Omit<ComplexProps, 'type'>
   trailingComplex?: Omit<ComplexProps, 'type'>
@@ -18,7 +19,7 @@ type Props<T> = {
   onChange?: (value: T) => void
 }
 
-export function Input<T>(props: Props<T>) {
+export function Input<T>(props: InputProps<T>) {
   const {
     status = '',
     isDisabled,
@@ -60,7 +61,6 @@ export function Input<T>(props: Props<T>) {
           ref={inputRef}
           {...inputProps}
           type={type}
-          placeholder='Placeholder'
           className='placeholder:text-md grow text-gray-900 placeholder:text-gray-400'
         />
         <Complex type='right' {...trailingComplex} />

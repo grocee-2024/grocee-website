@@ -1,45 +1,44 @@
-import { FC, PropsWithChildren } from 'react'
-import { ButtonProps } from '.'
-import { parseIcon } from 'ui/helpers/parseIcon'
-import { motion } from 'framer-motion'
+'use client'
 
-type Props = PropsWithChildren &
-  Pick<ButtonProps, 'leftIcon' | 'rightIcon'> & {
+import { PropsWithChildren, useEffect } from 'react'
+import { ButtonProps, IconProps } from '.'
+import { parseIcon } from 'ui/helpers/parseIcon'
+import { motion, useAnimate } from 'framer-motion'
+
+type Props<T> = PropsWithChildren &
+  Pick<ButtonProps<T>, 'leftIcon' | 'rightIcon'> & {
     className?: string
   }
 
-const mapHoverClassName = (className?: string) => {
-  return (className ?? '')
-    .split(' ')
-    .map(classNameItem => {
-      if (classNameItem.startsWith('group-hover/button:')) {
-        return classNameItem
-      }
+function Icon<T>({ icon }: { icon?: IconProps<T> }) {
+  const { icon: MappedIcon, animateWhen, animationProps, value } = parseIcon(icon)
+  const [scope, animate] = useAnimate()
 
-      return `group-hover/button:${classNameItem}`
-    })
-    .join(' ')
-}
+  if (!MappedIcon) {
+    return null
+  }
 
-export const IconsWrapper: FC<Props> = ({ children, leftIcon, rightIcon, className = '' }) => {
-  const [
-    { icon: LeftIcon, onHoverClassName: onLeftIconHoverClassName },
-    { icon: RightIcon, onHoverClassName: onRightIconHoverClassName },
-  ] = [parseIcon(leftIcon), parseIcon(rightIcon)]
+  useEffect(() => {
+    if (animateWhen(value)) {
+      animate(scope.current, animationProps?.initial ?? {})
+    } else {
+      animate(scope.current, animationProps?.exit ?? {})
+    }
+  }, [animateWhen, value, animationProps])
 
   return (
+    <motion.div ref={scope}>
+      <MappedIcon height={16} width={24} />
+    </motion.div>
+  )
+}
+
+export function IconsWrapper<T>({ children, leftIcon, rightIcon, className = '' }: Props<T>) {
+  return (
     <div className={className}>
-      {LeftIcon && (
-        <motion.div className={mapHoverClassName(onLeftIconHoverClassName)}>
-          <LeftIcon height={12} width={24} />
-        </motion.div>
-      )}
+      <Icon icon={leftIcon} />
       {children}
-      {RightIcon && (
-        <motion.div className={mapHoverClassName(onRightIconHoverClassName)}>
-          <RightIcon height={12} width={24} />
-        </motion.div>
-      )}
+      <Icon icon={rightIcon} />
     </div>
   )
 }
