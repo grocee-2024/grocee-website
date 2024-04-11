@@ -281,11 +281,11 @@ export function ListOptions<T>({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.5, opacity: 0 }}
       >
-        <div className='m-[-4px] overflow-hidden rounded-2xl p-1 shadow-[0_4px_16px_0_rgba(105,105,105,0.24)]'>
+        <div className='mx-[-4px] overflow-hidden rounded-2xl bg-white p-1 shadow-[0_4px_16px_0_rgba(105,105,105,0.24)]'>
           <ul
             ref={listBoxRef}
             {...mergeProps(restProps, listBoxProps)}
-            className='flex flex-col gap-2 overflow-auto rounded-2xl bg-white p-6 outline-none'
+            className='flex flex-col gap-2 overflow-auto bg-white p-6 outline-none'
             style={{ height: position.height, maxHeight, width: position.width }}
           >
             {[...selectState.collection].map(option => (
