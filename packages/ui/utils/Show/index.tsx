@@ -14,7 +14,6 @@ type ShowComponent = FC<PropsWithChildren> & {
 }
 
 export const Show: ShowComponent = ({ children }) => {
-  console.log('Show children', children)
   let when: ReactNode = null
   let otherwise: ReactNode = null
 

@@ -1,10 +1,8 @@
 'use client'
+import { Button, Input, Select } from 'ui'
 import { useState } from 'react'
-import { Select } from 'ui'
-import { useRouter } from 'next/navigation'
 
-export default function Home() {
-  const { push } = useRouter()
+const CustomSelect = () => {
   const options = [
     {
       label: 'label 1',
@@ -36,22 +34,18 @@ export default function Home() {
     },
   ]
 
-  const [selectedValue, setSelectedValue] = useState<{ label: string; value: string } | null>(
-    options[3],
-  )
-
   return (
     <Select
-      className='ml-96 mt-[100px]'
-      animationOrigin='top right'
-      onTrigger='hover'
+      animationOrigin='bottom right'
+      onTrigger='click'
       listPosition={{
-        horizontal: 'right',
-        vertical: 'bottom',
+        horizontal: 'left',
+        vertical: 'top',
       }}
       triggerProps={{
         rightIcon: {
           icon: 'SwapVertical',
+          size: 16,
           animateWhen: state => {
             if (!state || !state.isOpen) {
               return false
@@ -65,22 +59,32 @@ export default function Home() {
           },
         },
         children: 'Sort',
-        variant: 'tertiary',
-        className: '!bg-gray-100',
-        animationProps: {
-          whileHover: {
-            scale: 0.9,
-          },
-        },
+        variant: 'secondary',
+        // className: 'min-h-0 py-0 px-0',
       }}
       listWidth={300}
-      selectedValue={selectedValue}
       options={options}
-      label='sort-products'
+      label={{
+        select: 'sort-products',
+        listOptions: 'list-options',
+        option: 'option',
+      }}
       onChange={option => {
-        setSelectedValue(option)
-        push(`?value=${option?.value}&label=${option?.label}`)
+        console.log({ option })
       }}
     />
+  )
+}
+
+export default function Home() {
+  return (
+    <div className='m-[1000px] h-[2000px]'>
+      <CustomSelect />
+    </div>
+    // <Input
+    //   type='text'
+    //   ariaLabel='input'
+    //   leadingComplex={{ start: 'Search', end: <CustomSelect /> }}
+    // />
   )
 }

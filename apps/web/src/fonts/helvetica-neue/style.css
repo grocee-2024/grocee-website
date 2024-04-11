@@ -27,26 +27,26 @@
   font-display: swap;
 }
 
-.display-xs {
+.helvetica-xs {
   @apply font-helvetica text-[24px] leading-[133%] transition-[font-size];
 }
 
-.display-sm {
+.helvetica-sm {
   @apply font-helvetica text-[32px] leading-[125%] transition-[font-size];
 }
 
-.display-md {
+.helvetica-md {
   @apply font-helvetica text-[36px] leading-[122%] tracking-tightest transition-[font-size];
 }
 
-.display-lg {
+.helvetica-lg {
   @apply font-helvetica text-[48px] leading-[125%] tracking-tightest transition-[font-size];
 }
 
-.display-xl {
+.helvetica-xl {
   @apply font-helvetica text-[60px] leading-[120%] tracking-tightest transition-[font-size];
 }
 
-.display-2xl {
+.helvetica-2xl {
   @apply font-helvetica text-[72px] leading-[125%] tracking-tightest transition-[font-size];
 }

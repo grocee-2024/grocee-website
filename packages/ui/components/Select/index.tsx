@@ -37,9 +37,14 @@ export type SelectProps<T> = {
     vertical?: 'top' | 'bottom'
   }
   listWidth?: number
-  label: string
+  maxHeight?: number
+  label: {
+    select: string
+    listOptions: string
+    option: string
+  }
   options: SelectOptionType<T>[]
-  selectedValue: SelectOptionType<T> | null
+  selectedValue?: SelectOptionType<T> | null
   onChange: (option: SelectOptionType<T> | null) => void
   onTrigger?: 'click' | 'hover'
   triggerProps: ButtonProps<SelectState<T>>
@@ -75,6 +80,8 @@ function SelectWithItems<T>(props: SelectProps<T>) {
     animationOrigin,
     listPosition,
     listWidth,
+    label,
+    maxHeight,
     ...restProps
   } = props
 
@@ -164,15 +171,15 @@ function SelectWithItems<T>(props: SelectProps<T>) {
   }, [selectState.isOpen, selectState.isFocused])
 
   useEffect(() => {
-    const { key: selectedKey } = [...selectState.collection].find(collectionItem =>
+    const selectedVal = [...selectState.collection].find(collectionItem =>
       selectKeyManager(
         selectedValue as SelectOptionType<T>,
         collectionItem as StatelyNode<T>,
       ).compare(),
     ) as StatelyNode<T>
 
-    if (selectedKey) {
-      selectState.setSelectedKey(selectedKey)
+    if (selectedVal?.key) {
+      selectState.setSelectedKey(selectedVal?.key)
     }
   }, [])
 
@@ -185,7 +192,7 @@ function SelectWithItems<T>(props: SelectProps<T>) {
   }, [inView, canHover])
 
   const { menuProps, triggerProps: selectTriggerProps } = useSelect(
-    restProps as AriaSelectOptions<T>,
+    { ...restProps, 'aria-label': label.select } as AriaSelectOptions<T>,
     selectState as unknown as SelectState<T>,
     selectRef,
   )
@@ -229,7 +236,7 @@ function SelectWithItems<T>(props: SelectProps<T>) {
       onKeyUp={onHandleKeyDown}
       ref={containerRef}
     >
-      <HiddenSelect state={selectState} triggerRef={selectRef} isDisabled label={restProps.label} />
+      <HiddenSelect state={selectState} triggerRef={selectRef} isDisabled label={label.select} />
       <Button
         {...mergeProps(mappedTriggerProps, restSelectTriggerProps, {
           'data-type': 'selectTrigger',
@@ -250,6 +257,8 @@ function SelectWithItems<T>(props: SelectProps<T>) {
             listWidth={listWidth}
             isDismissable={triggerType === 'click'}
             triggerRef={triggerRef}
+            label={label}
+            maxHeight={maxHeight}
           />
         )}
       </AnimatePresence>
