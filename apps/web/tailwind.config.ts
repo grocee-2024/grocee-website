@@ -1,5 +1,7 @@
 import type { Config } from 'tailwindcss'
 
+const plugin = require('tailwindcss/plugin')
+
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -14,6 +16,7 @@ const config: Config = {
       black: '#000',
       current: 'currentColor',
       transparent: 'transparent',
+      focus: '#1E90FF',
 
       // main colors
       gray: {

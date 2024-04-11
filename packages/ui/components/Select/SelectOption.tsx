@@ -14,15 +14,16 @@ export type SelectOptionType<T> = {
 type OptionProps<T> = {
   selectState: SelectState<unknown>
   option: StatelyNode<T>
+  label: string
 } & Pick<SelectProps<T>, 'onChange'>
 
-export function SelectOption<T>({ selectState, option, onChange }: OptionProps<T>) {
+export function SelectOption<T>({ selectState, option, onChange, label }: OptionProps<T>) {
   const optionRef = useRef<HTMLLIElement | null>(null)
 
   const isSelectedValue = selectState.selectedKey === option.key
 
   const { optionProps } = useOption(
-    { key: option.key, 'aria-label': `${option.rendered}` },
+    { key: option.key, 'aria-label': label },
     selectState,
     optionRef,
   )
@@ -58,7 +59,7 @@ export function SelectOption<T>({ selectState, option, onChange }: OptionProps<T
         onPointerDown={undefined}
         onPointerUp={undefined}
         className={clsx(
-          'ease cursor-pointer select-none rounded-lg px-3 py-2 text-sm text-gray-900 outline-none transition-colors duration-300 first-letter:uppercase hover:bg-gray-50',
+          'ease gilroy-sm cursor-pointer select-none rounded-lg px-3 py-2 text-gray-900 outline-none transition-colors duration-300 first-letter:uppercase hover:bg-gray-50',
           {
             'bg-gray-100': isSelectedValue,
             'bg-transparent': !isSelectedValue,

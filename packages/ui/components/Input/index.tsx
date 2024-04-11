@@ -6,41 +6,45 @@ import { Complex, ComplexProps } from './Complex'
 import { clsx } from 'clsx'
 import { AriaTextFieldOptions, useTextField } from 'react-aria'
 
-type InputProps<T> = {
+type InputProps<T, U> = {
   type: 'text' | 'password' | 'date' | 'tel' | 'email' | 'time'
   status?: 'success' | 'error'
   isDisabled?: boolean
+  className?: string
   label?: string
+  ariaLabel: string
   placeholder?: string
   errorMessage?: string
-  leadingComplex?: Omit<ComplexProps, 'type'>
-  trailingComplex?: Omit<ComplexProps, 'type'>
+  leadingComplex?: Omit<ComplexProps<U>, 'type'>
+  trailingComplex?: Omit<ComplexProps<U>, 'type'>
   value?: T
   onChange?: (value: T) => void
 }
 
-export function Input<T>(props: InputProps<T>) {
+export function Input<T, U>(props: InputProps<T, U>) {
   const {
     status = '',
     isDisabled,
     label,
+    ariaLabel,
     errorMessage,
     type,
     leadingComplex,
     trailingComplex,
+    className,
   } = props
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const { labelProps, inputProps, errorMessageProps } = useTextField(
-    props as AriaTextFieldOptions<'input'>,
+    { ...props, 'aria-label': ariaLabel } as AriaTextFieldOptions<'input'>,
     inputRef,
   )
 
   return (
-    <div className='m-10 inline-block'>
+    <div className={clsx('inline-block', className)}>
       {label && (
-        <label {...labelProps} className='text-xs text-gray-400'>
+        <label {...labelProps} className='gilroy-xs text-gray-400'>
           {label}
         </label>
       )}
@@ -61,12 +65,12 @@ export function Input<T>(props: InputProps<T>) {
           ref={inputRef}
           {...inputProps}
           type={type}
-          className='placeholder:text-md grow text-gray-900 placeholder:text-gray-400'
+          className='placeholder:gilroy-md grow text-gray-900 placeholder:text-gray-400'
         />
         <Complex type='right' {...trailingComplex} />
       </div>
       {errorMessageProps && (
-        <span {...errorMessageProps} className='text-xs text-error-500'>
+        <span {...errorMessageProps} className='gilroy-xs text-error-500'>
           {errorMessage}
         </span>
       )}

@@ -1,22 +1,32 @@
-import { FC } from 'react'
+/* eslint-disable no-unused-vars */
 import { AllIconNames, IconType } from '@oleksii-lavka/grocee-icons'
 import { parseIcon } from '../../helpers/parseIcon'
 import { clsx } from 'clsx'
+import { ReactNode, isValidElement } from 'react'
+import { Show } from '../..'
 
-export type ComplexProps = {
-  type: 'left' | 'right'
-  startIcon?: IconType | AllIconNames
-  end?: {
-    icon: IconType | AllIconNames
-    text: string
-  }
+type EndPartObject = {
+  icon: IconType | AllIconNames
+  text: string
 }
 
-export const Complex: FC<ComplexProps> = ({ type, startIcon, end }) => {
-  const [{ icon: StartIcon }, { icon: EndIcon }] = [
-    parseIcon(startIcon),
-    parseIcon(end?.icon) as { icon: IconType },
-  ]
+export type ComplexProps<T> = {
+  type: 'left' | 'right'
+  start?: IconType | AllIconNames
+  end?: EndPartObject | ReactNode
+}
+
+export function Complex<T>({ type, start, end }: ComplexProps<T>) {
+  const { icon: StartIcon } = parseIcon(start)
+
+  const endPartIsObject = !!(
+    end &&
+    typeof end === 'object' &&
+    'icon' in end &&
+    !isValidElement(end)
+  )
+
+  const { icon: EndIcon } = endPartIsObject ? parseIcon(end?.icon) : { icon: null }
 
   return (
     <div
@@ -39,12 +49,14 @@ export const Complex: FC<ComplexProps> = ({ type, startIcon, end }) => {
         />
       )}
 
-      {end && (
+      {endPartIsObject && EndIcon && (
         <div className='flex items-center gap-2'>
           <span className='select-none text-sm'>{end.text}</span>
-          <EndIcon width={12} height={24} />
+          <EndIcon width={16} height={24} />
         </div>
       )}
+
+      {!endPartIsObject && end}
     </div>
   )
 }

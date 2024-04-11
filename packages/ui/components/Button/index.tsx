@@ -9,6 +9,7 @@ import {
   MouseEventHandler,
   KeyboardEventHandler,
   MutableRefObject,
+  CSSProperties,
 } from 'react'
 import { AllIconNames, IconType } from '@oleksii-lavka/grocee-icons'
 import { FocusRing, HoverEvents, mergeProps, useButton, useHover, useLink } from 'react-aria'
@@ -30,8 +31,22 @@ export type IconProps<T> =
 export type ButtonProps<T> = PropsWithChildren<{
   additionalRef?: MutableRefObject<HTMLButtonElement | HTMLAnchorElement | null>
   className?: string
-  leftIcon?: IconProps<T>
-  rightIcon?: IconProps<T>
+  leftIcon?: IconProps<T> & {
+    size?:
+      | {
+          width?: number
+          height?: number
+        }
+      | number
+  }
+  rightIcon?: IconProps<T> & {
+    size?:
+      | {
+          width?: number
+          height?: number
+        }
+      | number
+  }
   isLoading?: boolean
   isDisabled?: boolean
   href?: LinkProps['href']
@@ -41,6 +56,8 @@ export type ButtonProps<T> = PropsWithChildren<{
   type?: 'button' | 'submit' | 'reset'
   tabIndex?: number
   isFocused?: boolean
+  style?: CSSProperties
+  disableBorder?: boolean
   onClick?: () => void
   formAction?: () => void
   onHoverStart?: HoverEvents['onHoverStart']
@@ -59,8 +76,10 @@ export function Button<T>(props: ButtonProps<T>) {
     type = 'button',
     formAction,
     isLoading,
+    style,
     className = '',
     isFocused,
+    disableBorder,
     onHoverStart = () => {},
     onHoverEnd = () => {},
     onMouseEnter = () => {},
@@ -73,7 +92,7 @@ export function Button<T>(props: ButtonProps<T>) {
   const refButton = useRef<HTMLButtonElement | null>(null)
   const refLink = useRef<HTMLAnchorElement | null>(null)
 
-  const { hoverProps, isHovered } = useHover({ onHoverStart, onHoverEnd })
+  const { hoverProps } = useHover({ onHoverStart, onHoverEnd })
 
   const isButtonDisabled = isDisabled || isLoading
 
@@ -110,8 +129,11 @@ export function Button<T>(props: ButtonProps<T>) {
   const parentProps = useMemo(
     () => ({
       className: clsx(
-        'text-md relative inline-block min-h-12 touch-none select-none rounded-[1000px] border-transparent px-6 py-3 font-gilroy no-underline transition-colors duration-300 ease-in-out',
-        'after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:rounded-[1000px] after:border-[1px] after:transition-colors after:duration-300 after:content-[""]',
+        'gilroy-md relative inline-block min-h-12 touch-none select-none rounded-[1000px] border-transparent px-6 py-3 font-gilroy font-light no-underline transition-colors duration-300 ease-in-out',
+        'after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:rounded-[1000px] after:transition-colors after:duration-300 after:content-[""]',
+        {
+          'after:border-[1px]': !disableBorder,
+        },
         {
           primary: clsx({
             'text-white': !isButtonDisabled,
@@ -189,6 +211,7 @@ export function Button<T>(props: ButtonProps<T>) {
       <motion.button
         ref={refButton}
         {...mergeProps(restButtonProps, parentProps, hoverProps)}
+        style={style}
         onPointerDown={event => {
           if (event.button !== 0) {
             return
