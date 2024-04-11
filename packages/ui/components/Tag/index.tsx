@@ -4,7 +4,7 @@ import { FC, PropsWithChildren } from 'react'
 import clsx from 'clsx'
 import { motion, HTMLMotionProps } from 'framer-motion'
 
-type TagProps = PropsWithChildren & {
+export type TagProps = PropsWithChildren & {
   text?: string
   className?: string
   type?: 'texted' | 'bordered' | 'selected'

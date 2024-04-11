@@ -51,6 +51,7 @@ export type ButtonProps<T> = PropsWithChildren<{
   isDisabled?: boolean
   href?: LinkProps['href']
   target?: '_self' | '_blank' | '_parent' | '_top'
+  prefetch?: boolean
   animationProps?: HTMLMotionProps<'div' | 'a'>
   variant?: 'primary' | 'secondary' | 'tertiary' | 'danger'
   type?: 'button' | 'submit' | 'reset'
@@ -76,15 +77,16 @@ export function Button<T>(props: ButtonProps<T>) {
     type = 'button',
     formAction,
     isLoading,
-    style,
     className = '',
     isFocused,
+    style,
     disableBorder,
     onHoverStart = () => {},
     onHoverEnd = () => {},
     onMouseEnter = () => {},
     onKeyPress = () => {},
     additionalRef,
+    prefetch,
     ...restProps
   } = props
   const { isDisabled, onClick, animationProps } = restProps
@@ -194,6 +196,7 @@ export function Button<T>(props: ButtonProps<T>) {
           {...mergeProps(linkProps, hoverProps)}
           className='inline-block h-full rounded-[1000px]'
           href={href}
+          prefetch={prefetch}
         >
           {/* @ts-ignore */}
           <motion.div {...parentProps}>{contnet}</motion.div>

@@ -6,11 +6,12 @@ import { Complex, ComplexProps } from './Complex'
 import { clsx } from 'clsx'
 import { AriaTextFieldOptions, useTextField } from 'react-aria'
 
-type InputProps<T, U> = {
+export type InputProps<T, U> = {
   type: 'text' | 'password' | 'date' | 'tel' | 'email' | 'time'
   status?: 'success' | 'error'
   isDisabled?: boolean
   className?: string
+  name?: string
   label?: string
   ariaLabel: string
   placeholder?: string

@@ -33,9 +33,9 @@ export function SelectOption<T>({ selectState, option, onChange, label }: Option
       return
     }
 
-    onChange({
-      label: option.rendered as T,
-      value: option.textValue as T,
+    onChange?.({
+      label: option.textValue as T,
+      value: option.key as T,
     })
 
     selectState.setSelectedKey(option.key)

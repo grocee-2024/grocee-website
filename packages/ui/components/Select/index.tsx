@@ -18,7 +18,6 @@ import { SelectOptionType } from './SelectOption'
 import { ListOptions } from './ListOptions'
 import clsx from 'clsx'
 import { useCanHover } from 'ui/hooks'
-import { selectKeyManager } from './selectKeyManager'
 
 export type SelectProps<T> = {
   className?: string
@@ -36,6 +35,7 @@ export type SelectProps<T> = {
     horizontal?: 'left' | 'right'
     vertical?: 'top' | 'bottom'
   }
+  name?: string
   listWidth?: number
   maxHeight?: number
   label: {
@@ -45,10 +45,11 @@ export type SelectProps<T> = {
   }
   options: SelectOptionType<T>[]
   selectedValue?: SelectOptionType<T> | null
-  onChange: (option: SelectOptionType<T> | null) => void
+  onChange?: (option: SelectOptionType<T> | null) => void
   onTrigger?: 'click' | 'hover'
   triggerProps: ButtonProps<SelectState<T>>
   isDisabled?: boolean
+  useAsTriggerLabel?: 'label' | 'value'
 }
 
 export function Select<T>(props: SelectProps<T>) {
@@ -56,15 +57,11 @@ export function Select<T>(props: SelectProps<T>) {
 
   return (
     <SelectWithItems {...props}>
-      {options.map(option => {
-        const key = selectKeyManager(option).create()
-
-        return (
-          <Item key={key} textValue={option.value as string}>
-            {option.label as string}
-          </Item>
-        )
-      })}
+      {options.map(option => (
+        <Item key={option.value as string} textValue={option.label as string}>
+          {option.label as string}
+        </Item>
+      ))}
     </SelectWithItems>
   )
 }
@@ -82,6 +79,8 @@ function SelectWithItems<T>(props: SelectProps<T>) {
     listWidth,
     label,
     maxHeight,
+    useAsTriggerLabel,
+    name,
     ...restProps
   } = props
 
@@ -171,11 +170,8 @@ function SelectWithItems<T>(props: SelectProps<T>) {
   }, [selectState.isOpen, selectState.isFocused])
 
   useEffect(() => {
-    const selectedVal = [...selectState.collection].find(collectionItem =>
-      selectKeyManager(
-        selectedValue as SelectOptionType<T>,
-        collectionItem as StatelyNode<T>,
-      ).compare(),
+    const selectedVal = [...selectState.collection].find(
+      collectionItem => selectedValue?.value === collectionItem.key,
     ) as StatelyNode<T>
 
     if (selectedVal?.key) {
@@ -229,6 +225,18 @@ function SelectWithItems<T>(props: SelectProps<T>) {
     }
   }, [triggerProps, selectState])
 
+  const childrenProp = useMemo(() => {
+    if (!useAsTriggerLabel) {
+      return triggerProps?.children
+    }
+
+    if (useAsTriggerLabel === 'label') {
+      return selectState.selectedItem?.textValue || triggerProps?.children
+    }
+
+    return selectState.selectedItem?.key || triggerProps?.children
+  }, [selectState, triggerProps])
+
   return (
     <div
       className={clsx('relative inline-block', className)}
@@ -236,11 +244,15 @@ function SelectWithItems<T>(props: SelectProps<T>) {
       onKeyUp={onHandleKeyDown}
       ref={containerRef}
     >
-      <HiddenSelect state={selectState} triggerRef={selectRef} isDisabled label={label.select} />
+      <HiddenSelect state={selectState} triggerRef={selectRef} label={label.select} name={name} />
       <Button
-        {...mergeProps(mappedTriggerProps, restSelectTriggerProps, {
-          'data-type': 'selectTrigger',
-        })}
+        {...mergeProps(
+          mappedTriggerProps,
+          { ...restSelectTriggerProps, children: childrenProp },
+          {
+            'data-type': 'selectTrigger',
+          },
+        )}
         onClick={onTriggerClick as () => void}
         onMouseEnter={onOpenSelectByHover}
         isFocused={selectState.isOpen}
