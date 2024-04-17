@@ -14,13 +14,12 @@ export type InputProps<T> = {
   isDisabled?: boolean
   className?: string
   label?: string
-  ariaLabel: string
   errorMessage?: string
   leadingComplex?: Omit<ComplexProps, 'type'>
   trailingComplex?: Omit<ComplexProps, 'type'>
   value?: T
   onChange?: (value: T) => void
-} & Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'aria-label' | 'value' | 'onChange'>
+} & Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange'>
 
 const dateRegexp = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/
 const timeRegexp = /^(?:[01]\d|2[0-3]):(?:[0-5]\d)$/
@@ -167,7 +166,6 @@ function CommonInput<T>(props: InputProps<T>) {
     status = '',
     isDisabled,
     label,
-    ariaLabel,
     errorMessage,
     type,
     leadingComplex,
@@ -177,7 +175,7 @@ function CommonInput<T>(props: InputProps<T>) {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const { labelProps, inputProps, errorMessageProps } = useTextField(
-    { ...props, 'aria-label': ariaLabel } as AriaTextFieldOptions<'input'>,
+    props as AriaTextFieldOptions<'input'>,
     inputRef,
   )
 

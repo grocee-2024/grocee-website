@@ -10,6 +10,7 @@ import {
   KeyboardEventHandler,
   MutableRefObject,
   CSSProperties,
+  InputHTMLAttributes,
 } from 'react'
 import { AllIconNames, IconType } from '@oleksii-lavka/grocee-icons'
 import { FocusRing, HoverEvents, mergeProps, useButton, useHover, useLink } from 'react-aria'
@@ -19,14 +20,12 @@ import Link, { LinkProps } from 'next/link'
 import { IconsWrapper } from './IconsWrapper'
 import { Loader } from 'ui'
 
-export type IconProps<T> =
-  | {
-      icon: AllIconNames | IconType
-      animationProps: Pick<AnimationProps, 'initial' | 'exit'>
-      animateWhen: (value?: T) => boolean
-      value?: T
-    }
-  | (AllIconNames | IconType)
+export type IconProps<T> = {
+  icon: AllIconNames | IconType
+  animationProps?: Pick<AnimationProps, 'initial' | 'exit'>
+  animateWhen?: (value?: T) => boolean
+  value?: T
+}
 
 export type ButtonProps<T> = PropsWithChildren<{
   additionalRef?: MutableRefObject<HTMLButtonElement | HTMLAnchorElement | null>
@@ -67,7 +66,8 @@ export type ButtonProps<T> = PropsWithChildren<{
   onHoverEnd?: HoverEvents['onHoverEnd']
   onKeyPress?: KeyboardEventHandler<HTMLButtonElement | null>
   onMouseEnter?: MouseEventHandler<HTMLButtonElement | null>
-}>
+}> &
+  Pick<InputHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'aria-controls' | 'aria-expanded'>
 
 export function Button<T>(props: ButtonProps<T>) {
   const {

@@ -10,6 +10,7 @@ export * from './components/ProductCard'
 export * from './components/NextImage'
 export * from './components/NewsCard'
 export * from './components/Card'
+export * from './components/AccordionList'
 
 export { Show } from './utils/Show'
 export { Each } from './utils/Each'
