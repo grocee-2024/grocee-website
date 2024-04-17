@@ -3,20 +3,19 @@ import { AllIconNames, IconType } from '@oleksii-lavka/grocee-icons'
 import { parseIcon } from '../../helpers/parseIcon'
 import { clsx } from 'clsx'
 import { ReactNode, isValidElement } from 'react'
-import { Show } from '../..'
 
 type EndPartObject = {
   icon: IconType | AllIconNames
   text: string
 }
 
-export type ComplexProps<T> = {
+export type ComplexProps = {
   type: 'left' | 'right'
   start?: IconType | AllIconNames
   end?: EndPartObject | ReactNode
 }
 
-export function Complex<T>({ type, start, end }: ComplexProps<T>) {
+export function Complex({ type, start, end }: ComplexProps) {
   const { icon: StartIcon } = parseIcon(start)
 
   const endPartIsObject = !!(
