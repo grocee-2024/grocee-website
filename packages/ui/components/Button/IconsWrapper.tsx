@@ -53,6 +53,10 @@ function Icon<T>({ icon }: { icon?: Props<T>['leftIcon'] }) {
   }, [icon])
 
   useEffect(() => {
+    if (!animateWhen) {
+      return
+    }
+
     if (animateWhen(value)) {
       animate(scope.current, animationProps?.initial ?? {})
     } else {

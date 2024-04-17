@@ -5,8 +5,8 @@ import { AnimationProps } from 'framer-motion'
 
 export function parseIcon<T>(icon?: IconProps<T>): {
   icon: IconType | null
-  animationProps: Pick<AnimationProps, 'initial' | 'exit'>
-  animateWhen: (value?: T) => boolean
+  animationProps?: Pick<AnimationProps, 'initial' | 'exit'>
+  animateWhen?: (value?: T) => boolean
   value?: T
 } {
   if (!icon) {
@@ -33,10 +33,10 @@ export function parseIcon<T>(icon?: IconProps<T>): {
 
   if ('icon' in icon) {
     return {
-      ...parseIcon(icon.icon),
-      animationProps: icon.animationProps,
+      icon: typeof icon.icon === 'string' ? mapIcon(icon.icon) : icon.icon,
+      animationProps: icon?.animationProps,
       animateWhen: icon?.animateWhen,
-      value: icon.value,
+      value: icon?.value,
     }
   }
 

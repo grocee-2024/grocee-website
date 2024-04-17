@@ -33,7 +33,7 @@ export const Card: FC<CardProps> = props => {
       {...hoverProps}
       ref={linkRef}
     >
-      <div className='overflow-hidden rounded-lg'>
+      <div className='grow overflow-hidden rounded-lg'>
         <img
           src='/action.png'
           className={clsx('h-full w-full object-cover transition-transform duration-200', {
