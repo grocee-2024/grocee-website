@@ -4549,6 +4549,13 @@
     "@types/mime" "*"
     "@types/node" "*"
 
+"@types/swiper@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@types/swiper/-/swiper-6.0.0.tgz#9934ecd569611b660a2a9bf200f25ce5ba4b4d63"
+  integrity sha512-QPZRgxZ+ivXXtzV43B3LxpXUIC7FE/EoKM+rtxngmgt2M7eeUYypZhyqZD8UxJtlBcUDw/ATGoVeSNpvBBrz2w==
+  dependencies:
+    swiper "*"
+
 "@types/through@*":
   version "0.0.33"
   resolved "https://registry.npmjs.org/@types/through/-/through-0.0.33.tgz"
@@ -13162,6 +13169,11 @@ swc-minify-webpack-plugin@^2.1.0:
   version "2.1.2"
   resolved "https://registry.npmjs.org/swc-minify-webpack-plugin/-/swc-minify-webpack-plugin-2.1.2.tgz"
   integrity sha512-UL8UlHDddcZS5jExTuuX+DAKizdAxFXhmc0G0PB5GDNpYWf3bBDaoMjL7yoeebRnhPCerrN+17qXHk/cVzzzgg==
+
+swiper@*, swiper@^11.1.1:
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-11.1.1.tgz#5efaa222d4a47a3ac75090cfc2fda6e53e564982"
+  integrity sha512-jGmEA/fNz1lACIcY4/40ggm1Gcyv+EUivmgV/Jd2WFPsEJhbWXnRAwzZR8OPjkBLtDxmzcoYG/iiAMWfRs0YKQ==
 
 synckit@0.9.0:
   version "0.9.0"
