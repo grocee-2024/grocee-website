@@ -135,7 +135,7 @@ export function Button<T>(props: ButtonProps<T>) {
   const parentProps = useMemo(
     () => ({
       className: clsx(
-        'relative inline-block touch-none select-none rounded-[1000px] border-transparent font-light no-underline transition-colors duration-300 ease-in-out',
+        'relative block touch-none select-none rounded-[1000px] border-transparent font-light no-underline transition-colors duration-300 ease-in-out',
         'after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:rounded-[1000px] after:transition-colors after:duration-300 after:content-[""]',
         {
           'after:border-[1px]': !disableBorder,
@@ -146,17 +146,17 @@ export function Button<T>(props: ButtonProps<T>) {
             'text-white': !isButtonDisabled,
             'after:border-transparent': !isPressed,
             'bg-gray-900 hover:bg-gray-800': !isPressed && !isButtonDisabled,
-            'bg-gray-900 after:border-gray-800': isPressed,
+            'bg-gray-900 after:border-gray-800': isPressed && !isButtonDisabled,
             'bg-gray-200 text-gray-500': isButtonDisabled,
           }),
           secondary: clsx('bg-transparent', {
             'text-gray-800 after:border-gray-800 hover:text-gray-700 hover:after:border-gray-700':
               !isPressed && !isButtonDisabled,
-            'text-gray-900 after:border-gray-900': isPressed,
+            'text-gray-900 after:border-gray-900': isPressed && !isButtonDisabled,
             'text-gray-300 after:border-gray-300': isButtonDisabled,
           }),
           tertiary: clsx('bg-gray-25 hover:after:border-gray-800', {
-            'after:border-gray-800': isPressed,
+            'after:border-gray-800': isPressed && !isButtonDisabled,
             'bg-gray-25 text-gray-200': isButtonDisabled,
             'after:border-transparent': !isPressed,
             'text-gray-900': !isButtonDisabled,
@@ -199,7 +199,7 @@ export function Button<T>(props: ButtonProps<T>) {
         <Link
           ref={refLink}
           {...mergeProps(linkProps, hoverProps)}
-          className='inline-block rounded-[1000px]'
+          className='rounded-[1000px]'
           href={href}
           prefetch={prefetch}
         >

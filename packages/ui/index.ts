@@ -11,6 +11,7 @@ export * from './components/NextImage'
 export * from './components/NewsCard'
 export * from './components/Card'
 export * from './components/AccordionList'
+export * from './components/MainSlider'
 
 export { Show } from './utils/Show'
 export { Each } from './utils/Each'

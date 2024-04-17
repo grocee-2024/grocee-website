@@ -79,7 +79,9 @@ const config: Config = {
       helvetica: ['Helvetica Neue'],
     },
     screens: {
+      mobile: '496px',
       tablet: '768px',
+      laptop: '1024px',
       desktop: '1280px',
     },
     letterSpacing: {
