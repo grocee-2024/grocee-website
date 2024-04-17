@@ -1,17 +1,11 @@
 'use client'
 
-import { Input } from 'ui'
+import { Card, Input } from 'ui'
 
 export default function Home() {
   return (
     <>
-      <Input
-        type='text'
-        ariaLabel='time-picker'
-        trailingComplex={{ start: 'Clock' }}
-        label='Choose a time'
-        placeholder='00-00'
-      />
+      <Card className='w-[300px]' href='/' text='Order delivery' />
     </>
   )
 }
