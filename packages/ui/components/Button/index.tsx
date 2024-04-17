@@ -52,12 +52,14 @@ export type ButtonProps<T> = PropsWithChildren<{
   href?: LinkProps['href']
   target?: '_self' | '_blank' | '_parent' | '_top'
   prefetch?: boolean
-  animationProps?: HTMLMotionProps<'div' | 'a'>
+  standartButton?: boolean
+  animationProps?: HTMLMotionProps<'div' | 'button'>
   variant?: 'primary' | 'secondary' | 'tertiary' | 'danger'
   type?: 'button' | 'submit' | 'reset'
   tabIndex?: number
   isFocused?: boolean
   style?: CSSProperties
+  backgroundColor?: string
   disableBorder?: boolean
   onClick?: () => void
   formAction?: () => void
@@ -75,12 +77,14 @@ export function Button<T>(props: ButtonProps<T>) {
     children,
     href,
     type = 'button',
+    backgroundColor,
     formAction,
     isLoading,
     className = '',
     isFocused,
     style,
     disableBorder,
+    standartButton,
     onHoverStart = () => {},
     onHoverEnd = () => {},
     onMouseEnter = () => {},
@@ -131,10 +135,11 @@ export function Button<T>(props: ButtonProps<T>) {
   const parentProps = useMemo(
     () => ({
       className: clsx(
-        'gilroy-md relative inline-block min-h-12 touch-none select-none rounded-[1000px] border-transparent px-6 py-3 font-gilroy font-light no-underline transition-colors duration-300 ease-in-out',
+        'relative inline-block touch-none select-none rounded-[1000px] border-transparent font-light no-underline transition-colors duration-300 ease-in-out',
         'after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:rounded-[1000px] after:transition-colors after:duration-300 after:content-[""]',
         {
           'after:border-[1px]': !disableBorder,
+          'gilroy-md min-h-12 px-6 py-3': standartButton,
         },
         {
           primary: clsx({
@@ -150,7 +155,7 @@ export function Button<T>(props: ButtonProps<T>) {
             'text-gray-900 after:border-gray-900': isPressed,
             'text-gray-300 after:border-gray-300': isButtonDisabled,
           }),
-          tertiary: clsx('bg-white hover:after:border-gray-800', {
+          tertiary: clsx('bg-gray-25 hover:after:border-gray-800', {
             'after:border-gray-800': isPressed,
             'bg-gray-25 text-gray-200': isButtonDisabled,
             'after:border-transparent': !isPressed,
@@ -194,7 +199,7 @@ export function Button<T>(props: ButtonProps<T>) {
         <Link
           ref={refLink}
           {...mergeProps(linkProps, hoverProps)}
-          className='inline-block h-full rounded-[1000px]'
+          className='inline-block rounded-[1000px]'
           href={href}
           prefetch={prefetch}
         >
