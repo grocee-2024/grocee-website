@@ -1,10 +1,6 @@
 import type { CollectionConfig } from 'payload/types'
 
 import { isAdmin } from '../../access/isAdmin'
-import { Archive } from '../../blocks/ArchiveBlock'
-import { CallToAction } from '../../blocks/CallToAction'
-import { Content } from '../../blocks/Content'
-import { MediaBlock } from '../../blocks/MediaBlock'
 import { slugField } from '../../fields/slug'
 import { beforeProductChange } from './hooks/beforeChange'
 import { deleteProductFromCarts } from './hooks/deleteProductFromCarts'
@@ -17,6 +13,7 @@ export const Products: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'stripeProductID', '_status'],
+    group: 'Shop',
     preview: doc => {
       return `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/next/preview?url=${encodeURIComponent(
         `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/products/${doc.slug}`,
@@ -38,69 +35,35 @@ export const Products: CollectionConfig = {
     delete: isAdmin,
   },
   fields: [
+    slugField(),
     {
       name: 'title',
       type: 'text',
       required: true,
     },
     {
-      name: 'publishedOn',
-      type: 'date',
-      admin: {
-        position: 'sidebar',
-        date: {
-          pickerAppearance: 'dayAndTime',
-        },
-      },
-      hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
+      name: 'productDetails',
+      type: 'group',
+      fields: [
+        {
+          name: 'stripeProductID',
+          label: 'Stripe Product',
+          type: 'text',
+          admin: {
+            components: {
+              Field: ProductSelect,
+            },
           },
-        ],
-      },
-    },
-    {
-      type: 'tabs',
-      tabs: [
-        {
-          label: 'Content',
-          fields: [
-            {
-              name: 'layout',
-              type: 'blocks',
-              required: true,
-              blocks: [CallToAction, Content, MediaBlock, Archive],
-            },
-          ],
         },
         {
-          label: 'Product Details',
-          fields: [
-            {
-              name: 'stripeProductID',
-              label: 'Stripe Product',
-              type: 'text',
-              admin: {
-                components: {
-                  Field: ProductSelect,
-                },
-              },
-            },
-            {
-              name: 'priceJSON',
-              label: 'Price JSON',
-              type: 'textarea',
-              admin: {
-                readOnly: true,
-                hidden: true,
-                rows: 10,
-              },
-            },
-          ],
+          name: 'priceJSON',
+          label: 'Price JSON',
+          type: 'textarea',
+          admin: {
+            readOnly: true,
+            hidden: true,
+            rows: 10,
+          },
         },
       ],
     },
@@ -113,20 +76,6 @@ export const Products: CollectionConfig = {
         position: 'sidebar',
       },
     },
-    {
-      name: 'relatedProducts',
-      type: 'relationship',
-      relationTo: 'products',
-      hasMany: true,
-      filterOptions: ({ id }) => {
-        return {
-          id: {
-            not_in: [id],
-          },
-        }
-      },
-    },
-    slugField(),
     {
       name: 'skipSync',
       label: 'Skip Sync',
