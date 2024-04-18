@@ -12,6 +12,7 @@ export const Orders: CollectionConfig = {
   admin: {
     useAsTitle: 'createdAt',
     defaultColumns: ['createdAt', 'orderedBy'],
+    group: 'Shop',
     preview: doc => `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/orders/${doc.id}`,
   },
   hooks: {
