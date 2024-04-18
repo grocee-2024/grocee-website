@@ -11,7 +11,6 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'slug',
     defaultColumns: ['slug', 'updatedAt'],
-    group: 'Pages',
     preview: doc => {
       return `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/next/preview?url=${encodeURIComponent(
         `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/${doc.slug !== 'home' ? doc.slug : ''}`,

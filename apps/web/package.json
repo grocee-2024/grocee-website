@@ -19,7 +19,7 @@
     "axios": "^1.6.8",
     "zustand": "^4.5.2",
     "framer-motion": "^11.0.24",
-    "@oleksii-lavka/grocee-icons": "^1.0.7"
+    "@oleksii-lavka/grocee-icons": "^1.0.9"
   },
   "devDependencies": {
     "typescript": "^5.4.3",

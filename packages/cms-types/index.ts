@@ -34,6 +34,8 @@ export interface Config {
   globals: {
     header: Header
     footer: Footer
+    globalTypography: GlobalTypography
+    allBlocks: AllBlock
   }
 }
 /**
@@ -48,6 +50,7 @@ export interface User {
   cart?: {
     items?: CartItems
   }
+  skipSync?: boolean | null
   updatedAt: string
   createdAt: string
   email: string
@@ -65,136 +68,13 @@ export interface User {
  */
 export interface Product {
   id: number
+  slug: string
   title: string
-  publishedOn?: string | null
-  layout: (
-    | {
-        richText: {
-          root: {
-            children: {
-              type: string
-              version: number
-              [k: string]: unknown
-            }[]
-            direction: ('ltr' | 'rtl') | null
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-            indent: number
-            type: string
-            version: number
-          }
-          [k: string]: unknown
-        }
-        links?:
-          | {
-              link: {
-                type?: ('reference' | 'custom') | null
-                newTab?: boolean | null
-                reference?: {
-                  relationTo: 'pages'
-                  value: number | Page
-                } | null
-                url?: string | null
-                label: string
-                appearance?: ('primary' | 'secondary') | null
-              }
-              id?: string | null
-            }[]
-          | null
-        id?: string | null
-        blockName?: string | null
-        blockType: 'cta'
-      }
-    | {
-        columns?:
-          | {
-              size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null
-              richText: {
-                root: {
-                  children: {
-                    type: string
-                    version: number
-                    [k: string]: unknown
-                  }[]
-                  direction: ('ltr' | 'rtl') | null
-                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-                  indent: number
-                  type: string
-                  version: number
-                }
-                [k: string]: unknown
-              }
-              enableLink?: boolean | null
-              link?: {
-                type?: ('reference' | 'custom') | null
-                newTab?: boolean | null
-                reference?: {
-                  relationTo: 'pages'
-                  value: number | Page
-                } | null
-                url?: string | null
-                label: string
-                appearance?: ('default' | 'primary' | 'secondary') | null
-              }
-              id?: string | null
-            }[]
-          | null
-        id?: string | null
-        blockName?: string | null
-        blockType: 'content'
-      }
-    | {
-        position?: ('default' | 'fullscreen') | null
-        media?: {
-          image?: number | Image | null
-          video?: number | Video | null
-        }
-        id?: string | null
-        blockName?: string | null
-        blockType: 'mediaBlock'
-      }
-    | {
-        introContent: {
-          root: {
-            children: {
-              type: string
-              version: number
-              [k: string]: unknown
-            }[]
-            direction: ('ltr' | 'rtl') | null
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-            indent: number
-            type: string
-            version: number
-          }
-          [k: string]: unknown
-        }
-        populateBy?: ('collection' | 'selection') | null
-        relationTo?: 'products' | null
-        categories?: (number | Category)[] | null
-        limit?: number | null
-        selectedDocs?:
-          | {
-              relationTo: 'products'
-              value: number | Product
-            }[]
-          | null
-        populatedDocs?:
-          | {
-              relationTo: 'products'
-              value: number | Product
-            }[]
-          | null
-        populatedDocsTotal?: number | null
-        id?: string | null
-        blockName?: string | null
-        blockType: 'archive'
-      }
-  )[]
-  stripeProductID?: string | null
-  priceJSON?: string | null
+  productDetails?: {
+    stripeProductID?: string | null
+    priceJSON?: string | null
+  }
   categories?: (number | Category)[] | null
-  relatedProducts?: (number | Product)[] | null
-  slug?: string | null
   skipSync?: boolean | null
   meta?: {
     title?: string | null
@@ -207,182 +87,22 @@ export interface Product {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
+ * via the `definition` "categories".
  */
-export interface Page {
+export interface Category {
   id: number
-  title: string
-  publishedOn?: string | null
-  hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact'
-    richText: {
-      root: {
-        children: {
-          type: string
-          version: number
-          [k: string]: unknown
-        }[]
-        direction: ('ltr' | 'rtl') | null
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-        indent: number
-        type: string
-        version: number
-      }
-      [k: string]: unknown
-    }
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null
-            newTab?: boolean | null
-            reference?: {
-              relationTo: 'pages'
-              value: number | Page
-            } | null
-            url?: string | null
-            label: string
-            appearance?: ('default' | 'primary' | 'secondary') | null
-          }
-          id?: string | null
-        }[]
-      | null
-    media?: {
-      image?: number | Image | null
-      video?: number | Video | null
-    }
-  }
-  layout: (
+  title?: string | null
+  parent?: (number | null) | Category
+  breadcrumbs?:
     | {
-        richText: {
-          root: {
-            children: {
-              type: string
-              version: number
-              [k: string]: unknown
-            }[]
-            direction: ('ltr' | 'rtl') | null
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-            indent: number
-            type: string
-            version: number
-          }
-          [k: string]: unknown
-        }
-        links?:
-          | {
-              link: {
-                type?: ('reference' | 'custom') | null
-                newTab?: boolean | null
-                reference?: {
-                  relationTo: 'pages'
-                  value: number | Page
-                } | null
-                url?: string | null
-                label: string
-                appearance?: ('primary' | 'secondary') | null
-              }
-              id?: string | null
-            }[]
-          | null
+        doc?: (number | null) | Category
+        url?: string | null
+        label?: string | null
         id?: string | null
-        blockName?: string | null
-        blockType: 'cta'
-      }
-    | {
-        columns?:
-          | {
-              size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null
-              richText: {
-                root: {
-                  children: {
-                    type: string
-                    version: number
-                    [k: string]: unknown
-                  }[]
-                  direction: ('ltr' | 'rtl') | null
-                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-                  indent: number
-                  type: string
-                  version: number
-                }
-                [k: string]: unknown
-              }
-              enableLink?: boolean | null
-              link?: {
-                type?: ('reference' | 'custom') | null
-                newTab?: boolean | null
-                reference?: {
-                  relationTo: 'pages'
-                  value: number | Page
-                } | null
-                url?: string | null
-                label: string
-                appearance?: ('default' | 'primary' | 'secondary') | null
-              }
-              id?: string | null
-            }[]
-          | null
-        id?: string | null
-        blockName?: string | null
-        blockType: 'content'
-      }
-    | {
-        position?: ('default' | 'fullscreen') | null
-        media?: {
-          image?: number | Image | null
-          video?: number | Video | null
-        }
-        id?: string | null
-        blockName?: string | null
-        blockType: 'mediaBlock'
-      }
-    | {
-        introContent: {
-          root: {
-            children: {
-              type: string
-              version: number
-              [k: string]: unknown
-            }[]
-            direction: ('ltr' | 'rtl') | null
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-            indent: number
-            type: string
-            version: number
-          }
-          [k: string]: unknown
-        }
-        populateBy?: ('collection' | 'selection') | null
-        relationTo?: 'products' | null
-        categories?: (number | Category)[] | null
-        limit?: number | null
-        selectedDocs?:
-          | {
-              relationTo: 'products'
-              value: number | Product
-            }[]
-          | null
-        populatedDocs?:
-          | {
-              relationTo: 'products'
-              value: number | Product
-            }[]
-          | null
-        populatedDocsTotal?: number | null
-        id?: string | null
-        blockName?: string | null
-        blockType: 'archive'
-      }
-  )[]
-  slug?: string | null
-  meta?: {
-    title?: string | null
-    description?: string | null
-    image?: number | Image | null
-  }
+      }[]
+    | null
   updatedAt: string
   createdAt: string
-  _status?: ('draft' | 'published') | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -435,6 +155,7 @@ export interface Video {
   alt?: string | null
   caption?: {
     root: {
+      type: string
       children: {
         type: string
         version: number
@@ -443,7 +164,6 @@ export interface Video {
       direction: ('ltr' | 'rtl') | null
       format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
       indent: number
-      type: string
       version: number
     }
     [k: string]: unknown
@@ -456,25 +176,6 @@ export interface Video {
   filesize?: number | null
   width?: number | null
   height?: number | null
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number
-  title?: string | null
-  parent?: (number | null) | Category
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Category
-        url?: string | null
-        label?: string | null
-        id?: string | null
-      }[]
-    | null
-  updatedAt: string
-  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -495,6 +196,71 @@ export interface Order {
     | null
   updatedAt: string
   createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number
+  slug: string
+  layout: MainSliderBlock[]
+  meta?: {
+    title?: string | null
+    description?: string | null
+    image?: number | Image | null
+  }
+  updatedAt: string
+  createdAt: string
+  _status?: ('draft' | 'published') | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MainSliderBlock".
+ */
+export interface MainSliderBlock {
+  slides?:
+    | {
+        image: number | Image
+        heading: {
+          title?: string | null
+          description?: string | null
+          link: {
+            label: string
+            type?: ('link' | 'button') | null
+            appearance?: ('defaultLink' | 'primary' | 'secondary' | 'tertiary' | 'danger') | null
+            isStandartButton?: boolean | null
+            linkType?: ('reference' | 'custom') | null
+            reference?: {
+              relationTo: 'pages'
+              value: number | Page
+            } | null
+            url?: string | null
+            newTab?: boolean | null
+            icons?: {
+              leftIcon: {
+                icon?: string | null
+                size?: {
+                  width?: number | null
+                  height?: number | null
+                }
+              }
+              rightIcon: {
+                icon?: string | null
+                size?: {
+                  width?: number | null
+                  height?: number | null
+                }
+              }
+            }
+          }
+        }
+        id?: string | null
+      }[]
+    | null
+  id?: string | null
+  blockName?: string | null
+  blockType: 'MainSlider'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -561,15 +327,34 @@ export interface Header {
   id: number
   navItems?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null
-          newTab?: boolean | null
+        linkOrButton: {
+          label: string
+          type?: ('link' | 'button') | null
+          appearance?: ('defaultLink' | 'primary' | 'secondary' | 'tertiary' | 'danger') | null
+          isStandartButton?: boolean | null
+          linkType?: ('reference' | 'custom') | null
           reference?: {
             relationTo: 'pages'
             value: number | Page
           } | null
           url?: string | null
-          label: string
+          newTab?: boolean | null
+          icons?: {
+            leftIcon: {
+              icon?: string | null
+              size?: {
+                width?: number | null
+                height?: number | null
+              }
+            }
+            rightIcon: {
+              icon?: string | null
+              size?: {
+                width?: number | null
+                height?: number | null
+              }
+            }
+          }
         }
         id?: string | null
       }[]
@@ -585,19 +370,57 @@ export interface Footer {
   id: number
   navItems?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null
-          newTab?: boolean | null
+        linkOrButton: {
+          label: string
+          type?: ('link' | 'button') | null
+          appearance?: ('defaultLink' | 'primary' | 'secondary' | 'tertiary' | 'danger') | null
+          isStandartButton?: boolean | null
+          linkType?: ('reference' | 'custom') | null
           reference?: {
             relationTo: 'pages'
             value: number | Page
           } | null
           url?: string | null
-          label: string
+          newTab?: boolean | null
+          icons?: {
+            leftIcon: {
+              icon?: string | null
+              size?: {
+                width?: number | null
+                height?: number | null
+              }
+            }
+            rightIcon: {
+              icon?: string | null
+              size?: {
+                width?: number | null
+                height?: number | null
+              }
+            }
+          }
         }
         id?: string | null
       }[]
     | null
+  updatedAt?: string | null
+  createdAt?: string | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "globalTypography".
+ */
+export interface GlobalTypography {
+  id: number
+  updatedAt?: string | null
+  createdAt?: string | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "allBlocks".
+ */
+export interface AllBlock {
+  id: number
+  blocks?: MainSliderBlock[] | null
   updatedAt?: string | null
   createdAt?: string | null
 }

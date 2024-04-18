@@ -2,8 +2,8 @@ import type { ArrayField } from 'payload/dist/fields/config/types'
 import type { Field } from 'payload/types'
 
 import deepMerge from '../utilities/deepMerge'
-import type { LinkAppearances } from './link'
-import link from './link'
+import type { LinkAppearances } from './linkOrButton'
+import linkOrButton from './linkOrButton'
 
 type LinkGroupType = (options?: {
   overrides?: Partial<ArrayField>
@@ -15,7 +15,7 @@ const linkGroup: LinkGroupType = ({ overrides = {}, appearances } = {}) => {
     name: 'links',
     type: 'array',
     fields: [
-      link({
+      linkOrButton({
         appearances,
       }),
     ],

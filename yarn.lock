@@ -2402,10 +2402,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@oleksii-lavka/grocee-icons@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@oleksii-lavka/grocee-icons/-/grocee-icons-1.0.7.tgz#416941475b54a31d24bb5189e407e7213ea63936"
-  integrity sha512-yoV/xpDg3of2XFcUO1AvbwXU/vbT62+dvYC1T5qIB+0gumfr4p3I5BXSdlrR0sJWEGz7WaCVmfbb1W1qtjHVfw==
+"@oleksii-lavka/grocee-icons@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@oleksii-lavka/grocee-icons/-/grocee-icons-1.0.9.tgz#7fb71695be04e7cb7b4d6329b55dd9b7c33f188c"
+  integrity sha512-QlTUfBiNmmvDK2ZjiceFGvMLAtSkf912CclC9k3PzoVABAdvclBKMSOnFgxBDkymNr43kB7tJpVDVqNsmhoYkQ==
   dependencies:
     react "^18.2.0"
     react-dom "^18.2.0"
