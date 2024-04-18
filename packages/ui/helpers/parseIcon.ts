@@ -9,7 +9,7 @@ export function parseIcon<T>(icon?: IconProps<T>): {
   animateWhen?: (value?: T) => boolean
   value?: T
 } {
-  if (!icon) {
+  if (!icon || !icon?.icon) {
     return {
       icon: null,
       animateWhen: () => false,
@@ -41,7 +41,7 @@ export function parseIcon<T>(icon?: IconProps<T>): {
   }
 
   return {
-    icon,
+    icon: icon as IconType,
     animateWhen: () => false,
     animationProps: {
       initial: {},

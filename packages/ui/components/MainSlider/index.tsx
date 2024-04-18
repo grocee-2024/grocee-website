@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, ReactNode, useState } from 'react'
+import { FC, useState } from 'react'
 import { Swiper, SwiperProps, SwiperSlide, useSwiper } from 'swiper/react'
 import type { Swiper as SwiperType } from 'swiper'
 import { Virtual, Autoplay } from 'swiper/modules'
@@ -19,7 +19,7 @@ type SlideProps = {
     description?: string
     button?: {
       props: ButtonProps<string>
-      children: ReactNode
+      text: string
     }
   }
 }
@@ -53,37 +53,35 @@ export const MainSlider: FC<SliderProps> = ({
   const [swiper, setSwiper] = useState<SwiperType | null>(null)
 
   return (
-    <>
-      <Swiper
-        modules={[Virtual, Autoplay]}
-        centeredSlides
-        onSwiper={setSwiper}
-        onSlideChange={({ activeIndex }) => {
-          setActiveIndex(activeIndex)
-        }}
-        className={clsx('relative rounded-[32px]', className)}
-        {...props}
-      >
-        {slides.map((slide, idx) => {
-          return (
-            <SwiperSlide key={uuidv4()} virtualIndex={idx}>
-              <Slide {...slide} slideHeight={slideHeight} slideClassName={slideClassName} />
-            </SwiperSlide>
-          )
-        })}
+    <Swiper
+      modules={[Virtual, Autoplay]}
+      centeredSlides
+      onSwiper={setSwiper}
+      onSlideChange={({ activeIndex }) => {
+        setActiveIndex(activeIndex)
+      }}
+      className={clsx('relative rounded-[32px]', className)}
+      {...props}
+    >
+      {slides.map((slide, idx) => {
+        return (
+          <SwiperSlide key={uuidv4()} virtualIndex={idx}>
+            <Slide {...slide} slideHeight={slideHeight} slideClassName={slideClassName} />
+          </SwiperSlide>
+        )
+      })}
 
-        <div className='absolute bottom-8 right-[68px] z-20 hidden gap-2 laptop:flex'>
-          <PrevSlide
-            isDisabled={Boolean(activeIndex === 0 && !swiper?.originalParams.loop)}
-            speed={props?.speed ?? 500}
-          />
-          <NextSlide
-            isDisabled={Boolean(activeIndex === slides.length - 1 && !swiper?.originalParams.loop)}
-            speed={props?.speed ?? 500}
-          />
-        </div>
-      </Swiper>
-    </>
+      <div className='absolute bottom-8 right-[68px] z-20 hidden gap-2 laptop:flex'>
+        <PrevSlide
+          isDisabled={Boolean(activeIndex === 0 && !swiper?.originalParams.loop)}
+          speed={props?.speed ?? 500}
+        />
+        <NextSlide
+          isDisabled={Boolean(activeIndex === slides.length - 1 && !swiper?.originalParams.loop)}
+          speed={props?.speed ?? 500}
+        />
+      </div>
+    </Swiper>
   )
 }
 
@@ -114,7 +112,11 @@ function Slide({
               )}
             </div>
 
-            {heading.button && <Button {...heading.button.props}>{heading.button.children}</Button>}
+            {heading.button && (
+              <Button {...heading.button.props}>
+                <span className='flex grow justify-start'>{heading.button.text}</span>
+              </Button>
+            )}
           </div>
         )}
       </div>

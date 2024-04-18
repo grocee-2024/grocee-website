@@ -25,10 +25,7 @@ export const Card: FC<CardProps> = props => {
   return (
     <Link
       href={href}
-      className={clsx(
-        'relative m-3 inline-flex flex-col gap-4 rounded-lg bg-gray-25 p-2',
-        className,
-      )}
+      className={clsx('relative m-3 flex flex-col gap-4 rounded-lg bg-gray-25 p-2', className)}
       {...linkProps}
       {...hoverProps}
       ref={linkRef}

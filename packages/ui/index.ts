@@ -12,6 +12,7 @@ export * from './components/NewsCard'
 export * from './components/Card'
 export * from './components/AccordionList'
 export * from './components/MainSlider'
+export * from './components/Carousel'
 
 export { Show } from './utils/Show'
 export { Each } from './utils/Each'

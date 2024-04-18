@@ -33,7 +33,7 @@ export const NewsCard: FC<Props> = props => {
 
   return (
     <motion.div
-      className={clsx('relative inline-block rounded-2xl', className)}
+      className={clsx('relative rounded-2xl', className)}
       style={{ height, minWidth }}
       {...animationProps}
     >

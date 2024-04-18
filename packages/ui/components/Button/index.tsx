@@ -21,7 +21,7 @@ import { IconsWrapper } from './IconsWrapper'
 import { Loader } from 'ui'
 
 export type IconProps<T> = {
-  icon: AllIconNames | IconType
+  icon?: AllIconNames | IconType
   animationProps?: Pick<AnimationProps, 'initial' | 'exit'>
   animateWhen?: (value?: T) => boolean
   value?: T
