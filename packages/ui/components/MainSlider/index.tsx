@@ -6,14 +6,14 @@ import type { Swiper as SwiperType } from 'swiper'
 import { Virtual, Autoplay } from 'swiper/modules'
 import { Button, ButtonProps } from '../Button'
 import type { Image as PayloadImageType } from 'cms-types'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import { v4 as uuidv4 } from 'uuid'
 
 import 'swiper/css'
 import 'swiper/css/virtual'
 
 type SlideProps = {
-  image: PayloadImageType | string
+  image: PayloadImageType
   heading?: {
     title?: string
     description?: string

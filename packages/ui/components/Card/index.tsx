@@ -12,10 +12,11 @@ type CardProps = {
   image?: PayloadImageType
   text: string
   href: string
+  gap?: 'small' | 'normal'
 }
 
 export const Card: FC<CardProps> = props => {
-  const { className = '', href, text } = props
+  const { className = '', href, text, gap = 'small' } = props
 
   const { hoverProps, isHovered } = useHover({})
   const linkRef = useRef<HTMLAnchorElement | null>(null)
@@ -25,7 +26,14 @@ export const Card: FC<CardProps> = props => {
   return (
     <Link
       href={href}
-      className={clsx('relative m-3 flex flex-col gap-4 rounded-lg bg-gray-25 p-2', className)}
+      className={clsx(
+        'relative m-3 flex flex-col rounded-lg bg-gray-25 p-2',
+        {
+          'gap-4': gap === 'small',
+          'gap-8': gap === 'normal',
+        },
+        className,
+      )}
       {...linkProps}
       {...hoverProps}
       ref={linkRef}

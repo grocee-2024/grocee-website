@@ -24,8 +24,10 @@ import { Videos } from './collections/media/Videos'
 import { Orders } from './collections/Orders'
 import { Pages } from './collections/Pages'
 
+import { AllBlocks } from './globals/AllBlocks'
 import { Header } from './globals/Header'
 import { Footer } from './globals/Footer'
+import { GlobalTypography } from './globals/GlobalTypography'
 
 import { createPaymentIntent } from './endpoints/create-payment-intent'
 import { customersProxy } from './endpoints/customers'
@@ -74,7 +76,7 @@ export default buildConfig({
     ],
   }),
   collections: [Users, Products, Categories, Images, Videos, Orders, Pages],
-  globals: [Header, Footer],
+  globals: [Header, Footer, GlobalTypography, AllBlocks],
   typescript: {
     outputFile: path.resolve(__dirname, '../../../packages/cms-types/index.ts'),
     declare: false,
