@@ -49,7 +49,7 @@ export const ProductCard: FC<ProductCardProps> = props => {
 
   return (
     <motion.div
-      className={clsx('inline-flex flex-col gap-4 rounded-2xl bg-gray-25 p-4', className)}
+      className={clsx('flex flex-col gap-4 rounded-2xl bg-gray-25 p-4', className)}
       {...animationProps}
     >
       <div className='relative'>

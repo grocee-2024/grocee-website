@@ -48,8 +48,8 @@ export const useWindowSize = singletonHook<WindowSizeProps>(
       const handleResize = () => {
         const windowWidth = window.innerWidth
 
-        const isMatchTablet = windowWidth >= 768 && windowWidth < 1440
-        const isMatchDesktop = windowWidth >= 1440
+        const isMatchTablet = windowWidth >= 768 && windowWidth < 1280
+        const isMatchDesktop = windowWidth >= 1280
 
         // Only trigger modals handle when window type changed
         if (isMatchDesktop !== previousDesktopState.current) {

@@ -79,6 +79,10 @@ video {
   @apply grid grid-cols-12 gap-x-8 gap-y-6;
 }
 
+.width-limit {
+  @apply !px-2.5 tablet:!px-5 laptop:!px-12 desktop:!px-[100px];
+}
+
 input,
 button {
   outline: none;
