@@ -12,22 +12,31 @@ type WindowSize = {
 type WindowSizeProps = {
   windowSize: WindowSize
   isDesktop: boolean
+  isLaptop: boolean
   isTablet: boolean
   isMobile: boolean
 }
 
 export const useWindowSize = singletonHook<WindowSizeProps>(
-  { windowSize: { width: 0, height: 0 }, isDesktop: false, isTablet: false, isMobile: false },
+  {
+    windowSize: { width: 0, height: 0 },
+    isDesktop: false,
+    isLaptop: false,
+    isTablet: false,
+    isMobile: false,
+  },
   () => {
     const [isDesktop, setIsDesktop] = useState(false)
+    const [isLaptop, setIsLaptop] = useState(false)
     const [isTablet, setIsTablet] = useState(false)
     const [windowSize, setWindowSize] = useThrottle<WindowSize>({ width: 0, height: 0 }, 4)
 
-    const previousDesktopState = useRef<boolean>()
+    const previousLaptopState = useRef<boolean>()
     const previousTabletState = useRef<boolean>()
+    const previousDesktopState = useRef<boolean>()
 
-    const closeModals = (isMathchDesktopOrTablet: boolean, modalStates: ModalStates) => {
-      if (isMathchDesktopOrTablet) {
+    const closeModals = (isMathchNotMobile: boolean, modalStates: ModalStates) => {
+      if (isMathchNotMobile) {
         Object.entries(modalStates).forEach(([key, { onCloseDesktop }]) => {
           if (onCloseDesktop) {
             onCloseDesktop()
@@ -48,7 +57,8 @@ export const useWindowSize = singletonHook<WindowSizeProps>(
       const handleResize = () => {
         const windowWidth = window.innerWidth
 
-        const isMatchTablet = windowWidth >= 768 && windowWidth < 1280
+        const isMatchTablet = windowWidth >= 768 && windowWidth < 1024
+        const isMatchLaptop = windowWidth >= 1024 && windowWidth < 1280
         const isMatchDesktop = windowWidth >= 1280
 
         // Only trigger modals handle when window type changed
@@ -60,6 +70,16 @@ export const useWindowSize = singletonHook<WindowSizeProps>(
           setIsDesktop(isMatchDesktop)
 
           closeModals(isMatchDesktop, modalStates)
+        }
+
+        if (isMatchLaptop !== previousLaptopState.current) {
+          const modalStates = modalService.getModalStates()
+
+          previousLaptopState.current = isMatchLaptop
+
+          setIsLaptop(isMatchLaptop)
+
+          closeModals(isMatchLaptop, modalStates)
         }
 
         if (isMatchTablet !== previousTabletState.current) {
@@ -82,6 +102,12 @@ export const useWindowSize = singletonHook<WindowSizeProps>(
       return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-    return { windowSize, isDesktop, isTablet, isMobile: !isDesktop && !isTablet }
+    return {
+      windowSize,
+      isDesktop,
+      isTablet,
+      isLaptop,
+      isMobile: !isDesktop && !isTablet && !isLaptop,
+    }
   },
 )

@@ -16,7 +16,7 @@ export default function IconPicker({ path, label, required }: Props) {
       {Boolean(value) ? (
         <IconPreview
           icon={value as string}
-          iconSize={100}
+          iconSize={80}
           withCancelButton
           onCancel={() => setValue('')}
         />

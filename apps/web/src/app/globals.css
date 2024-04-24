@@ -80,7 +80,7 @@ video {
 }
 
 .width-limit {
-  @apply !px-2.5 tablet:!px-5 laptop:!px-12 desktop:!px-[100px];
+  @apply !mx-2.5 tablet:!mx-5 laptop:!mx-12 desktop:!mx-[100px];
 }
 
 input,

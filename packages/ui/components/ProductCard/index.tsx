@@ -9,6 +9,7 @@ import { FocusRing } from 'react-aria'
 import { Image as PayloadImageType } from 'cms-types'
 import clsx from 'clsx'
 import { HTMLMotionProps, motion } from 'framer-motion'
+import { PayloadImage } from '../PayloadImage'
 
 export type ProductCardProps = {
   tag?: string
@@ -32,6 +33,7 @@ export type ProductCardProps = {
 
 export const ProductCard: FC<ProductCardProps> = props => {
   const {
+    image,
     imageClassName = '',
     className = '',
     tag,
@@ -45,6 +47,7 @@ export const ProductCard: FC<ProductCardProps> = props => {
     onClickLikeButton,
     link,
     animationProps = {},
+    objectFit = 'cover',
   } = props
 
   return (
@@ -65,10 +68,13 @@ export const ProductCard: FC<ProductCardProps> = props => {
               className='relative w-full overflow-hidden rounded-lg'
               style={{ paddingBottom: imageHeight, minWidth: minImageWidth }}
             >
-              <img
-                src='/temp-image.png'
-                alt='product'
-                className={clsx('absolute left-0 top-0 h-full w-full object-cover', imageClassName)}
+              <PayloadImage
+                src={image}
+                skipBlur
+                objectFit={objectFit}
+                imgProps={{
+                  className: clsx('absolute left-0 top-0 object-cover', imageClassName),
+                }}
               />
             </div>
           </Link>

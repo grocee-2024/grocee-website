@@ -202,6 +202,7 @@ function CommonInput<T>(props: InputProps<T>) {
         <input
           ref={inputRef}
           {...inputProps}
+          role={props?.role}
           type={type}
           className='placeholder:gilroy-md grow text-gray-900 placeholder:text-gray-400'
         />

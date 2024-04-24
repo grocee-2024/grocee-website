@@ -58,9 +58,9 @@ function Icon<T>({ icon }: { icon?: Props<T>['leftIcon'] }) {
     }
 
     if (animateWhen(value)) {
-      animate(scope.current, animationProps?.initial ?? {})
+      animate(scope.current, animationProps?.initial ?? {}, animationProps?.transition ?? {})
     } else {
-      animate(scope.current, animationProps?.exit ?? {})
+      animate(scope.current, animationProps?.exit ?? {}, animationProps?.transition ?? {})
     }
   }, [animateWhen, value, animationProps])
 

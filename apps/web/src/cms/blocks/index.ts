@@ -1,6 +1,7 @@
 import { Config } from 'cms-types'
 
 import { MainSlider } from './MainSlider'
+import { Carousel } from './Carousel'
 
 export type AnyBlock = NonNullable<Config['globals']['allBlocks']['blocks']>[number]
 
@@ -10,4 +11,5 @@ export const blocks: Record<
   (...args: any[]) => JSX.Element | null | Promise<JSX.Element | null>
 > = {
   MainSlider,
+  Carousel,
 }

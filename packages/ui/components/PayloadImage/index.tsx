@@ -1,17 +1,16 @@
 'use client'
 
 import clsx from 'clsx'
-import { Image as PayloadImageType } from 'cms-types'
-import { useInView } from 'framer-motion'
+import { Image as CMSImage } from 'cms-types'
+import { AnimatePresence, useInView, motion } from 'framer-motion'
 import { CSSProperties, useLayoutEffect, useMemo, useRef, useState } from 'react'
-
 import { useWindowSize } from '../../hooks'
 
 export type PayloadImageProps = {
   /**
    * The image to display
    */
-  src?: PayloadImageType
+  src?: CMSImage
   /**
    * Optional alt property for the image
    * Is normally extracted from the payload image object, but can be overridden
@@ -73,7 +72,25 @@ export function PayloadImage({
 
   const isInView = useInView(pictureRef)
 
-  const { avif, webp, png, biggestPng, smallestPng, availableSizes } = useMemo(() => {
+  const { avif, webp, png, biggestPng, svg, smallestPng, availableSizes } = useMemo(() => {
+    if (src?.mimeType === 'image/svg+xml') {
+      return {
+        avif: '',
+        svg: src.url as string,
+        webp: '',
+        png: '',
+        biggestPng: {
+          url: '',
+          width: 0,
+        },
+        smallestPng: {
+          url: '',
+          width: Infinity,
+        },
+        availableSizes: [] as number[],
+      }
+    }
+
     return Object.values(src?.sizes ?? {}).reduce(
       (acc, { mimeType, url, width }) => {
         if (url == null || width == null) return acc
@@ -97,6 +114,7 @@ export function PayloadImage({
       },
       {
         avif: '',
+        svg: '',
         webp: '',
         png: '',
         biggestPng: {
@@ -126,7 +144,7 @@ export function PayloadImage({
   const customSizes = useMemo(() => {
     if (sizes) return sizes
 
-    if (pictureWidth) return skipFastLoad ? null : `${smallestPng.width}px`
+    if (pictureWidth == null) return skipFastLoad ? null : `${smallestPng.width}px`
 
     return `${pictureWidth}px`
   }, [sizes, pictureWidth, skipFastLoad, smallestPng.width])
@@ -137,23 +155,24 @@ export function PayloadImage({
       {...pictureProps}
       className={clsx(
         {
-          blur: pictureWidth == null && !skipBlur,
+          blur: pictureWidth == null && !skipBlur && !svg,
           'w-full': !pictureWidth,
         },
-        'relative transition-[filter]',
+        'transition-[filter]',
         className,
       )}
     >
-      {customSizes && (
+      {customSizes != null && (
         <>
-          {avif && <source srcSet={avif} type='image/avif' sizes={customSizes} />}
-          {webp && <source srcSet={webp} type='image/webp' sizes={customSizes} />}
-          {png && <source srcSet={png} type='image/png' sizes={customSizes} />}
+          {avif !== '' && <source srcSet={avif} type='image/avif' sizes={customSizes} />}
+          {webp !== '' && <source srcSet={webp} type='image/webp' sizes={customSizes} />}
+          {png !== '' && <source srcSet={png} type='image/png' sizes={customSizes} />}
+          {svg !== '' && <source srcSet={svg} type='image/svg+xml' sizes={customSizes} />}
 
-          {pictureWidth && (
+          {pictureWidth != null || svg ? (
             <img
               {...imgProps}
-              src={biggestPng.url}
+              src={biggestPng.url || svg}
               alt={alt ?? src?.alt ?? ''}
               loading={isInView ? 'eager' : 'lazy'}
               style={{
@@ -161,6 +180,15 @@ export function PayloadImage({
                 ...imgProps?.style,
               }}
             />
+          ) : (
+            <AnimatePresence>
+              <motion.div
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 1 }}
+                className='absolute inset-0 min-h-full w-full animate-pulse bg-gray-500'
+              />
+            </AnimatePresence>
           )}
         </>
       )}

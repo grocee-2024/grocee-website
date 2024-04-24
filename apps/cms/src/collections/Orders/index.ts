@@ -2,10 +2,10 @@ import type { CollectionConfig } from 'payload/types'
 
 import { isAdmin } from '../../access/isAdmin'
 import { isAdminOrLoggedIn } from '../../access/isAdminOrLoggedIn'
-import { isAdminsOrOrderedBy } from './access/isAdminsOrOrderedBy'
 import { clearUserCart } from './hooks/clearUserCart'
 import { populateOrderedBy } from './hooks/populateOrderedBy'
 import { LinkToPaymentIntent } from './ui/LinkToPaymentIntent'
+import { isAnyone } from '../../access/isAnyone'
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
@@ -19,7 +19,7 @@ export const Orders: CollectionConfig = {
     afterChange: [clearUserCart],
   },
   access: {
-    read: isAdminsOrOrderedBy,
+    read: isAnyone,
     update: isAdmin,
     create: isAdminOrLoggedIn,
     delete: isAdmin,

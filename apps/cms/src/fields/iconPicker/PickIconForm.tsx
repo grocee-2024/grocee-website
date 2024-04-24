@@ -15,8 +15,6 @@ export default function PickIconForm({ path, onPick }: PickIconFormProps) {
   const [query, setQuery] = useState('')
   const deferredQuery = useDeferredValue(query)
 
-  const [color, setColor] = useState('')
-
   const filteredList = useMemo(() => {
     const normalizedQuery = deferredQuery.toLowerCase()
 
@@ -29,7 +27,7 @@ export default function PickIconForm({ path, onPick }: PickIconFormProps) {
     () =>
       getPagination(filteredList, {
         page,
-        maxItemsPerPage: 25,
+        maxItemsPerPage: 15,
       }),
     [page, filteredList],
   )

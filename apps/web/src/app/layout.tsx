@@ -5,6 +5,7 @@ import { getMetadata, getGlobal } from '@/cms'
 import { cookies } from 'next/headers'
 import { useGlobalTypography } from '@/store/globalTypographyStore'
 import SetupClientComponent from '@/components/SetupClientComponent'
+import MainNavigation from '@/cms/globals/MainNavigation'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,8 +20,9 @@ export default async function RootLayout({
 }>) {
   const locale = cookies().get('locale')?.value ?? 'en'
 
-  const [globalTypography] = await Promise.all([
+  const [globalTypography, mainNavigation] = await Promise.all([
     getGlobal('globalTypography', { searchParams: { depth: '1', locale } }),
+    getGlobal('mainNavigation', { searchParams: { depth: '1', locale } }),
   ])
 
   useGlobalTypography.setState(globalTypography)
@@ -29,7 +31,8 @@ export default async function RootLayout({
     <html lang={locale}>
       <body>
         <SetupClientComponent globalTypography={globalTypography} />
-        <main className='mx-auto max-w-[1440px]'>{children}</main>
+        <MainNavigation {...mainNavigation} />
+        <main className='mx-auto max-w-[1440px] bg-white laptop:mt-8'>{children}</main>
       </body>
     </html>
   )

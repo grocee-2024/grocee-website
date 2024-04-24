@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 
 import { resolveRelation } from './helpers'
 
-export const CMS_URL = process.env['PAYLOAD_INTERNAL_URL'] ?? process.env.NEXT_PUBLIC_PAYLOAD_URL
+export const CMS_URL = process.env.PAYLOAD_INTERNAL_URL ?? process.env.NEXT_PUBLIC_PAYLOAD_URL
 
 const isAxiosError = (error: unknown): error is AxiosError => {
   return (

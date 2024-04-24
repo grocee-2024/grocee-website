@@ -6,9 +6,12 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import { Image as PayloadImageType } from 'cms-types'
 import { useHover, useLink } from 'react-aria'
+import { PayloadImage } from '../PayloadImage'
+import { useCanHover } from '../../hooks'
 
 type CardProps = {
   className?: string
+  imageClassName?: string
   image?: PayloadImageType
   text: string
   href: string
@@ -16,7 +19,8 @@ type CardProps = {
 }
 
 export const Card: FC<CardProps> = props => {
-  const { className = '', href, text, gap = 'small' } = props
+  const { className = '', href, text, gap = 'small', image, imageClassName = '' } = props
+  const canHover = useCanHover()
 
   const { hoverProps, isHovered } = useHover({})
   const linkRef = useRef<HTMLAnchorElement | null>(null)
@@ -27,10 +31,10 @@ export const Card: FC<CardProps> = props => {
     <Link
       href={href}
       className={clsx(
-        'relative m-3 flex flex-col rounded-lg bg-gray-25 p-2',
+        'relative flex flex-col rounded-lg bg-gray-25 p-4',
         {
           'gap-4': gap === 'small',
-          'gap-8': gap === 'normal',
+          'gap-[62px]': gap === 'normal',
         },
         className,
       )}
@@ -38,21 +42,25 @@ export const Card: FC<CardProps> = props => {
       {...hoverProps}
       ref={linkRef}
     >
-      <div className='grow overflow-hidden rounded-lg'>
-        <img
-          src='/action.png'
-          className={clsx('h-full w-full object-cover transition-transform duration-200', {
-            'scale-110': isHovered,
-          })}
-          alt='alt'
+      <div className='relative min-h-24 grow overflow-hidden rounded-lg'>
+        <PayloadImage
+          src={image}
+          skipBlur
+          imgProps={{
+            className: clsx(
+              'absolute left-0 top-0 h-full w-full object-cover transition-transform duration-300',
+              { 'scale-110': canHover && isHovered },
+              imageClassName,
+            ),
+          }}
         />
       </div>
 
       <div className='gilroy-md flex items-center justify-between gap-1 text-gray-900'>
         <span>{text}</span>
         <ArrowRight
-          className={clsx('transition-transform duration-200', {
-            'translate-x-1': isHovered,
+          className={clsx('transition-transform duration-300', {
+            'translate-x-1': canHover && isHovered,
           })}
         />
       </div>

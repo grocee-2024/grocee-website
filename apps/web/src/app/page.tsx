@@ -1,21 +1,12 @@
-'use client'
+import { getPage } from '@/cms'
+import { renderBlocks } from '@/cms/helpers'
+import { NextRoute } from '@/types'
+import { cookies } from 'next/headers'
 
-import { AccordionList, Card, Carousel, Input, MainSlider, ProductCard } from 'ui'
+export default async function HomePage({ searchParams }: NextRoute) {
+  const locale = cookies().get('locale')?.value || 'en'
 
-export default function Home() {
-  return (
-    <div className=''>
-      <Carousel
-        className='width-limit'
-        title='Categories'
-        buttonIcon='ArrowCircleRight'
-        buttonText='All'
-        buttonLink='/'
-      >
-        {Array.from({ length: 4 }).map((_, idx) => (
-          <ProductCard key={idx} link='/' price={50} rating={5} title='Title' weight='Weight' />
-        ))}
-      </Carousel>
-    </div>
-  )
+  const page = await getPage('pages', 'home', { searchParams: { ...searchParams, locale } })
+
+  return <div className='mb-20 flex flex-col gap-20'>{renderBlocks(page?.layout)}</div>
 }

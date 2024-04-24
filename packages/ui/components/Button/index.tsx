@@ -14,15 +14,17 @@ import {
 } from 'react'
 import { AllIconNames, IconType } from '@oleksii-lavka/grocee-icons'
 import { FocusRing, HoverEvents, mergeProps, useButton, useHover, useLink } from 'react-aria'
-import { AnimationProps, HTMLMotionProps, motion } from 'framer-motion'
+import { AnimationProps, HTMLMotionProps, ValueAnimationTransition, motion } from 'framer-motion'
 import clsx from 'clsx'
 import Link, { LinkProps } from 'next/link'
 import { IconsWrapper } from './IconsWrapper'
 import { Loader } from 'ui'
 
 export type IconProps<T> = {
-  icon?: AllIconNames | IconType
-  animationProps?: Pick<AnimationProps, 'initial' | 'exit'>
+  icon?: AllIconNames | IconType | null
+  animationProps?: Pick<AnimationProps, 'initial' | 'exit'> & {
+    transition?: ValueAnimationTransition<any>
+  }
   animateWhen?: (value?: T) => boolean
   value?: T
 }
@@ -53,7 +55,7 @@ export type ButtonProps<T> = PropsWithChildren<{
   prefetch?: boolean
   standartButton?: boolean
   animationProps?: HTMLMotionProps<'div' | 'button'>
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'danger'
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'danger' | 'defaultLink'
   type?: 'button' | 'submit' | 'reset'
   tabIndex?: number
   isFocused?: boolean
@@ -135,11 +137,15 @@ export function Button<T>(props: ButtonProps<T>) {
   const parentProps = useMemo(
     () => ({
       className: clsx(
-        'relative block touch-none select-none rounded-[1000px] border-transparent font-light no-underline transition-colors duration-300 ease-in-out',
-        'after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:rounded-[1000px] after:transition-colors after:duration-300 after:content-[""]',
         {
-          'after:border-[1px]': !disableBorder,
-          'gilroy-md min-h-12 px-6 py-3': standartButton,
+          'relative block touch-none select-none rounded-[1000px] border-transparent font-light no-underline transition-colors duration-300 ease-in-out':
+            variant !== 'defaultLink',
+          'after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:rounded-[1000px] after:transition-colors after:duration-300 after:content-[""]':
+            variant !== 'defaultLink',
+        },
+        {
+          'after:border-[1px]': !disableBorder && variant !== 'defaultLink',
+          'gilroy-md min-h-12 px-6 py-3': standartButton && variant !== 'defaultLink',
         },
         {
           primary: clsx({
@@ -167,6 +173,8 @@ export function Button<T>(props: ButtonProps<T>) {
               !isPressed && !isButtonDisabled,
             'text-gray-500 after:border-gray-500': isButtonDisabled,
           }),
+          defaultLink:
+            'gilroy-sm ease inline-block text-gray-900 underline underline-offset-2 transition-colors duration-300 hover:text-gray-700',
         }[variant],
         className,
       ),
@@ -175,13 +183,17 @@ export function Button<T>(props: ButtonProps<T>) {
     [variant, isPressed, isButtonDisabled],
   )
 
-  const contnet = (
-    <>
-      {isLoading ? (
+  const content = () => {
+    if (isLoading) {
+      return (
         <div className='flex items-center justify-center gap-2'>
           <Loader size={20} />
         </div>
-      ) : (
+      )
+    }
+
+    if (variant !== 'defaultLink') {
+      return (
         <IconsWrapper
           className='flex items-center justify-center gap-2'
           leftIcon={leftIcon}
@@ -189,9 +201,11 @@ export function Button<T>(props: ButtonProps<T>) {
         >
           {children}
         </IconsWrapper>
-      )}
-    </>
-  )
+      )
+    }
+
+    return children
+  }
 
   if (href) {
     return (
@@ -204,7 +218,7 @@ export function Button<T>(props: ButtonProps<T>) {
           prefetch={prefetch}
         >
           {/* @ts-ignore */}
-          <motion.div {...parentProps}>{contnet}</motion.div>
+          <motion.div {...parentProps}>{content()}</motion.div>
         </Link>
       </FocusRing>
     )
@@ -242,7 +256,7 @@ export function Button<T>(props: ButtonProps<T>) {
         aria-label='button'
         aria-disabled={isDisabled || isLoading}
       >
-        {contnet}
+        {content()}
       </motion.button>
     </FocusRing>
   )

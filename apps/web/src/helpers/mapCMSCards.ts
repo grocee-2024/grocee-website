@@ -1,0 +1,28 @@
+import { getCollectionItem } from '@/cms'
+import { CardBlock, Image } from 'cms-types'
+import { parsePayloadLink } from '.'
+
+export const mapCMSCards = async (cards: CardBlock[]) => {
+  const mappedCards = await Promise.all(
+    (cards ?? []).map(async card => {
+      const { image, link, id, text } = card
+
+      let previewImage = image
+
+      if (typeof previewImage === 'string') {
+        previewImage = (await getCollectionItem(previewImage, 'images')) as Image
+      }
+
+      const parsedLink = parsePayloadLink(link)
+
+      return {
+        id: id as string,
+        text,
+        link: parsedLink,
+        image: previewImage,
+      }
+    }),
+  )
+
+  return mappedCards
+}

@@ -20,13 +20,14 @@ import { Users } from './collections/Users'
 import { Products } from './collections/Products'
 import { Categories } from './collections/Categories'
 import { Images } from './collections/media/Images'
-import { Videos } from './collections/media/Videos'
 import { Orders } from './collections/Orders'
 import { Pages } from './collections/Pages'
+import { ProductPages } from './collections/ProductPages'
+import { News } from './collections/News'
 
 import { AllBlocks } from './globals/AllBlocks'
-import { Header } from './globals/Header'
-import { Footer } from './globals/Footer'
+import { MainNavigation } from './globals/MainNavigation'
+import { BottomNavigation } from './globals/BottomNavigation'
 import { GlobalTypography } from './globals/GlobalTypography'
 
 import { createPaymentIntent } from './endpoints/create-payment-intent'
@@ -75,8 +76,8 @@ export default buildConfig({
       HTMLConverterFeature({}),
     ],
   }),
-  collections: [Users, Products, Categories, Images, Videos, Orders, Pages],
-  globals: [Header, Footer, GlobalTypography, AllBlocks],
+  collections: [Users, Products, Categories, Images, Orders, Pages, ProductPages, News],
+  globals: [MainNavigation, BottomNavigation, GlobalTypography, AllBlocks],
   typescript: {
     outputFile: path.resolve(__dirname, '../../../packages/cms-types/index.ts'),
     declare: false,
@@ -115,6 +116,8 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI,
     },
+    push: false,
+    idType: 'uuid',
   }),
   localization: {
     locales: ['en', 'ua'],
@@ -126,12 +129,18 @@ export default buildConfig({
     supportedLngs: ['en', 'ua'],
     debug: false,
   },
-  cors: ['https://checkout.stripe.com', process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(
-    Boolean,
-  ),
-  csrf: ['https://checkout.stripe.com', process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(
-    Boolean,
-  ),
+  // cors: '*',
+  // csrf: ['*'],
+  cors: [
+    'https://checkout.stripe.com',
+    process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
+    process.env.PAYLOAD_PUBLIC_WEBSITE_PUBLIC_URL || '',
+  ].filter(Boolean),
+  csrf: [
+    'https://checkout.stripe.com',
+    process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
+    process.env.PAYLOAD_PUBLIC_WEBSITE_PUBLIC_URL || '',
+  ].filter(Boolean),
   endpoints: [
     {
       path: '/create-payment-intent',
