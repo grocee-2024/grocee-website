@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { IconType, mapIcon } from '@oleksii-lavka/grocee-icons'
 import { IconProps } from 'ui/components/Button'
-import { AnimationProps } from 'framer-motion'
+import { AnimationProps, ValueAnimationTransition } from 'framer-motion'
 
 export function parseIcon<T>(icon?: IconProps<T>): {
   icon: IconType | null
-  animationProps?: Pick<AnimationProps, 'initial' | 'exit'>
+  animationProps?: Pick<AnimationProps, 'initial' | 'exit'> & {
+    transition?: ValueAnimationTransition<any>
+  }
   animateWhen?: (value?: T) => boolean
   value?: T
 } {
@@ -16,6 +18,7 @@ export function parseIcon<T>(icon?: IconProps<T>): {
       animationProps: {
         initial: {},
         exit: {},
+        transition: {},
       },
     }
   }
@@ -27,13 +30,14 @@ export function parseIcon<T>(icon?: IconProps<T>): {
       animationProps: {
         initial: {},
         exit: {},
+        transition: {},
       },
     }
   }
 
   if ('icon' in icon) {
     return {
-      icon: typeof icon.icon === 'string' ? mapIcon(icon.icon) : icon.icon,
+      icon: typeof icon.icon === 'string' ? mapIcon(icon.icon) : (icon.icon as IconType),
       animationProps: icon?.animationProps,
       animateWhen: icon?.animateWhen,
       value: icon?.value,
@@ -46,6 +50,7 @@ export function parseIcon<T>(icon?: IconProps<T>): {
     animationProps: {
       initial: {},
       exit: {},
+      transition: {},
     },
   }
 }

@@ -2,29 +2,21 @@ import type { CollectionConfig } from 'payload/types'
 
 import { isAdmin } from './../../access/isAdmin'
 import { slugField } from '../../fields/slug'
-import { isAdminOrPublished } from './access/isAdminOrPublished'
-import { revalidatePage } from './hooks/revalidatePage'
 import { ALL_BLOCKS } from '../../blocks'
+import { isAnyone } from '../../access/isAnyone'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
+    group: 'Pages',
     useAsTitle: 'slug',
-    defaultColumns: ['slug', 'updatedAt'],
-    preview: doc => {
-      return `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/next/preview?url=${encodeURIComponent(
-        `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/${doc.slug !== 'home' ? doc.slug : ''}`,
-      )}&secret=${process.env.PAYLOAD_PUBLIC_DRAFT_SECRET}`
-    },
-  },
-  hooks: {
-    afterChange: [revalidatePage],
+    defaultColumns: ['slug', 'layout', 'updatedAt'],
   },
   versions: {
     drafts: true,
   },
   access: {
-    read: isAdminOrPublished,
+    read: isAnyone,
     update: isAdmin,
     create: isAdmin,
     delete: isAdmin,
@@ -34,7 +26,6 @@ export const Pages: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      required: true,
       blocks: ALL_BLOCKS,
     },
   ],

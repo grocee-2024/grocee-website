@@ -19,7 +19,11 @@
     "axios": "^1.6.8",
     "zustand": "^4.5.2",
     "framer-motion": "^11.0.24",
-    "@oleksii-lavka/grocee-icons": "^1.0.9"
+    "@oleksii-lavka/grocee-icons": "^1.1.0",
+    "nextjs-progressbar": "^0.0.16",
+    "@stripe/react-stripe-js": "^2.7.0",
+    "@stripe/stripe-js": "^3.3.0",
+    "stripe": "^15.1.0"
   },
   "devDependencies": {
     "typescript": "^5.4.3",

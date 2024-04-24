@@ -3,45 +3,53 @@
 import { Children, FC, PropsWithChildren, useCallback, useId, useState } from 'react'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import type { Swiper as SwiperType } from 'swiper'
-import { Virtual, Autoplay } from 'swiper/modules'
+import { Virtual } from 'swiper/modules'
 import { Button } from '../Button'
-import { AllIconNames } from '@oleksii-lavka/grocee-icons'
+import { AllIconNames, IconType } from '@oleksii-lavka/grocee-icons'
 import clsx from 'clsx'
+import { useCanHover } from '../../hooks'
 
 import 'swiper/css'
 import 'swiper/css/virtual'
 
 type CarouselProps = PropsWithChildren<{
   title?: string
+  showLink?: boolean
   buttonLink?: string
   buttonText?: string
-  buttonIcon?: AllIconNames
+  buttonIcon?: AllIconNames | IconType | null
   speed?: number
   loop?: boolean
+  virtual?: boolean
   className?: string
 }>
 
 export const Carousel: FC<CarouselProps> = ({
   children,
   title,
-  speed,
+  speed = 500,
   buttonLink,
   buttonText,
   buttonIcon,
   className = '',
   loop = false,
+  virtual = false,
+  showLink = true,
 }) => {
+  const [isHovered, setIsHovered] = useState(false)
+  const canHover = useCanHover()
   const [swiper, setSwiper] = useState<SwiperType | null>(null)
   const [disabledNavigation, setDisabledNavigation] = useState<{ prev: boolean; next: boolean }>({
     prev: true,
     next: true,
   })
+
   const carouselId = useId()
 
   const onUpdateDisableNavigation = useCallback(
     ({ isBeginning, isEnd }: Pick<SwiperType, 'isBeginning' | 'isEnd'>) => {
-      const prev = isBeginning && !swiper?.originalParams.loop
-      const next = isEnd && !swiper?.originalParams.loop
+      const prev = isBeginning && (!swiper?.originalParams?.loop ?? false)
+      const next = isEnd && (!swiper?.originalParams?.loop ?? false)
 
       setDisabledNavigation(prevState => ({
         ...prevState,
@@ -54,29 +62,30 @@ export const Carousel: FC<CarouselProps> = ({
 
   return (
     <Swiper
-      modules={[Virtual, Autoplay]}
+      modules={[Virtual]}
       spaceBetween={24}
       slidesPerView={1}
+      virtual={virtual}
       loop={loop}
       allowTouchMove
       onResize={({ isBeginning, isEnd, originalParams }) => {
-        const currPrev = isBeginning && originalParams.loop
-        const currNext = isEnd && originalParams.loop
+        const currPrev = isBeginning && (originalParams?.loop ?? false)
+        const currNext = isEnd && (originalParams?.loop ?? false)
 
         if (currPrev !== disabledNavigation.prev || currNext !== disabledNavigation.next) {
           onUpdateDisableNavigation({ isBeginning, isEnd })
         }
       }}
       breakpoints={{
-        496: {
+        768: {
           slidesPerView: 2,
           slidesPerGroup: 2,
         },
-        768: {
+        1024: {
           slidesPerView: 3,
           slidesPerGroup: 3,
         },
-        1024: {
+        1280: {
           slidesPerView: 4,
           slidesPerGroup: 4,
           allowTouchMove: false,
@@ -95,12 +104,31 @@ export const Carousel: FC<CarouselProps> = ({
         )}
 
         <div className='flex grow items-center justify-end gap-6'>
-          {buttonText && buttonLink && (
+          {showLink && buttonText && buttonLink && (
             <Button
               href={buttonLink}
               standartButton
               variant='tertiary'
-              rightIcon={{ icon: buttonIcon, size: 18 }}
+              rightIcon={{
+                icon: buttonIcon,
+                size: 18,
+                animateWhen: value => !!value,
+                value: isHovered && canHover,
+                animationProps: {
+                  initial: {
+                    translateX: 3,
+                  },
+                  exit: {
+                    translateX: 0,
+                  },
+                },
+              }}
+              onHoverStart={() => {
+                setIsHovered(true)
+              }}
+              onHoverEnd={() => {
+                setIsHovered(false)
+              }}
             >
               {buttonText}
             </Button>

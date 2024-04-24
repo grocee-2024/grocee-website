@@ -1,7 +1,7 @@
 import { CollectionConfig } from 'payload/types'
 import { useCacheControl } from '../../middleware/useCacheControl'
 import { isAnyone } from '../../access/isAnyone'
-import { isNobody } from '../../access/isNobody'
+import { isAdmin } from '../../access/isAdmin'
 
 const AVAILABLE_SIZES =
   process.env.NODE_ENV !== 'production'
@@ -22,11 +22,13 @@ export const Images: CollectionConfig = {
   },
   access: {
     read: isAnyone,
-    update: isNobody,
+    update: isAdmin,
+    delete: isAdmin,
+    create: isAdmin,
   },
   upload: {
     staticURL: '/images',
-    staticDir: '../../media/images/',
+    staticDir: 'images',
     imageSizes: AVAILABLE_SIZES.flatMap(size =>
       FORMATS.map(format => ({
         name: `${format}_${size}px`,

@@ -132,7 +132,7 @@ const linkOrButton: LinkType = ({
             name: 'reference',
             label: 'Document to link to',
             type: 'relationship',
-            relationTo: ['pages'],
+            relationTo: ['pages', 'productPages'],
             required: true,
             maxDepth: 1,
             admin: {
@@ -187,10 +187,14 @@ const linkOrButton: LinkType = ({
                           {
                             name: 'width',
                             type: 'number',
+                            defaultValue: 18,
+                            required: true,
                           },
                           {
                             name: 'height',
                             type: 'number',
+                            defaultValue: 18,
+                            required: true,
                           },
                         ],
                       },
@@ -226,6 +230,9 @@ const linkOrButton: LinkType = ({
             ],
           },
         ],
+        admin: {
+          condition: (_, siblingData) => siblingData?.appearance !== 'defaultLink',
+        },
       },
     ],
   }

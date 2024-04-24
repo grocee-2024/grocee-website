@@ -1,10 +1,12 @@
 import * as React from 'react'
-import { Select, useFormFields } from 'payload/components/forms'
+import { Select, useField, useFormFields } from 'payload/components/forms'
 import CopyToClipboard from 'payload/dist/admin/components/elements/CopyToClipboard'
-import { TextField } from 'payload/dist/fields/config/types'
+import { Props } from 'payload/components/fields/Text'
 
-export const ProductSelect: React.FC<TextField> = props => {
-  const { name, label } = props
+import './ProductSelect.css'
+
+export const ProductSelect: React.FC<Props> = props => {
+  const { path = '', label } = props
   const [options, setOptions] = React.useState<
     {
       label: string
@@ -12,7 +14,7 @@ export const ProductSelect: React.FC<TextField> = props => {
     }[]
   >([])
 
-  const { value: stripeProductID } = useFormFields(([fields]) => fields[name])
+  const { value: stripeProductID } = useField({ path })
 
   React.useEffect(() => {
     const getStripeProducts = async () => {
@@ -41,6 +43,7 @@ export const ProductSelect: React.FC<TextField> = props => {
             },
           ],
         )
+
         setOptions(fetchedProducts)
       }
     }
@@ -86,6 +89,7 @@ export const ProductSelect: React.FC<TextField> = props => {
             <span
               className='label'
               style={{
+                marginTop: 20,
                 color: '#9A9A9A',
               }}
             >

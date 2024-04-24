@@ -1,6 +1,7 @@
 import { GlobalConfig } from 'payload/types'
 import { ALL_BLOCKS } from '../blocks'
 import { isAdmin } from '../access/isAdmin'
+import { isAnyone } from '../access/isAnyone'
 
 export const AllBlocks: GlobalConfig = {
   slug: 'allBlocks',
@@ -9,7 +10,8 @@ export const AllBlocks: GlobalConfig = {
     hidden: true,
   },
   access: {
-    read: isAdmin,
+    read: isAnyone,
+    update: isAdmin,
   },
   fields: [
     {

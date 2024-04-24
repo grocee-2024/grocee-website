@@ -23,7 +23,7 @@ export const Tag: FC<TagProps> = ({
   return (
     <motion.div
       className={clsx(
-        'gilroy-md relative inline-block select-none rounded-[1000px] px-3 py-2 font-light transition-colors duration-300 ease-in-out',
+        'gilroy-md relative inline-block rounded-[1000px] px-3 py-2 font-light transition-colors duration-300 ease-in-out',
         'after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:rounded-[1000px] after:border-[1px] after:border-transparent after:transition-colors after:duration-300 after:content-[""]',
         {
           texted: 'bg-transparent text-gray-900',

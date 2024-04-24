@@ -17,6 +17,12 @@ export const pageToUrl = (
 
   if ('relationTo' in page) {
     switch (page.relationTo) {
+      case 'productPages':
+        return `/product${pageToUrl(page.value)}`
+
+      case 'news':
+        return `/news${pageToUrl(page.value)}`
+
       default:
         return pageToUrl(page.value)
     }

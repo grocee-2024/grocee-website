@@ -1,28 +1,20 @@
 import type { CollectionConfig } from 'payload/types'
 
 import { isAdmin } from '../../access/isAdmin'
-import { slugField } from '../../fields/slug'
 import { beforeProductChange } from './hooks/beforeChange'
 import { deleteProductFromCarts } from './hooks/deleteProductFromCarts'
-import { revalidateProduct } from './hooks/revalidateProduct'
 import { ProductSelect } from './ui/ProductSelect'
 import { isAnyone } from '../../access/isAnyone'
 
 export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
-    useAsTitle: 'title',
-    defaultColumns: ['title', 'stripeProductID', '_status'],
+    useAsTitle: 'name',
+    defaultColumns: ['name', 'productDetails.stripeProductID', 'updatedAt'],
     group: 'Shop',
-    preview: doc => {
-      return `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/next/preview?url=${encodeURIComponent(
-        `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/products/${doc.slug}`,
-      )}&secret=${process.env.PAYLOAD_PUBLIC_DRAFT_SECRET}`
-    },
   },
   hooks: {
     beforeChange: [beforeProductChange],
-    afterChange: [revalidateProduct],
     afterDelete: [deleteProductFromCarts],
   },
   versions: {
@@ -35,16 +27,28 @@ export const Products: CollectionConfig = {
     delete: isAdmin,
   },
   fields: [
-    slugField(),
     {
-      name: 'title',
+      name: 'name',
       type: 'text',
+      required: true,
+      localized: true,
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      localized: true,
       required: true,
     },
     {
       name: 'productDetails',
       type: 'group',
       fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'images',
+          required: true,
+        },
         {
           name: 'stripeProductID',
           label: 'Stripe Product',
@@ -56,14 +60,13 @@ export const Products: CollectionConfig = {
           },
         },
         {
-          name: 'priceJSON',
-          label: 'Price JSON',
-          type: 'textarea',
+          name: 'rating',
+          type: 'number',
           admin: {
-            readOnly: true,
-            hidden: true,
-            rows: 10,
+            step: 0.5,
           },
+          min: 1,
+          max: 5,
         },
       ],
     },

@@ -16,7 +16,7 @@ export type ComplexProps = {
 }
 
 export function Complex({ type, start, end }: ComplexProps) {
-  const { icon: StartIcon } = parseIcon(start)
+  const { icon: StartIcon } = parseIcon({ icon: start })
 
   const endPartIsObject = !!(
     end &&
@@ -25,7 +25,7 @@ export function Complex({ type, start, end }: ComplexProps) {
     !isValidElement(end)
   )
 
-  const { icon: EndIcon } = endPartIsObject ? parseIcon(end?.icon) : { icon: null }
+  const { icon: EndIcon } = endPartIsObject ? parseIcon({ icon: end.icon }) : { icon: null }
 
   return (
     <div

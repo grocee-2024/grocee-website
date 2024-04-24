@@ -1,40 +1,35 @@
 'use client'
 
-import { FC, useState } from 'react'
+import 'swiper/css'
+import 'swiper/css/virtual'
+import 'swiper/css/effect-fade'
+
+import { FC, useCallback, useState } from 'react'
 import { Swiper, SwiperProps, SwiperSlide, useSwiper } from 'swiper/react'
 import type { Swiper as SwiperType } from 'swiper'
-import { Virtual, Autoplay } from 'swiper/modules'
+import { Virtual, Autoplay, EffectFade } from 'swiper/modules'
 import { Button, ButtonProps } from '../Button'
 import type { Image as PayloadImageType } from 'cms-types'
 import { clsx } from 'clsx'
-import { v4 as uuidv4 } from 'uuid'
+import { PayloadImage } from '../PayloadImage'
+import { useWindowSize } from '../../hooks'
 
-import 'swiper/css'
-import 'swiper/css/virtual'
-
-type SlideProps = {
+export type SlideProps = {
+  id: string
   image: PayloadImageType
   heading?: {
-    title?: string
-    description?: string
+    title?: string | null
+    description?: string | null
     button?: {
-      props: ButtonProps<string>
-      text: string
+      props?: ButtonProps<string>
+      text?: string
     }
   }
 }
 
-type SliderProps = Pick<
+export type SliderProps = Pick<
   SwiperProps,
-  | 'loop'
-  | 'autoplay'
-  | 'allowTouchMove'
-  | 'breakpoints'
-  | 'spaceBetween'
-  | 'slidesPerView'
-  | 'slidesPerGroup'
-  | 'virtual'
-  | 'speed'
+  'autoplay' | 'loop' | 'virtual' | 'speed' | 'effect'
 > & {
   className?: string
   slides: SlideProps[]
@@ -49,39 +44,74 @@ export const MainSlider: FC<SliderProps> = ({
   slideHeight,
   ...props
 }) => {
-  const [activeIndex, setActiveIndex] = useState<number>(0)
   const [swiper, setSwiper] = useState<SwiperType | null>(null)
 
-  return (
-    <Swiper
-      modules={[Virtual, Autoplay]}
-      centeredSlides
-      onSwiper={setSwiper}
-      onSlideChange={({ activeIndex }) => {
-        setActiveIndex(activeIndex)
-      }}
-      className={clsx('relative rounded-[32px]', className)}
-      {...props}
-    >
-      {slides.map((slide, idx) => {
-        return (
-          <SwiperSlide key={uuidv4()} virtualIndex={idx}>
-            <Slide {...slide} slideHeight={slideHeight} slideClassName={slideClassName} />
-          </SwiperSlide>
-        )
-      })}
+  const { windowSize } = useWindowSize()
 
-      <div className='absolute bottom-8 right-[68px] z-20 hidden gap-2 laptop:flex'>
-        <PrevSlide
-          isDisabled={Boolean(activeIndex === 0 && !swiper?.originalParams.loop)}
-          speed={props?.speed ?? 500}
-        />
-        <NextSlide
-          isDisabled={Boolean(activeIndex === slides.length - 1 && !swiper?.originalParams.loop)}
-          speed={props?.speed ?? 500}
-        />
-      </div>
-    </Swiper>
+  const [disabledNavigation, setDisabledNavigation] = useState<{ prev: boolean; next: boolean }>({
+    prev: true,
+    next: true,
+  })
+
+  const onUpdateDisableNavigation = useCallback(
+    ({ isBeginning, isEnd }: Pick<SwiperType, 'isBeginning' | 'isEnd'>) => {
+      const prev = isBeginning && (!swiper?.originalParams?.loop || windowSize.width <= 1024)
+      const next = isEnd && (!swiper?.originalParams?.loop || windowSize.width <= 1024)
+
+      setDisabledNavigation(prevState => ({
+        ...prevState,
+        prev,
+        next,
+      }))
+    },
+    [swiper],
+  )
+
+  return (
+    <div className={className}>
+      <Swiper
+        modules={[Virtual, Autoplay, EffectFade]}
+        centeredSlides
+        spaceBetween={20}
+        allowTouchMove
+        breakpoints={{
+          1024: {
+            loop: false,
+          },
+          1280: {
+            allowTouchMove: false,
+          },
+        }}
+        onSwiper={swiper => {
+          setSwiper(swiper)
+          onUpdateDisableNavigation({ isBeginning: swiper.isBeginning, isEnd: swiper.isEnd })
+        }}
+        onSlideChange={onUpdateDisableNavigation}
+        onResize={({ isBeginning, isEnd, originalParams }) => {
+          const currPrev = isBeginning && originalParams.loop
+          const currNext = isEnd && originalParams.loop
+
+          if (currPrev !== disabledNavigation.prev || currNext !== disabledNavigation.next) {
+            onUpdateDisableNavigation({ isBeginning, isEnd })
+          }
+        }}
+        className={'relative rounded-b-[32px] laptop:rounded-[32px]'}
+        {...props}
+      >
+        {slides.map(({ id, ...slide }, idx) => {
+          return (
+            <SwiperSlide key={id} virtualIndex={idx}>
+              <Slide {...slide} slideHeight={slideHeight} slideClassName={slideClassName} />
+            </SwiperSlide>
+          )
+        })}
+
+        <div className='absolute bottom-8 right-[68px] z-20 hidden gap-2 laptop:flex'>
+          <PrevSlide isDisabled={disabledNavigation.prev} speed={props?.speed ?? 500} />
+          <NextSlide isDisabled={disabledNavigation.next} speed={props?.speed ?? 500} />
+        </div>
+      </Swiper>
+    </div>
   )
 }
 
@@ -89,14 +119,20 @@ function Slide({
   heading,
   slideClassName = '',
   slideHeight,
-}: SlideProps & { slideClassName?: string; slideHeight?: number }) {
+  image,
+}: Omit<SlideProps, 'id'> & { slideClassName?: string; slideHeight?: number }) {
   return (
     <div className={clsx('desktop:h-[656px]', slideClassName)}>
-      <div className='relative h-full w-full' style={{ height: slideHeight }}>
-        <img
-          src='/main-section.png'
-          className={clsx('absolute left-0 top-0 z-10 h-full w-full rounded-[32px] object-cover')}
-          alt='alt'
+      <div style={{ height: slideHeight }}>
+        <PayloadImage
+          src={image}
+          className='!static h-full w-full'
+          skipBlur
+          imgProps={{
+            className: clsx(
+              'absolute left-0 top-0 z-10 h-full w-full rounded-b-[32px] object-cover laptop:rounded-[32px]',
+            ),
+          }}
         />
 
         {heading && (
@@ -106,7 +142,7 @@ function Slide({
                 <h3 className='helvetica-sm font-light text-gray-900'>{heading.title}</h3>
               )}
               {heading.description && (
-                <p className='gilroy-sm line-clamp-3 text-gray-700 tablet:line-clamp-none'>
+                <p className='gilroy-sm line-clamp-2 text-gray-700 tablet:line-clamp-none'>
                   {heading.description}
                 </p>
               )}

@@ -1,6 +1,7 @@
 export * from './components/Loader'
 export { Button, type ButtonProps } from './components/Button'
 export * from './components/Input'
+export * from './components/PayloadImage'
 export * from './components/Select'
 export { type SelectOptionType } from './components/Select/SelectOption'
 export * from './components/Tag'
@@ -13,6 +14,8 @@ export * from './components/Card'
 export * from './components/AccordionList'
 export * from './components/MainSlider'
 export * from './components/Carousel'
+
+export * from './modules/Navigation'
 
 export { Show } from './utils/Show'
 export { Each } from './utils/Each'
