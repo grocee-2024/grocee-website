@@ -2,6 +2,7 @@
 
 import { parsePayloadLink } from '@/helpers'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
+import clsx from 'clsx'
 import { CarouselBlock, Image } from 'cms-types'
 import { FC, useMemo } from 'react'
 import {
@@ -54,8 +55,8 @@ export const CarouselClient: FC<Props> = ({ title, settings, type, slides }) => 
     }
 
     if (type === 'simpleCard') {
-      return slides.map(({ id, image, link, text }, idx) => (
-        <CardUI key={`${id}-${idx}`} href={link} text={text} image={image} />
+      return slides.map(({ id, image, link, text, gap }, idx) => (
+        <CardUI key={`${id}-${idx}`} href={link} text={text} image={image} gap={gap ?? undefined} />
       ))
     }
 
@@ -81,11 +82,14 @@ export const CarouselClient: FC<Props> = ({ title, settings, type, slides }) => 
       speed={speed ?? 500}
       virtual={virtual ?? false}
       title={title ?? undefined}
-      className='width-limit'
       showLink={showLink ?? false}
       buttonIcon={parsedIcon.icon}
       buttonLink={buttonLink}
       buttonText={linkText ?? ''}
+      slideClassName={clsx({
+        'max-w-[212px] tablet:max-w-[300px] laptop:max-w-none': type === 'simpleCard',
+        'max-w-[292px] laptop:max-w-none': type === 'productCard' || type === 'newsCard',
+      })}
     >
       {mappedSlides}
     </CarouselUI>

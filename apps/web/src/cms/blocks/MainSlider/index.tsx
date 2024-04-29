@@ -8,23 +8,17 @@ import { MainSliderClient } from './MainSliderClient'
 export async function MainSlider({ slides, settings }: MainSliderBlock) {
   const mappedSlides: MainSlide[] = await Promise.all(
     (slides ?? []).map(async ({ id, heading, image }) => {
-      const { title, link, description } = heading
-      const { linkType, url, reference, icons } = link
+      let headingData: MainSlide['heading']
 
-      let previewImage = image
+      if (heading?.showHeading) {
+        const { title, link, description } = heading
+        const { linkType, url, reference, icons } = link!
 
-      if (typeof previewImage === 'string') {
-        previewImage = (await getCollectionItem(previewImage, 'images')) as Image
-      }
-
-      return {
-        id: id as string,
-        image: previewImage as Image,
-        heading: {
+        headingData = {
           title,
           description,
-          button: {
-            text: link.label,
+          link: {
+            text: link!.label,
             props: {
               href: parsePayloadLink({ url, reference, type: linkType }),
               leftIcon: {
@@ -41,12 +35,24 @@ export async function MainSlider({ slides, settings }: MainSliderBlock) {
                   height: icons?.leftIcon?.size?.height ?? undefined,
                 },
               },
-              target: link.newTab ? '_blank' : '_self',
-              standartButton: link.isStandartButton || false,
-              variant: link.appearance as ButtonProps<string>['variant'],
+              target: link!.newTab ? '_blank' : '_self',
+              standartButton: link!.isStandartButton ?? false,
+              variant: link!.appearance as ButtonProps<string>['variant'],
             },
           },
-        },
+        }
+      }
+
+      let previewImage = image
+
+      if (typeof previewImage === 'string') {
+        previewImage = (await getCollectionItem(previewImage, 'images')) as Image
+      }
+
+      return {
+        id: id as string,
+        image: previewImage as Image,
+        heading: headingData,
       }
     }),
   )

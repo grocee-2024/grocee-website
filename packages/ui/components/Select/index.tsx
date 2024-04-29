@@ -44,7 +44,7 @@ export type SelectProps<T> = {
     option: string
   }
   options: SelectOptionType<T>[]
-  selectedValue?: SelectOptionType<T> | null
+  selectedValue?: T | null
   onChange?: (option: SelectOptionType<T> | null) => void
   onTrigger?: 'click' | 'hover'
   triggerProps: ButtonProps<SelectState<T>>
@@ -171,7 +171,7 @@ function SelectWithItems<T>(props: SelectProps<T>) {
 
   useEffect(() => {
     const selectedVal = [...selectState.collection].find(
-      collectionItem => selectedValue?.value === collectionItem.key,
+      collectionItem => selectedValue === collectionItem.key,
     ) as StatelyNode<T>
 
     if (selectedVal?.key) {

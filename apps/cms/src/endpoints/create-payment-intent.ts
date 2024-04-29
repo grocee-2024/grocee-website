@@ -67,12 +67,12 @@ export const createPaymentIntent: PayloadHandler = async (req, res): Promise<voi
           return null
         }
 
-        if (typeof product === 'string' || !(product as Product)?.stripeProductID) {
+        if (typeof product === 'string' || !(product as Product)?.productDetails.stripeProductID) {
           throw new Error('No Stripe Product ID')
         }
 
         const prices = await stripe.prices.list({
-          product: (product as Product)?.stripeProductID,
+          product: (product as Product)?.productDetails.stripeProductID,
           limit: 100,
           expand: ['data.product'],
         })

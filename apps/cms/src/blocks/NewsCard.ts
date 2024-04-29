@@ -15,4 +15,6 @@ export const NewsCard: Block = {
       required: true,
     },
   ],
+  imageURL: '/previews/news-card.png',
+  imageAltText: 'News Card Preview',
 }

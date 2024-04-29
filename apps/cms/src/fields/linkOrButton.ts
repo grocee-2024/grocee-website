@@ -175,57 +175,11 @@ const linkOrButton: LinkType = ({
             tabs: [
               {
                 name: 'leftIcon',
-                fields: [
-                  iconPicker,
-                  {
-                    name: 'size',
-                    type: 'group',
-                    fields: [
-                      {
-                        type: 'row',
-                        fields: [
-                          {
-                            name: 'width',
-                            type: 'number',
-                            defaultValue: 18,
-                            required: true,
-                          },
-                          {
-                            name: 'height',
-                            type: 'number',
-                            defaultValue: 18,
-                            required: true,
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
+                fields: [iconPicker],
               },
               {
                 name: 'rightIcon',
-                fields: [
-                  iconPicker,
-                  {
-                    name: 'size',
-                    type: 'group',
-                    fields: [
-                      {
-                        type: 'row',
-                        fields: [
-                          {
-                            name: 'width',
-                            type: 'number',
-                          },
-                          {
-                            name: 'height',
-                            type: 'number',
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
+                fields: [iconPicker],
               },
             ],
           },

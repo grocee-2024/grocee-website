@@ -62,6 +62,7 @@ export type ButtonProps<T> = PropsWithChildren<{
   style?: CSSProperties
   backgroundColor?: string
   disableBorder?: boolean
+  linkClassName?: string
   onClick?: () => void
   formAction?: () => void
   onHoverStart?: HoverEvents['onHoverStart']
@@ -83,6 +84,7 @@ export function Button<T>(props: ButtonProps<T>) {
     formAction,
     isLoading,
     className = '',
+    linkClassName = '',
     isFocused,
     style,
     disableBorder,
@@ -93,6 +95,7 @@ export function Button<T>(props: ButtonProps<T>) {
     onKeyPress = () => {},
     additionalRef,
     prefetch,
+    tabIndex,
     ...restProps
   } = props
   const { isDisabled, onClick, animationProps } = restProps
@@ -138,7 +141,7 @@ export function Button<T>(props: ButtonProps<T>) {
     () => ({
       className: clsx(
         {
-          'relative block touch-none select-none rounded-[1000px] border-transparent font-light no-underline transition-colors duration-300 ease-in-out':
+          'relative block touch-none select-none rounded-[1000px] border-transparent text-center font-light no-underline transition-colors duration-300 ease-in-out':
             variant !== 'defaultLink',
           'after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:rounded-[1000px] after:transition-colors after:duration-300 after:content-[""]':
             variant !== 'defaultLink',
@@ -213,9 +216,10 @@ export function Button<T>(props: ButtonProps<T>) {
         <Link
           ref={refLink}
           {...mergeProps(linkProps, hoverProps)}
-          className='rounded-[1000px]'
+          className={clsx('rounded-[1000px]', linkClassName)}
           href={href}
           prefetch={prefetch}
+          tabIndex={tabIndex}
         >
           {/* @ts-ignore */}
           <motion.div {...parentProps}>{content()}</motion.div>
@@ -255,6 +259,7 @@ export function Button<T>(props: ButtonProps<T>) {
         formAction={formAction}
         aria-label='button'
         aria-disabled={isDisabled || isLoading}
+        tabIndex={tabIndex}
       >
         {content()}
       </motion.button>

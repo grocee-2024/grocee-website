@@ -97,32 +97,7 @@ export const Carousel: Block = {
               admin: {
                 condition: (_, siblingData) => siblingData?.showLink,
               },
-              fields: [
-                iconPicker,
-                {
-                  name: 'size',
-                  type: 'group',
-                  fields: [
-                    {
-                      type: 'row',
-                      fields: [
-                        {
-                          name: 'width',
-                          type: 'number',
-                          defaultValue: 18,
-                          required: true,
-                        },
-                        {
-                          name: 'height',
-                          type: 'number',
-                          defaultValue: 18,
-                          required: true,
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
+              fields: [iconPicker],
             },
           ],
         },
@@ -156,4 +131,6 @@ export const Carousel: Block = {
       },
     },
   ],
+  imageURL: '/previews/carousel.png',
+  imageAltText: 'Carousel Preview',
 }

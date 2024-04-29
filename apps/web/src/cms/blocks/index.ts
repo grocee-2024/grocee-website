@@ -2,6 +2,10 @@ import { Config } from 'cms-types'
 
 import { MainSlider } from './MainSlider'
 import { Carousel } from './Carousel'
+import { Banner } from './Banner'
+import { Cooperation } from './Cooperation'
+import { Accordion } from './Accordion'
+import { HelpBlock } from './HelpBlock'
 
 export type AnyBlock = NonNullable<Config['globals']['allBlocks']['blocks']>[number]
 
@@ -12,4 +16,8 @@ export const blocks: Record<
 > = {
   MainSlider,
   Carousel,
+  Banner,
+  Cooperation,
+  Accordion,
+  HelpBlock,
 }

@@ -8,7 +8,7 @@ export const createNews = async (images: Images) => {
       data: {
         slug: 'new-seasonal-produce-now-available',
         title: 'New Seasonal Produce Now Available!',
-        previewImage: images.mainGoodsId,
+        previewImage: images.tempImageId,
         titleColor: 'white',
         content: {
           root: {
