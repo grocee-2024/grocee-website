@@ -13,6 +13,8 @@ export type InputProps<T> = {
   status?: 'success' | 'error'
   isDisabled?: boolean
   className?: string
+  innerClassName?: string
+  inputClassName?: string
   label?: string
   errorMessage?: string
   leadingComplex?: Omit<ComplexProps, 'type'>
@@ -133,7 +135,7 @@ export function Input<T>(props: InputProps<T>) {
               disabledHours: () => {
                 const hours = []
 
-                for (let i = 0; i < 23; i++) {
+                for (let i = 0; i < 24; i++) {
                   if (i < 9 || i > 18) {
                     hours.push(i)
                   }
@@ -170,7 +172,9 @@ function CommonInput<T>(props: InputProps<T>) {
     type,
     leadingComplex,
     trailingComplex,
-    className,
+    className = '',
+    inputClassName = '',
+    innerClassName = '',
   } = props
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -196,6 +200,7 @@ function CommonInput<T>(props: InputProps<T>) {
             'focus-within:border-gray-800 hover:border-gray-400 focus-within:hover:border-gray-800':
               !isDisabled && !status && !errorMessage,
           },
+          innerClassName,
         )}
       >
         <Complex type='left' {...leadingComplex} />
@@ -204,7 +209,10 @@ function CommonInput<T>(props: InputProps<T>) {
           {...inputProps}
           role={props?.role}
           type={type}
-          className='placeholder:gilroy-md grow text-gray-900 placeholder:text-gray-400'
+          className={clsx(
+            'placeholder:gilroy-md !min-w-0 grow bg-transparent text-gray-900 placeholder:text-gray-400',
+            inputClassName,
+          )}
         />
         <Complex type='right' {...trailingComplex} />
       </div>

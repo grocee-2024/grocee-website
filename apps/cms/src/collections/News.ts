@@ -10,6 +10,9 @@ export const News: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['slug', 'title', 'updatedAt'],
   },
+  versions: {
+    drafts: true,
+  },
   access: {
     read: isAnyone,
     create: isAdmin,

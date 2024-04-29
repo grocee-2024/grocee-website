@@ -26,15 +26,15 @@ export default function MainNavigation({ logo, search }: MainNavigation) {
 
   const { headerOffsetTop, minusOffset } = useMemo(() => {
     const offsetTop = {
-      mobile: 4,
-      tablet: 16,
+      mobile: 32,
+      tablet: 32,
       laptop: 64,
     }
 
     const minusOffset = {
-      mobile: 4,
-      tablet: 24,
-      laptop: 120,
+      mobile: 32,
+      tablet: 32,
+      laptop: 96,
     }
 
     const currentDevice = isMobile ? 'mobile' : isTablet ? 'tablet' : 'laptop'
@@ -69,7 +69,10 @@ export default function MainNavigation({ logo, search }: MainNavigation) {
       style={{ transform }}
       ref={headerRef}
       className={clsx(
-        'left-3 right-3 top-1 z-50 mx-auto max-h-20 max-w-[1240px] rounded-[1000px] bg-white px-4 shadow-[0_8px_24px_0_rgba(179,179,179,0.2)] transition-transform duration-300 ease-in-out mobile:px-6 tablet:left-5 tablet:right-5 tablet:top-4 laptop:left-12 laptop:right-12 laptop:top-16 desktop:left-[100px] desktop:right-[100px]',
+        'left-4 right-4 top-8 z-50 mx-auto max-h-20 max-w-[1240px] rounded-[1000px] bg-white px-4 shadow-[0_8px_24px_0_rgba(179,179,179,0.2)] transition-transform duration-300 ease-in-out',
+        'tablet:left-5 tablet:right-5 tablet:px-6',
+        'laptop:left-12 laptop:right-12 laptop:top-16',
+        'desktop:left-[100px] desktop:right-[100px]',
         {
           absolute: !mounted,
           fixed: mounted,

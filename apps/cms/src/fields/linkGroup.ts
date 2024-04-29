@@ -7,10 +7,15 @@ import linkOrButton from './linkOrButton'
 
 type LinkGroupType = (options?: {
   overrides?: Partial<ArrayField>
-  appearances?: LinkAppearances[] | false
+  appearances?: LinkAppearances[]
+  overrideLinksField?: Omit<ArrayField, 'name' | 'type' | 'fields'>
 }) => Field
 
-const linkGroup: LinkGroupType = ({ overrides = {}, appearances } = {}) => {
+const linkGroup: LinkGroupType = ({
+  overrides = {},
+  overrideLinksField = {},
+  appearances,
+} = {}) => {
   const generatedLinkGroup: Field = {
     name: 'links',
     type: 'array',
@@ -19,6 +24,7 @@ const linkGroup: LinkGroupType = ({ overrides = {}, appearances } = {}) => {
         appearances,
       }),
     ],
+    ...overrideLinksField,
   }
 
   return deepMerge(generatedLinkGroup, overrides)

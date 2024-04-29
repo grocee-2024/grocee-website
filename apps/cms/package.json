@@ -4,9 +4,8 @@
   "main": "dist/server.js",
   "license": "MIT",
   "scripts": {
-    "dev": "yarn generate:types && yarn payload:dev",
     "payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload",
-    "payload:dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts nodemon",
+    "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts nodemon",
     "build:payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload build",
     "build:server": "tsc",
     "build": "yarn copyfiles && yarn build:payload && yarn build:server",
@@ -19,6 +18,7 @@
     "@oleksii-lavka/grocee-icons": "^1.1.0",
     "@payloadcms/bundler-webpack": "^1.0.0",
     "@payloadcms/db-postgres": "^0.x",
+    "@payloadcms/db-mongodb": "^1.0.4",
     "@payloadcms/plugin-cloud": "^3.0.0",
     "@payloadcms/plugin-nested-docs": "^1.0.12",
     "@payloadcms/plugin-redirects": "^1.0.1",
@@ -32,7 +32,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "nextjs-progressbar": "^0.0.16",
-    "payload": "^2.12.1",
+    "payload": "^2.14.1",
     "payload-admin-bar": "^1.0.6",
     "postgres": "^3.4.4",
     "stripe": "^15.1.0"

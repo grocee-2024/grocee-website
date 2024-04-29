@@ -45,6 +45,7 @@ export const Images: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
+      required: true,
       localized: true,
     },
   ],

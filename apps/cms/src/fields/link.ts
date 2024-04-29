@@ -1,14 +1,17 @@
 import { Field, GroupField } from 'payload/types'
 
-type Props = Pick<GroupField, 'admin' | 'name'> & {
-  relationTo?: string[]
-}
+type Props = Partial<
+  Pick<GroupField, 'name' | 'admin' | 'fields'> & {
+    relationTo?: string[]
+  }
+>
 
 export const link = (props?: Props): Field => ({
   name: props?.name ?? 'link',
   type: 'group',
-  admin: props?.admin,
+  admin: props?.admin ?? {},
   fields: [
+    ...(props?.fields ?? []),
     {
       name: 'type',
       type: 'radio',

@@ -87,21 +87,39 @@ export const MainSlider: Block = {
           type: 'group',
           fields: [
             {
+              name: 'showHeading',
+              type: 'checkbox',
+            },
+            {
               name: 'title',
               type: 'text',
               localized: true,
+              admin: {
+                condition: (_, siblingData) => siblingData?.showHeading,
+              },
             },
             {
               name: 'description',
               type: 'text',
               localized: true,
+              admin: {
+                condition: (_, siblingData) => siblingData?.showHeading,
+              },
             },
-            linkOrButton({ name: 'link', label: 'Link' }),
+            linkOrButton({
+              name: 'link',
+              label: 'Link',
+              overrides: {
+                admin: {
+                  condition: (_, siblingData) => siblingData?.showHeading,
+                },
+              },
+            }),
           ],
         },
       ],
     },
   ],
-  imageURL: '/previews/main-slider-preview.png',
-  imageAltText: 'Main Slider',
+  imageURL: '/previews/main-slider.png',
+  imageAltText: 'Main Slider Preview',
 }

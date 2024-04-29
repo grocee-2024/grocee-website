@@ -7,7 +7,7 @@ export const createMainNavigation = async (pages: Pages, images: Images) => {
     slug: 'mainNavigation',
     data: {
       logo: {
-        image: images.logoId,
+        image: images.logoDarkId,
         page: {
           type: 'reference',
           reference: {
@@ -23,4 +23,6 @@ export const createMainNavigation = async (pages: Pages, images: Images) => {
       },
     },
   })
+
+  payload.logger.info('> Created main navigation')
 }

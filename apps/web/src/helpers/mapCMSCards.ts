@@ -5,7 +5,7 @@ import { parsePayloadLink } from '.'
 export const mapCMSCards = async (cards: CardBlock[]) => {
   const mappedCards = await Promise.all(
     (cards ?? []).map(async card => {
-      const { image, link, id, text } = card
+      const { image, link, id, text, gap } = card
 
       let previewImage = image
 
@@ -18,6 +18,7 @@ export const mapCMSCards = async (cards: CardBlock[]) => {
       return {
         id: id as string,
         text,
+        gap,
         link: parsedLink,
         image: previewImage,
       }

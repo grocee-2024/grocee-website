@@ -78,14 +78,8 @@ export interface Product {
   }
   categories?: (string | Category)[] | null
   skipSync?: boolean | null
-  meta?: {
-    title?: string | null
-    description?: string | null
-    image?: string | Image | null
-  }
   updatedAt: string
   createdAt: string
-  _status?: ('draft' | 'published') | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -93,7 +87,7 @@ export interface Product {
  */
 export interface Image {
   id: string
-  alt?: string | null
+  alt: string
   updatedAt: string
   createdAt: string
   url?: string | null
@@ -176,7 +170,16 @@ export interface Order {
 export interface Page {
   id: string
   slug: string
-  layout?: (MainSliderBlock | CarouselBlock)[] | null
+  layout?:
+    | (
+        | MainSliderBlock
+        | CarouselBlock
+        | BannerBlock
+        | CooperationBlock
+        | AccordionBlock
+        | HelpBlock
+      )[]
+    | null
   meta?: {
     title?: string | null
     description?: string | null
@@ -201,10 +204,11 @@ export interface MainSliderBlock {
   slides?:
     | {
         image: string | Image
-        heading: {
+        heading?: {
+          showHeading?: boolean | null
           title?: string | null
           description?: string | null
-          link: {
+          link?: {
             label: string
             type?: ('link' | 'button') | null
             appearance?: ('defaultLink' | 'primary' | 'secondary' | 'tertiary' | 'danger') | null
@@ -231,9 +235,9 @@ export interface MainSliderBlock {
               }
               rightIcon: {
                 icon?: string | null
-                size?: {
-                  width?: number | null
-                  height?: number | null
+                size: {
+                  width: number
+                  height: number
                 }
               }
             }
@@ -324,6 +328,7 @@ export interface ProductCardBlock {
 export interface CardBlock {
   text: string
   image: string | Image
+  gap?: ('small' | 'big') | null
   link?: {
     type?: ('reference' | 'custom') | null
     reference?:
@@ -379,9 +384,210 @@ export interface News {
     }
     [k: string]: unknown
   }
-  footerLayout?: (MainSliderBlock | CarouselBlock)[] | null
+  footerLayout?:
+    | (
+        | MainSliderBlock
+        | CarouselBlock
+        | BannerBlock
+        | CooperationBlock
+        | AccordionBlock
+        | HelpBlock
+      )[]
+    | null
+  meta?: {
+    title?: string | null
+    description?: string | null
+    image?: string | Image | null
+  }
   updatedAt: string
   createdAt: string
+  _status?: ('draft' | 'published') | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock".
+ */
+export interface BannerBlock {
+  previewImage: string | Image
+  heading: {
+    type: 'info' | 'orderDelivery'
+    title: string
+    logo: {
+      image: string | Image
+      page?: {
+        type?: ('reference' | 'custom') | null
+        reference?:
+          | ({
+              relationTo: 'pages'
+              value: string | Page
+            } | null)
+          | ({
+              relationTo: 'productPages'
+              value: string | ProductPage
+            } | null)
+        url?: string | null
+      }
+    }
+    info?: {
+      listMarker: {
+        icon?: string | null
+        size: {
+          width: number
+          height: number
+        }
+      }
+      list: {
+        listItem: string
+        id?: string | null
+      }[]
+    }
+    orderDelivery?: {
+      subtitle: string
+    }
+    links: {
+      linkOrButton: {
+        label: string
+        type?: ('link' | 'button') | null
+        appearance?: ('defaultLink' | 'primary' | 'secondary' | 'tertiary' | 'danger') | null
+        isStandartButton?: boolean | null
+        linkType?: ('reference' | 'custom') | null
+        reference?:
+          | ({
+              relationTo: 'pages'
+              value: string | Page
+            } | null)
+          | ({
+              relationTo: 'productPages'
+              value: string | ProductPage
+            } | null)
+        url?: string | null
+        newTab?: boolean | null
+        icons?: {
+          leftIcon: {
+            icon?: string | null
+            size: {
+              width: number
+              height: number
+            }
+          }
+          rightIcon: {
+            icon?: string | null
+            size: {
+              width: number
+              height: number
+            }
+          }
+        }
+      }
+      id?: string | null
+    }[]
+  }
+  id?: string | null
+  blockName?: string | null
+  blockType: 'Banner'
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CooperationBlock".
+ */
+export interface CooperationBlock {
+  title?: string | null
+  logos?:
+    | {
+        logo: string | Image
+        id?: string | null
+      }[]
+    | null
+  id?: string | null
+  blockName?: string | null
+  blockType: 'Cooperation'
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock".
+ */
+export interface AccordionBlock {
+  accordionList?:
+    | {
+        title: string
+        content: string
+        id?: string | null
+      }[]
+    | null
+  link: {
+    label: string
+    icon: {
+      icon?: string | null
+      size: {
+        width: number
+        height: number
+      }
+    }
+    type?: ('reference' | 'custom') | null
+    reference?:
+      | ({
+          relationTo: 'pages'
+          value: string | Page
+        } | null)
+      | ({
+          relationTo: 'productPages'
+          value: string | ProductPage
+        } | null)
+    url?: string | null
+  }
+  id?: string | null
+  blockName?: string | null
+  blockType: 'Accordion'
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HelpBlock".
+ */
+export interface HelpBlock {
+  title?: string | null
+  support?: {
+    links?:
+      | {
+          type?: ('email' | 'phone' | 'location') | null
+          info: string
+          caption: string
+          googleMapsLocation?: string | null
+          icon: {
+            icon?: string | null
+            size: {
+              width: number
+              height: number
+            }
+          }
+          id?: string | null
+        }[]
+      | null
+  }
+  link: {
+    label: string
+    icon: {
+      icon?: string | null
+      size: {
+        width: number
+        height: number
+      }
+    }
+    type?: ('reference' | 'custom') | null
+    reference?:
+      | ({
+          relationTo: 'pages'
+          value: string | Page
+        } | null)
+      | ({
+          relationTo: 'productPages'
+          value: string | ProductPage
+        } | null)
+    url?: string | null
+  }
+  accordion: AccordionBlock[]
+  id?: string | null
+  blockName?: string | null
+  blockType: 'HelpBlock'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -398,8 +604,12 @@ export interface Redirect {
           value: string | Page
         } | null)
       | ({
-          relationTo: 'products'
-          value: string | Product
+          relationTo: 'productPages'
+          value: string | ProductPage
+        } | null)
+      | ({
+          relationTo: 'news'
+          value: string | News
         } | null)
     url?: string | null
   }
@@ -476,45 +686,59 @@ export interface MainNavigation {
  */
 export interface BottomNavigation {
   id: string
-  navItems?:
+  logo: {
+    image: string | Image
+    page?: {
+      type?: ('reference' | 'custom') | null
+      reference?:
+        | ({
+            relationTo: 'pages'
+            value: string | Page
+          } | null)
+        | ({
+            relationTo: 'productPages'
+            value: string | ProductPage
+          } | null)
+      url?: string | null
+    }
+    caption: string
+  }
+  navGroups?:
     | {
-        linkOrButton: {
-          label: string
-          type?: ('link' | 'button') | null
-          appearance?: ('defaultLink' | 'primary' | 'secondary' | 'tertiary' | 'danger') | null
-          isStandartButton?: boolean | null
-          linkType?: ('reference' | 'custom') | null
-          reference?:
-            | ({
-                relationTo: 'pages'
-                value: string | Page
-              } | null)
-            | ({
-                relationTo: 'productPages'
-                value: string | ProductPage
-              } | null)
-          url?: string | null
-          newTab?: boolean | null
-          icons?: {
-            leftIcon: {
-              icon?: string | null
-              size: {
-                width: number
-                height: number
+        title: string
+        links?:
+          | {
+              page: {
+                label: string
+                type?: ('reference' | 'custom') | null
+                reference?:
+                  | ({
+                      relationTo: 'pages'
+                      value: string | Page
+                    } | null)
+                  | ({
+                      relationTo: 'productPages'
+                      value: string | ProductPage
+                    } | null)
+                url?: string | null
               }
-            }
-            rightIcon: {
-              icon?: string | null
-              size?: {
-                width?: number | null
-                height?: number | null
-              }
-            }
-          }
-        }
+              id?: string | null
+            }[]
+          | null
         id?: string | null
       }[]
     | null
+  subscribeSection: {
+    title: string
+    textField: {
+      placeholder: string
+      subscribeButtonLabel: string
+    }
+  }
+  footerInfo: {
+    rightsText: string
+    designedBy?: string | null
+  }
   updatedAt?: string | null
   createdAt?: string | null
 }
@@ -524,6 +748,32 @@ export interface BottomNavigation {
  */
 export interface GlobalTypography {
   id: string
+  orderDeliveryForm: {
+    firstName: {
+      label: string
+      placeholder: string
+    }
+    lastName: {
+      label: string
+      placeholder: string
+    }
+    phoneNumber: {
+      label: string
+      placeholder: string
+    }
+    shippingAddress: {
+      label: string
+      placeholder: string
+    }
+    date: {
+      label: string
+      placeholder: string
+    }
+    time: {
+      label: string
+      placeholder: string
+    }
+  }
   updatedAt?: string | null
   createdAt?: string | null
 }
@@ -533,7 +783,16 @@ export interface GlobalTypography {
  */
 export interface AllBlock {
   id: string
-  blocks?: (MainSliderBlock | CarouselBlock)[] | null
+  blocks?:
+    | (
+        | MainSliderBlock
+        | CarouselBlock
+        | BannerBlock
+        | CooperationBlock
+        | AccordionBlock
+        | HelpBlock
+      )[]
+    | null
   updatedAt?: string | null
   createdAt?: string | null
 }

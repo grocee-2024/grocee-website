@@ -7,6 +7,7 @@ import redirects from '@payloadcms/plugin-redirects'
 
 import { payloadCloud } from '@payloadcms/plugin-cloud'
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { webpackBundler } from '@payloadcms/bundler-webpack'
 import {
   lexicalEditor,
@@ -16,14 +17,17 @@ import {
 import { buildConfig } from 'payload/config'
 import { Config } from 'cms-types'
 
-import { Users } from './collections/Users'
-import { Products } from './collections/Products'
-import { Categories } from './collections/Categories'
+import { Users } from './collections/admin/Users'
 import { Images } from './collections/media/Images'
-import { Orders } from './collections/Orders'
-import { Pages } from './collections/Pages'
-import { ProductPages } from './collections/ProductPages'
+
 import { News } from './collections/News'
+
+import { Products } from './collections/shop/Products'
+import { Categories } from './collections/shop/Categories'
+import { Orders } from './collections/shop/Orders'
+
+import { Pages } from './collections/pages/Pages'
+import { ProductPages } from './collections/pages/ProductPages'
 
 import { AllBlocks } from './globals/AllBlocks'
 import { MainNavigation } from './globals/MainNavigation'
@@ -55,10 +59,11 @@ export default buildConfig({
           alias: {
             ...config.resolve?.alias,
             dotenv: path.resolve(__dirname, './dotenv.js'),
-            [path.resolve(__dirname, 'collections/Products/hooks/beforeChange')]: mockModulePath,
-            [path.resolve(__dirname, 'collections/Users/hooks/createStripeCustomer')]:
+            [path.resolve(__dirname, 'collections/shop/Products/hooks/beforeChange')]:
               mockModulePath,
-            [path.resolve(__dirname, 'collections/Users/endpoints/customer')]: mockModulePath,
+            [path.resolve(__dirname, 'collections/admin/Users/hooks/createStripeCustomer')]:
+              mockModulePath,
+            [path.resolve(__dirname, 'collections/admin/Users/endpoints/customer')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/create-payment-intent')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/customers')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/products')]: mockModulePath,
@@ -98,7 +103,7 @@ export default buildConfig({
       },
     }),
     seo({
-      collections: ['pages', 'products', 'productPages'],
+      collections: ['pages', 'news', 'productPages'],
       uploadsCollection: 'images',
       tabbedUI: true,
     }),
@@ -108,17 +113,19 @@ export default buildConfig({
       generateURL: docs => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
     }),
     redirects({
-      collections: ['pages', 'products'],
+      collections: ['pages', 'productPages', 'news'],
     }),
     payloadCloud(),
   ],
-  db: postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URI,
-    },
-    push: false,
-    idType: 'uuid',
+  db: mongooseAdapter({
+    url: process.env.DATABASE_URI,
   }),
+  // db: postgresAdapter({
+  //   pool: {
+  //     connectionString: process.env.DATABASE_URI,
+  //   },
+  //   idType: 'uuid',
+  // }),
   localization: {
     locales: ['en', 'ua'],
     defaultLocale: 'en',
@@ -129,8 +136,6 @@ export default buildConfig({
     supportedLngs: ['en', 'ua'],
     debug: false,
   },
-  // cors: '*',
-  // csrf: ['*'],
   cors: [
     'https://checkout.stripe.com',
     process.env.PAYLOAD_PUBLIC_SERVER_URL || '',

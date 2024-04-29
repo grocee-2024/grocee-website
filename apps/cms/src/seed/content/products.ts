@@ -10,9 +10,9 @@ export const createProducts = async (images: Images) => {
         name: 'Potato',
         description: 'Potato',
         productDetails: {
-          image: images.mainGoodsId,
+          image: images.tempImageId,
           rating: 4,
-          stripeProductID: 'prod_PxyKhs9rlSX85p',
+          stripeProductID: 'prod_PzMCeis5cSASsB',
         },
       },
     }),

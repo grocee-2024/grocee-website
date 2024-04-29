@@ -79,8 +79,12 @@ video {
   @apply grid grid-cols-12 gap-x-8 gap-y-6;
 }
 
+.grid-layout {
+  @apply grid grid-cols-4 gap-x-4 gap-y-2 tablet:grid-cols-6 tablet:gap-x-8 tablet:gap-y-6 laptop:grid-cols-12 laptop:gap-x-8 laptop:gap-y-6;
+}
+
 .width-limit {
-  @apply !mx-2.5 tablet:!mx-5 laptop:!mx-12 desktop:!mx-[100px];
+  @apply !mx-4 tablet:!mx-5 laptop:!mx-12 desktop:!mx-[100px];
 }
 
 input,

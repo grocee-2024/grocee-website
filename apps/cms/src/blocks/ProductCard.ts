@@ -15,4 +15,6 @@ export const ProductCard: Block = {
       required: true,
     },
   ],
+  imageURL: '/previews/product-card.png',
+  imageAltText: 'Product Card Preview',
 }
