@@ -1,3 +1,5 @@
+'use client'
+
 import { FC } from 'react'
 import { NavItems } from './NavItems'
 import { SearchInput } from './SearchInput'
