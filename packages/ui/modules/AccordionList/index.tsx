@@ -10,7 +10,6 @@ type Panel = {
   id: string
   title: string
   content: string
-  // content: (JSX.Element | null)[]
 }
 
 type AccordionProps = {
