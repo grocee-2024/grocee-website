@@ -4,8 +4,8 @@
   "main": "dist/server.js",
   "license": "MIT",
   "scripts": {
-    "payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload",
     "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts nodemon",
+    "payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload",
     "build:payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload build",
     "build:server": "tsc",
     "build": "yarn copyfiles && yarn build:payload && yarn build:server",

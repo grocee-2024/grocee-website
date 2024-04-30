@@ -1,4 +1,4 @@
-import { Config, Image, Page } from 'cms-types'
+import { Config, Image, Page, Product } from 'cms-types'
 import { createElement } from 'react'
 
 import { AnyBlock, blocks } from './blocks'
@@ -19,6 +19,9 @@ export const pageToUrl = (
     switch (page.relationTo) {
       case 'productPages':
         return `/product${pageToUrl(page.value)}`
+
+      case 'products':
+        return `/product/${(page.value as unknown as Product).name.toLowerCase()}`
 
       case 'news':
         return `/news${pageToUrl(page.value)}`

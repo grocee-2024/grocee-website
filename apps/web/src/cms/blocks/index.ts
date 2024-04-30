@@ -6,6 +6,7 @@ import { Banner } from './Banner'
 import { Cooperation } from './Cooperation'
 import { Accordion } from './Accordion'
 import { HelpBlock } from './HelpBlock'
+import { RichText } from './RichText'
 
 export type AnyBlock = NonNullable<Config['globals']['allBlocks']['blocks']>[number]
 
@@ -20,4 +21,5 @@ export const blocks: Record<
   Cooperation,
   Accordion,
   HelpBlock,
+  RichText,
 }

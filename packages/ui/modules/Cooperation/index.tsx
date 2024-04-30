@@ -1,8 +1,5 @@
 'use client'
 
-import 'swiper/css/autoplay'
-import 'swiper/css/virtual'
-
 import { Image as PayloadImageType } from 'cms-types'
 import { FC, useMemo } from 'react'
 import { HorizontalInfiniteSlider, PayloadImage } from '../..'
