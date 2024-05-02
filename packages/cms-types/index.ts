@@ -547,45 +547,7 @@ export interface AccordionBlock {
  */
 export interface HelpBlock {
   title?: string | null
-  support?: {
-    links?:
-      | {
-          type?: ('email' | 'phone' | 'location') | null
-          info: string
-          caption: string
-          googleMapsLocation?: string | null
-          icon: {
-            icon?: string | null
-            size: {
-              width: number
-              height: number
-            }
-          }
-          id?: string | null
-        }[]
-      | null
-  }
-  link: {
-    label: string
-    icon: {
-      icon?: string | null
-      size: {
-        width: number
-        height: number
-      }
-    }
-    type?: ('reference' | 'custom') | null
-    reference?:
-      | ({
-          relationTo: 'pages'
-          value: string | Page
-        } | null)
-      | ({
-          relationTo: 'productPages'
-          value: string | ProductPage
-        } | null)
-    url?: string | null
-  }
+  support?: string | null
   accordion: AccordionBlock[]
   id?: string | null
   blockName?: string | null
@@ -703,6 +665,103 @@ export interface MainNavigation {
     searchButtonLabel: string
     closeButtonLabel: string
   }
+  defaultMenuHeader: string
+  navigation: {
+    categories: {
+      title: string
+      icon: {
+        icon?: string | null
+        size: {
+          width: number
+          height: number
+        }
+      }
+      cardLinks: CardBlock[]
+      commonLinks?:
+        | {
+            label: string
+            link?: {
+              type?: ('reference' | 'custom') | null
+              reference?:
+                | ({
+                    relationTo: 'pages'
+                    value: string | Page
+                  } | null)
+                | ({
+                    relationTo: 'productPages'
+                    value: string | ProductPage
+                  } | null)
+              url?: string | null
+            }
+            id?: string | null
+          }[]
+        | null
+    }
+    delivery: {
+      title: string
+      icon: {
+        icon?: string | null
+        size: {
+          width: number
+          height: number
+        }
+      }
+    }
+    promotions: {
+      title: string
+      icon: {
+        icon?: string | null
+        size: {
+          width: number
+          height: number
+        }
+      }
+      cardLinks: CardBlock[]
+    }
+    integration: {
+      title: string
+      icon: {
+        icon?: string | null
+        size: {
+          width: number
+          height: number
+        }
+      }
+      logos?:
+        | {
+            logo: string | Image
+            id?: string | null
+          }[]
+        | null
+    }
+  }
+  helpNavigation: {
+    label: string
+    link?: {
+      type?: ('reference' | 'custom') | null
+      reference?:
+        | ({
+            relationTo: 'pages'
+            value: string | Page
+          } | null)
+        | ({
+            relationTo: 'productPages'
+            value: string | ProductPage
+          } | null)
+      url?: string | null
+    }
+    id?: string | null
+  }[]
+  backButton: {
+    label: string
+    icon: {
+      icon?: string | null
+      size: {
+        width: number
+        height: number
+      }
+    }
+  }
   updatedAt?: string | null
   createdAt?: string | null
 }
@@ -798,6 +857,64 @@ export interface GlobalTypography {
     time: {
       label: string
       placeholder: string
+    }
+  }
+  support: {
+    links?:
+      | {
+          type?: ('email' | 'phone' | 'location') | null
+          info: string
+          caption: string
+          googleMapsLocation?: string | null
+          icon: {
+            icon?: string | null
+            size: {
+              width: number
+              height: number
+            }
+          }
+          id?: string | null
+        }[]
+      | null
+    link: {
+      label: string
+      icon: {
+        icon?: string | null
+        size: {
+          width: number
+          height: number
+        }
+      }
+      type?: ('reference' | 'custom') | null
+      reference?:
+        | ({
+            relationTo: 'pages'
+            value: string | Page
+          } | null)
+        | ({
+            relationTo: 'productPages'
+            value: string | ProductPage
+          } | null)
+      url?: string | null
+    }
+  }
+  account: {
+    mainMenuAccountField: {
+      title: string
+      description: string
+      link?: {
+        type?: ('reference' | 'custom') | null
+        reference?:
+          | ({
+              relationTo: 'pages'
+              value: string | Page
+            } | null)
+          | ({
+              relationTo: 'productPages'
+              value: string | ProductPage
+            } | null)
+        url?: string | null
+      }
     }
   }
   updatedAt?: string | null

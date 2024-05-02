@@ -1,19 +1,22 @@
 'use client'
 
-import { Children, FC, PropsWithChildren, useCallback, useId, useState } from 'react'
+import { CSSProperties, Children, FC, PropsWithChildren, useCallback, useId, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperType } from 'swiper'
 import { Virtual } from 'swiper/modules'
 import { Button } from 'ui'
 import { AllIconNames, IconType } from '@oleksii-lavka/grocee-icons'
 import { useCanHover } from '../../hooks'
+import { SwiperOptions } from 'swiper/types'
 
 import 'swiper/css'
 import 'swiper/css/virtual'
+import clsx from 'clsx'
 
 type CarouselProps = PropsWithChildren<{
   title?: string
-  showLink?: boolean
+  disableLink?: boolean
+  disableNavigationButtons?: boolean
   buttonLink?: string
   buttonText?: string
   buttonIcon?: AllIconNames | IconType | null
@@ -21,7 +24,16 @@ type CarouselProps = PropsWithChildren<{
   loop?: boolean
   virtual?: boolean
   className?: string
+  containerClassName?: string
+  innerContainerClassName?: string
   slideClassName?: string
+  disableWidthLimit?: boolean
+  breakpoints?: {
+    tablet?: SwiperOptions
+    laptop?: SwiperOptions
+    desktop?: SwiperOptions
+  }
+  swiperStyle?: CSSProperties
 }>
 
 export const Carousel: FC<CarouselProps> = ({
@@ -32,10 +44,16 @@ export const Carousel: FC<CarouselProps> = ({
   buttonText,
   buttonIcon,
   className = '',
+  containerClassName = '',
+  innerContainerClassName = '',
   loop = false,
   virtual = false,
-  showLink = true,
+  disableLink = false,
+  disableNavigationButtons = false,
   slideClassName = '',
+  disableWidthLimit = false,
+  breakpoints,
+  swiperStyle,
 }) => {
   const [isHovered, setIsHovered] = useState(false)
   const canHover = useCanHover()
@@ -77,57 +95,75 @@ export const Carousel: FC<CarouselProps> = ({
     return swiper.slidePrev(speed)
   }, [swiper])
 
-  return (
-    <section className='width-limit flex flex-col gap-8'>
-      <div className='flex items-center justify-between gap-4'>
-        {title && (
-          <h3 className='helvetica-xs tablet:helvetica-md grow justify-start font-light text-gray-900'>
-            {title}
-          </h3>
-        )}
+  const hasSwiperLink = !disableLink && buttonText && buttonLink
+  const hasSwiperNavigation = !disableNavigationButtons || hasSwiperLink
+  const hasSwiperHeader = !!title || hasSwiperNavigation
 
-        <div className='flex grow items-center justify-end gap-6'>
-          {showLink && buttonText && buttonLink && (
-            <Button
-              href={buttonLink}
-              standartButton
-              variant='tertiary'
-              rightIcon={{
-                icon: buttonIcon,
-                size: 18,
-                animateWhen: value => !!value,
-                value: isHovered && canHover,
-                animationProps: {
-                  initial: {
-                    translateX: 3,
-                  },
-                  exit: {
-                    translateX: 0,
-                  },
-                },
-              }}
-              onHoverStart={() => {
-                setIsHovered(true)
-              }}
-              onHoverEnd={() => {
-                setIsHovered(false)
-              }}
-            >
-              {buttonText}
-            </Button>
+  return (
+    <section
+      role='slider'
+      className={clsx(
+        'flex flex-col gap-8',
+        { 'width-limit': !disableWidthLimit },
+        containerClassName,
+      )}
+    >
+      {hasSwiperHeader && (
+        <div className='flex items-center justify-between gap-4'>
+          {title && (
+            <h3 className='helvetica-xs tablet:helvetica-md grow justify-start font-light text-gray-900'>
+              {title}
+            </h3>
           )}
 
-          <div className='hidden gap-2 tablet:flex'>
-            <PrevSlide isDisabled={disabledNavigation.prev} onSwipe={onSwipeToPrevSlide} />
-            <NextSlide isDisabled={disabledNavigation.next} onSwipe={onSwipeToNextSlide} />
-          </div>
-        </div>
-      </div>
+          {hasSwiperNavigation && (
+            <div className='flex grow items-center justify-end gap-6'>
+              {hasSwiperLink && (
+                <Button
+                  href={buttonLink}
+                  standartButton
+                  variant='tertiary'
+                  rightIcon={{
+                    icon: buttonIcon,
+                    size: 18,
+                    animateWhen: value => !!value,
+                    value: isHovered && canHover,
+                    animationProps: {
+                      initial: {
+                        translateX: 3,
+                      },
+                      exit: {
+                        translateX: 0,
+                      },
+                    },
+                  }}
+                  onHoverStart={() => {
+                    setIsHovered(true)
+                  }}
+                  onHoverEnd={() => {
+                    setIsHovered(false)
+                  }}
+                >
+                  {buttonText}
+                </Button>
+              )}
 
-      <div className='min-w-0'>
+              {!disableNavigationButtons && (
+                <div className='hidden gap-2 tablet:flex'>
+                  <PrevSlide isDisabled={disabledNavigation.prev} onSwipe={onSwipeToPrevSlide} />
+                  <NextSlide isDisabled={disabledNavigation.next} onSwipe={onSwipeToNextSlide} />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className={clsx('h-full min-w-0', innerContainerClassName)}>
         <Swiper
           modules={[Virtual]}
           spaceBetween={24}
+          slidesPerGroup={1}
           slidesPerView='auto'
           virtual={virtual}
           loop={loop}
@@ -142,16 +178,16 @@ export const Carousel: FC<CarouselProps> = ({
           }}
           breakpoints={{
             768: {
-              slidesPerView: 2,
+              ...(breakpoints?.tablet ?? {}),
             },
             1024: {
               slidesPerView: 3,
-              slidesPerGroup: 3,
+              ...(breakpoints?.laptop ?? {}),
             },
             1280: {
               slidesPerView: 4,
-              slidesPerGroup: 4,
               allowTouchMove: false,
+              ...(breakpoints?.desktop ?? {}),
             },
           }}
           onSlideChange={onUpdateDisableNavigation}
@@ -160,6 +196,7 @@ export const Carousel: FC<CarouselProps> = ({
             onUpdateDisableNavigation({ isBeginning: swiper.isBeginning, isEnd: swiper.isEnd })
           }}
           className={className}
+          style={swiperStyle}
         >
           {Children.map(children, (child, idx) => {
             // @ts-ignore

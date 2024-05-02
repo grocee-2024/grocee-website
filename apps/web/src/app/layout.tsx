@@ -29,10 +29,11 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className='bg-white desktop:mb-10'>
+      <body className='overflow-x-hidden bg-white desktop:mb-10'>
+        <div className='fade-container pointer-events-none absolute left-0 top-0 h-screen w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
         <SetupClientComponent globalTypography={globalTypography} />
         <MainNavigation {...mainNavigation} />
-        <main className='mx-auto max-w-[1440px] laptop:mt-8'>{children}</main>
+        <main className='mx-auto min-h-[80vh] max-w-[1440px] laptop:mt-8'>{children}</main>
         <BottomNavigation {...bottomNavigation} />
       </body>
     </html>

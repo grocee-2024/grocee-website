@@ -82,7 +82,7 @@ export const CarouselClient: FC<Props> = ({ title, settings, type, slides }) => 
       speed={speed ?? 500}
       virtual={virtual ?? false}
       title={title ?? undefined}
-      showLink={showLink ?? false}
+      disableLink={!showLink ?? false}
       buttonIcon={parsedIcon.icon}
       buttonLink={buttonLink}
       buttonText={linkText ?? ''}

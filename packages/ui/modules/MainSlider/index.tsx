@@ -65,7 +65,7 @@ export const MainSlider: FC<SliderProps> = ({
   )
 
   return (
-    <section className={className}>
+    <section className={className} role='slider'>
       <Swiper
         modules={[Virtual, Autoplay, EffectFade]}
         centeredSlides
@@ -150,7 +150,7 @@ function Slide({
                 </h3>
               )}
               {heading.description && (
-                <p className='gilroy-sm line-clamp-4 text-gray-700 tablet:line-clamp-none'>
+                <p className='gilroy-sm line-clamp-3 text-gray-700 tablet:line-clamp-none'>
                   {heading.description}
                 </p>
               )}

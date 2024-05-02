@@ -14,84 +14,9 @@ export const HelpBlock: Block = {
     },
     {
       name: 'support',
-      type: 'group',
-      fields: [
-        {
-          name: 'links',
-          type: 'array',
-          fields: [
-            {
-              name: 'type',
-              type: 'select',
-              options: [
-                {
-                  label: 'Email',
-                  value: 'email',
-                },
-                {
-                  label: 'Phone',
-                  value: 'phone',
-                },
-                {
-                  label: 'Location',
-                  value: 'location',
-                },
-              ],
-            },
-            {
-              type: 'row',
-              fields: [
-                {
-                  name: 'info',
-                  type: 'text',
-                  required: true,
-                  admin: {
-                    width: '45%',
-                  },
-                },
-                {
-                  name: 'caption',
-                  type: 'text',
-                  localized: true,
-                  required: true,
-                  admin: {
-                    width: '45%',
-                  },
-                },
-              ],
-            },
-            {
-              name: 'googleMapsLocation',
-              type: 'text',
-              required: true,
-              admin: {
-                condition: (_, siblingData) => siblingData?.type === 'location',
-              },
-            },
-            {
-              name: 'icon',
-              type: 'group',
-              fields: [iconPicker],
-            },
-          ],
-        },
-      ],
+      type: 'text',
+      hidden: true,
     },
-    link({
-      fields: [
-        {
-          name: 'label',
-          type: 'text',
-          localized: true,
-          required: true,
-        },
-        {
-          name: 'icon',
-          type: 'group',
-          fields: [iconPicker],
-        },
-      ],
-    }),
     {
       name: 'accordion',
       type: 'blocks',

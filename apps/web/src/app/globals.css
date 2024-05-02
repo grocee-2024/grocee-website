@@ -24,6 +24,10 @@ body.cancelScroll {
   width: 100%;
 }
 
+.fade {
+  @apply !pointer-events-auto opacity-20;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -96,7 +100,7 @@ button {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
   height: 8px;
   overflow: visible;
 }

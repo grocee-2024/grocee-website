@@ -29,5 +29,17 @@ export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'created
         placeholder: '',
       },
     },
+    support: {
+      links: [],
+      link: {
+        label: '',
+        icon: {
+          size: {
+            width: 18,
+            height: 18,
+          },
+        },
+      },
+    },
   }),
 )

@@ -35,21 +35,19 @@ const navLinks: NavLinkType[] = [
 
 export const NavItems: FC = () => {
   return (
-    <nav>
-      <ul className='flex gap-4 mobile:gap-6'>
-        <li className='flex items-center justify-center tablet:hidden'>
-          <FocusRing focusRingClass='ring ring-offset-2'>
-            <button className='border-none bg-transparent outline-none'>
-              <Search width={18} height={18} className='text-gray-900' />
-            </button>
-          </FocusRing>
+    <ul className='flex gap-4 mobile:gap-6'>
+      <li className='flex items-center justify-center tablet:hidden'>
+        <FocusRing focusRingClass='ring ring-offset-2'>
+          <button className='border-none bg-transparent text-gray-900 outline-none transition-colors duration-300 hover:text-gray-700'>
+            <Search width={18} height={18} />
+          </button>
+        </FocusRing>
+      </li>
+      {navLinks.map((link, idx) => (
+        <li key={`${link.href}-${idx}`} className='hidden tablet:block'>
+          <NavLink {...link} />
         </li>
-        {navLinks.map((link, idx) => (
-          <li key={`${link.href}-${idx}`} className='hidden tablet:block'>
-            <NavLink {...link} />
-          </li>
-        ))}
-      </ul>
-    </nav>
+      ))}
+    </ul>
   )
 }

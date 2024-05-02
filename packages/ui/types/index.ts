@@ -23,3 +23,9 @@ export type MappedLink = Omit<
   id: string
   linkHref: string
 }
+
+export type CommonLink = {
+  id: string
+  label: string
+  link: string
+}

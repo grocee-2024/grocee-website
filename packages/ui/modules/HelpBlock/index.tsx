@@ -36,7 +36,7 @@ type Props = {
   accordionBlock: JSX.Element
 }
 
-export const HelpBlock: FC<Props> = ({ title, supportLinks, accordionBlock, link }) => {
+export const HelpBlock: FC<Props> = ({ title, accordionBlock, supportLinks, link }) => {
   const canHover = useCanHover()
   const [hovered, setHovered] = useState(false)
 
