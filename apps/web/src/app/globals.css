@@ -15,12 +15,14 @@
 body {
   font-family: 'Gilroy';
   font-weight: 400;
+  margin: 0;
+  padding: 0;
+  height: auto;
 }
 
 body.cancelScroll {
-  position: fixed;
   overflow: hidden;
-  height: 100%;
+  height: auto;
   width: 100%;
 }
 

@@ -12,6 +12,7 @@ export type NavLinkType = {
   defaultIcon: ReactNode
   activeIcon: ReactNode
   badge?: number
+  onClick?: () => void
 }
 
 export const NavLink: FC<NavLinkType> = ({
@@ -20,6 +21,7 @@ export const NavLink: FC<NavLinkType> = ({
   href,
   linkClassName,
   badge,
+  onClick,
 }) => {
   const pathname = usePathname()
 
@@ -31,6 +33,7 @@ export const NavLink: FC<NavLinkType> = ({
   return (
     <FocusRing focusRingClass='ring ring-offset-2'>
       <Link
+        onClick={onClick}
         href={href}
         className={clsx(
           'relative transition-colors duration-300 hover:text-gray-700',

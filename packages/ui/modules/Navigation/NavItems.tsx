@@ -11,6 +11,10 @@ import {
 import { NavLink, NavLinkType } from './NavLink'
 import { FocusRing } from 'react-aria'
 
+type Props = {
+  onClickOnLink?: () => void
+}
+
 const navLinks: NavLinkType[] = [
   {
     href: '/delivery',
@@ -33,7 +37,7 @@ const navLinks: NavLinkType[] = [
   },
 ]
 
-export const NavItems: FC = () => {
+export const NavItems: FC<Props> = ({ onClickOnLink }) => {
   return (
     <ul className='flex gap-4 mobile:gap-6'>
       <li className='flex items-center justify-center tablet:hidden'>
@@ -45,7 +49,7 @@ export const NavItems: FC = () => {
       </li>
       {navLinks.map((link, idx) => (
         <li key={`${link.href}-${idx}`} className='hidden tablet:block'>
-          <NavLink {...link} />
+          <NavLink {...link} onClick={onClickOnLink} />
         </li>
       ))}
     </ul>
