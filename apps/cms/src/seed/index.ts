@@ -43,33 +43,33 @@ async function dropDataFromMongoDB() {
   }
 }
 
-async function dropDataFromSqlDB() {
-  payload.logger.info('Dropping local data...')
+// async function dropDataFromSqlDB() {
+//   payload.logger.info('Dropping local data...')
 
-  try {
-    const tables = Object.entries(payload.db.tables)
+//   try {
+//     const tables = Object.entries(payload.db.tables)
 
-    for (const [tableName, table] of tables) {
-      await payload.db.drizzle.delete(table)
+//     for (const [tableName, table] of tables) {
+//       await payload.db.drizzle.delete(table)
 
-      payload.logger.info(`Table ${tableName} dropped successfully`)
-    }
+//       payload.logger.info(`Table ${tableName} dropped successfully`)
+//     }
 
-    const mediaDir = path.resolve(__dirname, '../', 'images')
+//     const mediaDir = path.resolve(__dirname, '../', 'images')
 
-    if (fs.existsSync(mediaDir)) {
-      const files = fs.readdirSync(mediaDir)
+//     if (fs.existsSync(mediaDir)) {
+//       const files = fs.readdirSync(mediaDir)
 
-      for (const file of files) {
-        fs.unlinkSync(path.resolve(mediaDir, file))
-      }
-    }
+//       for (const file of files) {
+//         fs.unlinkSync(path.resolve(mediaDir, file))
+//       }
+//     }
 
-    payload.logger.info('All tables dropped successfully')
-  } catch (error: unknown) {
-    payload.logger.error('Error dropping tables: ', error)
-  }
-}
+//     payload.logger.info('All tables dropped successfully')
+//   } catch (error: unknown) {
+//     payload.logger.error('Error dropping tables: ', error)
+//   }
+// }
 
 async function createData() {
   payload.logger.info('Seeding local data')
@@ -85,7 +85,7 @@ async function createData() {
       populatePagesData(pages, productPages, news, images),
       createMainNavigation(pages, images),
       createBottomNavigation(pages, images),
-      createGlobalTypography(),
+      createGlobalTypography(pages),
     ])
   } catch (error: unknown) {
     payload.logger.error('Error seeding local data:')

@@ -10,9 +10,9 @@ export default async function HomePage({ searchParams }: NextRoute) {
   const page = await getPage('pages', 'home', { searchParams: { ...searchParams, locale } })
 
   return (
-    <>
+    <div>
       <SetupLastBlockOnPageStore layout={page.layout} />
       <div className='flex flex-col gap-16 laptop:gap-20'>{renderBlocks(page.layout)}</div>
-    </>
+    </div>
   )
 }

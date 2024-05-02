@@ -12,12 +12,12 @@ import {
 } from 'react-aria'
 import { SelectState, useSelectState, Item, Node as StatelyNode } from 'react-stately'
 import { AnimatePresence } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
-import { Button, ButtonProps, IconProps } from '../Button'
+import { Button, ButtonProps } from '../Button'
 import { SelectOptionType } from './SelectOption'
 import { ListOptions } from './ListOptions'
 import clsx from 'clsx'
 import { useCanHover } from 'ui/hooks'
+import { useIntersectionObserver } from 'usehooks-ts'
 
 export type SelectProps<T> = {
   className?: string
@@ -88,7 +88,9 @@ function SelectWithItems<T>(props: SelectProps<T>) {
   const triggerRef = useRef<HTMLButtonElement | null>(null)
   const selectState = useSelectState(restProps)
 
-  const { ref: containerRef, inView } = useInView()
+  const { isIntersecting, ref: containerRef } = useIntersectionObserver({
+    threshold: 0.5,
+  })
 
   const canHover = useCanHover()
 
@@ -180,12 +182,12 @@ function SelectWithItems<T>(props: SelectProps<T>) {
   }, [])
 
   useEffect(() => {
-    if (inView || !canHover) {
+    if (isIntersecting) {
       return
     }
 
     selectState.close()
-  }, [inView, canHover])
+  }, [isIntersecting])
 
   const { menuProps, triggerProps: selectTriggerProps } = useSelect(
     { ...restProps, 'aria-label': label.select } as AriaSelectOptions<T>,

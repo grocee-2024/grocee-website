@@ -6,7 +6,6 @@ import { parsePayloadLink } from '@/helpers'
 import { Footer } from 'ui'
 import clsx from 'clsx'
 import { useLastBlockOnPage } from '@/store/lastBlockOnPageStore'
-import { useEffect } from 'react'
 
 export default function BottomNavigation({
   logo,
@@ -40,7 +39,7 @@ export default function BottomNavigation({
       className={clsx(
         'mt-8 max-w-[1376px] bg-gray-900 px-4 py-8 tablet:mt-16 tablet:px-5 laptop:mt-20 laptop:px-12 laptop:py-16 desktop:mx-8 desktop:rounded-2xl desktop:px-[68px] min-[1440px]:mx-auto',
         {
-          '!mt-[-140px] !pt-[210px]': lastBlockOnPage === 'Banner',
+          'tablet:!mt-[-140px] tablet:!pt-[210px]': lastBlockOnPage === 'Banner',
         },
       )}
     >

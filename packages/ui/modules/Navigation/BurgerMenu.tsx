@@ -1,18 +1,23 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { FocusRing } from 'react-aria'
 
-export const BurgerMenu: FC = () => {
-  const [opened, setOpened] = useState(false)
+type BurgerMenuProps = {
+  isOpen?: boolean
+  onOpen?: () => void
+  onClose?: () => void
+}
 
+export const BurgerMenu: FC<BurgerMenuProps> = ({ isOpen, onClose, onOpen }) => {
   return (
     <FocusRing focusRingClass='ring ring-offset-2'>
       <motion.button
-        onClick={() => setOpened(prev => !prev)}
+        aria-label={isOpen ? 'Close Menu' : 'Open Menu'}
+        onClick={isOpen ? onClose : onOpen}
         className='relative top-[2px] h-[18px] w-4'
-        animate={opened ? 'opened' : 'closed'}
+        animate={isOpen ? 'opened' : 'closed'}
       >
         <motion.span
           variants={{

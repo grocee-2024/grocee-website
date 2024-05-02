@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useRef } from 'react'
+import { CSSProperties, FC, useRef } from 'react'
 import { ArrowRight } from '@oleksii-lavka/grocee-icons/icons'
 import Link from 'next/link'
 import clsx from 'clsx'
@@ -12,6 +12,8 @@ import { useCanHover } from '../../hooks'
 type CardProps = {
   className?: string
   imageClassName?: string
+  imageContainerClassName?: string
+  imageContainerStyle?: CSSProperties
   image?: PayloadImageType
   text: string
   href: string
@@ -19,7 +21,16 @@ type CardProps = {
 }
 
 export const Card: FC<CardProps> = props => {
-  const { className = '', href, text, gap = 'small', image, imageClassName = '' } = props
+  const {
+    className = '',
+    href,
+    text,
+    gap = 'small',
+    image,
+    imageClassName = '',
+    imageContainerClassName = '',
+    imageContainerStyle,
+  } = props
   const canHover = useCanHover()
 
   const { hoverProps, isHovered } = useHover({})
@@ -43,7 +54,13 @@ export const Card: FC<CardProps> = props => {
         {...hoverProps}
         ref={linkRef}
       >
-        <div className='relative min-h-24 grow overflow-hidden rounded-lg'>
+        <div
+          className={clsx(
+            'relative min-h-24 grow overflow-hidden rounded-lg',
+            imageContainerClassName,
+          )}
+          style={imageContainerStyle}
+        >
           <PayloadImage
             src={image}
             skipBlur

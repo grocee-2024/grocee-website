@@ -46,6 +46,7 @@ export type BannerProps = {
 export const Banner: FC<BannerProps> = ({ heading, previewImage, type, className }) => {
   return (
     <section
+      role='banner'
       className={clsx(
         'relative overflow-hidden px-4 py-8 tablet:px-8 laptop:mx-12 laptop:rounded-[32px] laptop:px-[68px] desktop:mx-[100px]',
         className,
@@ -53,9 +54,10 @@ export const Banner: FC<BannerProps> = ({ heading, previewImage, type, className
     >
       <PayloadImage
         src={previewImage}
-        className='absolute left-0 right-0 top-0 z-10 h-full w-full'
+        className='absolute left-0 right-0 top-0 h-full w-full'
         skipBlur
         objectFit='cover'
+        style={{ zIndex: 2 }}
       />
 
       {type === 'info' ? <InfoHeading {...heading} /> : <OrderDeliveryHeading {...heading} />}
@@ -67,7 +69,10 @@ function InfoHeading({ links, list, listMarker, logo, title }: InfoHeadingProps)
   const ListMarker = mapIcon(listMarker?.icon || null)
 
   return (
-    <div className='relative z-20 my-8 flex max-w-[496px] flex-col gap-8 rounded-[32px] bg-white p-8 tablet:float-right laptop:my-[56px]'>
+    <div
+      style={{ zIndex: 3 }}
+      className='relative my-8 flex max-w-[496px] flex-col gap-8 rounded-[32px] bg-white p-8 tablet:float-right laptop:my-[56px]'
+    >
       <FocusRing focusRingClass='ring ring-offset-2'>
         <Link className='h-[30px] w-[86px]' href={logo.page}>
           <PayloadImage className='h-full w-full' src={logo.image} />
@@ -137,7 +142,10 @@ function OrderDeliveryHeading({
     orderDeliveryFormTypography
 
   return (
-    <div className='relative z-20 flex max-w-[496px] flex-col gap-8 rounded-[32px] bg-white p-8 tablet:float-right tablet:max-w-min'>
+    <div
+      style={{ zIndex: 3 }}
+      className='relative flex max-w-[496px] flex-col gap-8 rounded-[32px] bg-white p-8 tablet:float-right tablet:max-w-min'
+    >
       <FocusRing focusRingClass='ring ring-offset-2'>
         <Link className='h-[30px] w-[86px]' href={logo.page}>
           <PayloadImage className='h-full w-full' src={logo.image} />
