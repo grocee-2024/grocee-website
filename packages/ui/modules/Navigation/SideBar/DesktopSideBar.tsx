@@ -1,6 +1,6 @@
 'use client'
 
-import { ComponentProps, FC, useCallback, useMemo, useRef, useState } from 'react'
+import { ComponentProps, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FocusRing, useIsSSR } from 'react-aria'
 import { useWindowSize } from '../../../hooks'
@@ -68,6 +68,14 @@ export const DesktopSideBar: FC<Props> = ({ navigation, helpNavigation, isOpen }
     return <NavigationPanel {...navigationProps} asideHeight={asideHeight} />
   }, [selectedTab, navigation, helpNavigation])
 
+  useEffect(() => {
+    if (isOpen) {
+      return
+    }
+
+    onChangeSelectedTab('categories')
+  }, [isOpen])
+
   if (isSSR || isMobile || isTablet) {
     return null
   }
@@ -92,9 +100,9 @@ export const DesktopSideBar: FC<Props> = ({ navigation, helpNavigation, isOpen }
           pointerEvents: 'none',
         },
       }}
-      className='absolute left-0 right-0 top-0 z-20 origin-top rounded-b-2xl rounded-t-[32px] bg-white px-6 pb-6 pt-[120px]'
+      className='absolute left-0 right-0 top-0 z-20 origin-top rounded-b-2xl rounded-t-[50px] bg-white px-6 pb-6 pt-[120px]'
     >
-      <motion.nav ref={asideRef} className='grid grid-cols-4 gap-6'>
+      <motion.nav ref={asideRef} className='grid grid-cols-4 gap-4'>
         <div className='col-span-1'>
           <ul className='mb-4 flex flex-col gap-2 border-b-[1px] border-gray-100 pb-4'>
             {Object.entries(navigation).map(([key, navItem]) => {
@@ -119,10 +127,10 @@ export const DesktopSideBar: FC<Props> = ({ navigation, helpNavigation, isOpen }
                       )}
                       onClick={() => onChangeSelectedTab(navKey)}
                     >
-                      {navKey === selectedTab && (
+                      {navKey === selectedTab && isOpen && (
                         <motion.div
                           layoutId='activeTab'
-                          className='absolute inset-0 bg-gray-900'
+                          className='absolute inset-0 bg-gray-900 transition-colors duration-300'
                           style={{ borderRadius: 9999 }}
                         />
                       )}

@@ -11,6 +11,7 @@ export type ModalStates = Record<
 
 type Options = {
   fade?: 'mobile' | 'desktop'
+  headerOffset?: number
 }
 
 class ModalService {
@@ -32,12 +33,10 @@ class ModalService {
 
   private handleModalsOpen(options?: Options) {
     const isSomeModalOpen = Object.values(this.modalsStates).some(({ state }) => state === true)
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
 
     if (isSomeModalOpen) {
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
-
       document.body.style.paddingRight = `${scrollbarWidth}px`
-
       document.body.classList.add('cancelScroll')
       document.querySelector('.fade-container')?.classList.add('fade')
     } else {

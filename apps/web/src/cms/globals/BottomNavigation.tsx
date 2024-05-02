@@ -5,7 +5,7 @@ import { resolveRelation } from '../helpers'
 import { parsePayloadLink } from '@/helpers'
 import { Footer } from 'ui'
 import clsx from 'clsx'
-import { useLastBlockOnPage } from '@/store/lastBlockOnPageStore'
+import { useEdgeBlocksOnPage } from '@/store/edgeBlocksOnPage'
 
 export default function BottomNavigation({
   logo,
@@ -15,7 +15,7 @@ export default function BottomNavigation({
 }: BottomNavigation) {
   const resolvedLogo = resolveRelation(logo.image)
   const logoUrl = parsePayloadLink(logo.page)
-  const { lastBlockOnPage } = useLastBlockOnPage()
+  const { lastBlockOnPage } = useEdgeBlocksOnPage()
 
   const mappedNavGroups = (navGroups ?? []).map(({ title, links }) => {
     const mappedLinks = (links ?? []).map(({ page, id }) => {

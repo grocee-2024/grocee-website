@@ -15,6 +15,7 @@ import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 import { CommonLink, MappedCard } from '../../types'
 import { useWindowSize } from '../../hooks'
 import { DesktopSideBar } from './SideBar/DesktopSideBar'
+import { usePathname } from 'next/navigation'
 
 type CommonNavigationProps = {
   title: string
@@ -90,6 +91,8 @@ export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, ...prop
   const mobileAsideRef = useRef<HTMLElement | null>(null)
   const desktopAsideRef = useRef<HTMLDivElement | null>(null)
 
+  const pathname = usePathname()
+
   const { isMobile, isTablet } = useWindowSize()
 
   const fade = useMemo(() => (isMobile || isTablet ? 'mobile' : 'desktop'), [isMobile, isTablet])
@@ -124,9 +127,15 @@ export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, ...prop
     }
   })
 
+  useEffect(() => {
+    if (burgerMenuOpened) {
+      handleCloseBurgerMenu()
+    }
+  }, [pathname])
+
   return (
     <div ref={desktopAsideRef}>
-      <nav className='relative z-30 flex h-full w-full items-center justify-between rounded-[1000px] bg-white px-4 py-[15px] shadow-[0_8px_24px_0_rgba(179,179,179,0.3)] tablet:px-6 tablet:py-[28px]'>
+      <div className='relative z-30 flex h-full w-full items-center justify-between rounded-[1000px] bg-white px-4 py-[15px] shadow-[0_8px_24px_0_rgba(179,179,179,0.3)] tablet:px-6 tablet:py-[28px]'>
         <BurgerMenu
           isOpen={burgerMenuOpened}
           onOpen={handleOpenBurgerMenu}
@@ -137,6 +146,11 @@ export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, ...prop
           <Link
             className='absolute left-12 mt-[-3px] h-[30px] w-[86px] tablet:left-16 laptop:left-[72px]'
             href={logoUrl}
+            onClick={() => {
+              if (burgerMenuOpened) {
+                handleCloseBurgerMenu()
+              }
+            }}
           >
             <PayloadImage className='h-full w-full' src={logo} />
           </Link>
@@ -144,8 +158,14 @@ export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, ...prop
 
         <SearchInput search={search} />
 
-        <NavItems />
-      </nav>
+        <NavItems
+          onClickOnLink={() => {
+            if (burgerMenuOpened) {
+              handleCloseBurgerMenu()
+            }
+          }}
+        />
+      </div>
 
       <MobileSideBar
         {...props}

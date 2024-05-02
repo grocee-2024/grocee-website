@@ -116,7 +116,7 @@ export function MainNavigationClient(props: Props) {
         'laptop:left-12 laptop:right-12 laptop:top-16',
         'desktop:left-[100px] desktop:right-[100px]',
         {
-          absolute: isServer,
+          hidden: isServer,
           fixed: isClient,
         },
       )}

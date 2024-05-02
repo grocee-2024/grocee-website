@@ -173,7 +173,7 @@ export const MobileSideBar = forwardRef<HTMLElement, Props>((props, ref) => {
     accountField,
   ])
 
-  if (isSSR || isLaptop || isDesktop) {
+  if (isSSR || isLaptop || isDesktop || !body.current) {
     return null
   }
 
@@ -199,7 +199,7 @@ export const MobileSideBar = forwardRef<HTMLElement, Props>((props, ref) => {
           pointerEvents: 'none',
         },
       }}
-      className='absolute bottom-0 left-0 top-0 z-30 flex w-full origin-left flex-col overflow-y-auto overflow-x-hidden bg-white p-4 min-[375px]:max-w-[325px]'
+      className='fixed bottom-0 left-0 top-0 z-30 flex w-full origin-left flex-col overflow-y-auto overflow-x-hidden bg-white p-4 min-[375px]:max-w-[325px]'
     >
       <header className='mb-6 flex justify-between'>
         <AnimatePresence mode='wait'>
