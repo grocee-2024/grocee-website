@@ -10,8 +10,7 @@ export type ModalStates = Record<
 >
 
 type Options = {
-  fade?: 'mobile' | 'desktop'
-  headerOffset?: number
+  fade?: 'showHeader' | 'full'
 }
 
 class ModalService {
@@ -45,11 +44,11 @@ class ModalService {
       document.querySelector('.fade-container')?.classList.remove('fade')
     }
 
-    if (isSomeModalOpen && options?.fade === 'mobile') {
+    if (isSomeModalOpen && options?.fade === 'full') {
       document.querySelector('.fade-container')?.classList.add('z-20')
     }
 
-    if (isSomeModalOpen && options?.fade === 'desktop') {
+    if (isSomeModalOpen && options?.fade === 'showHeader') {
       document.querySelector('.fade-container')?.classList.add('z-10')
     }
   }

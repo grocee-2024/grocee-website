@@ -9,6 +9,7 @@ import { useSSR } from '@/hooks'
 import { useGlobalTypography } from '@/store/globalTypographyStore'
 import { parsePayloadLink } from '@/helpers'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
+import { useEdgeBlocksOnPage } from '@/store/edgeBlocksOnPage'
 
 type Props = Omit<ComponentProps<typeof Navigation>, 'support' | 'accountField'>
 
@@ -17,9 +18,15 @@ export function MainNavigationClient(props: Props) {
   const headerRef = useRef<HTMLElement>(null)
   const scrollOffset = useRef(0)
   const { account, support } = useGlobalTypography()
+  const { firstBlockOnPage } = useEdgeBlocksOnPage()
 
   const { scrollY } = useScroll()
   const { isTablet, isLaptop, isMobile } = useWindowSize()
+
+  const headerHasOffsetTop = useMemo(
+    () => firstBlockOnPage === 'Banner' || firstBlockOnPage === 'MainSlider',
+    [firstBlockOnPage],
+  )
 
   const { headerOffsetTop, minusOffset } = useMemo(() => {
     const offsetTop = {
@@ -31,7 +38,7 @@ export function MainNavigationClient(props: Props) {
     const minusOffset = {
       mobile: 32,
       tablet: 32,
-      laptop: 96,
+      laptop: headerHasOffsetTop ? 96 : 64,
     }
 
     const currentDevice = isMobile ? 'mobile' : isTablet ? 'tablet' : 'laptop'
@@ -40,7 +47,7 @@ export function MainNavigationClient(props: Props) {
       headerOffsetTop: offsetTop[currentDevice],
       minusOffset: minusOffset[currentDevice],
     }
-  }, [isTablet, isLaptop, isMobile])
+  }, [isTablet, isLaptop, headerHasOffsetTop, isMobile])
 
   const transform = useTransform(scrollY, scrollPosition => {
     if (
@@ -111,11 +118,14 @@ export function MainNavigationClient(props: Props) {
       style={{ transform }}
       ref={headerRef}
       className={clsx(
+        'main-header-navigation',
         'left-4 right-4 top-8 z-10 mx-auto max-h-20 max-w-[1240px] bg-transparent transition-transform duration-300 ease-in-out',
         'tablet:left-5 tablet:right-5',
-        'laptop:left-12 laptop:right-12 laptop:top-16',
+        'laptop:left-12 laptop:right-12',
         'desktop:left-[100px] desktop:right-[100px]',
         {
+          'laptop:top-16': headerHasOffsetTop,
+          'laptop:top-8': !headerHasOffsetTop,
           hidden: isServer,
           fixed: isClient,
         },
