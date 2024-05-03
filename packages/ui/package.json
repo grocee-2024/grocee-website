@@ -29,7 +29,8 @@
     "flubber": "^0.4.2",
     "@stripe/react-stripe-js": "^2.7.0",
     "@stripe/stripe-js": "^3.3.0",
-    "stripe": "^15.1.0"
+    "stripe": "^15.1.0",
+    "react-loading-skeleton": "^3.4.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

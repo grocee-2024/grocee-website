@@ -86,9 +86,9 @@ export const CarouselClient: FC<Props> = ({ title, settings, type, slides }) => 
       buttonIcon={parsedIcon.icon}
       buttonLink={buttonLink}
       buttonText={linkText ?? ''}
-      slideClassName={clsx({
-        'max-w-[212px] tablet:max-w-[300px] laptop:max-w-none': type === 'simpleCard',
-        'max-w-[292px] laptop:max-w-none': type === 'productCard' || type === 'newsCard',
+      slideClassName={clsx('mr-6 laptop:max-w-[292px]', {
+        'max-w-[212px] tablet:max-w-[292px]': type === 'simpleCard',
+        'max-w-[292px]': type === 'productCard' || type === 'newsCard',
       })}
     >
       {mappedSlides}

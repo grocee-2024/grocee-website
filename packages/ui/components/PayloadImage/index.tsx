@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import { Image as CMSImage } from 'cms-types'
 import { AnimatePresence, useInView, motion } from 'framer-motion'
 import { CSSProperties, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import Skeleton from 'react-loading-skeleton'
 import { useWindowSize } from '../../hooks'
 
 export type PayloadImageProps = {
@@ -183,11 +184,13 @@ export function PayloadImage({
           ) : (
             <AnimatePresence>
               <motion.div
+                className='absolute inset-0 block min-h-full w-full'
                 initial={{ opacity: 1 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 1 }}
-                className='absolute inset-0 min-h-full w-full animate-pulse bg-gray-500'
-              />
+              >
+                <Skeleton className='absolute inset-0 block min-h-full w-full' borderRadius={16} />
+              </motion.div>
             </AnimatePresence>
           )}
         </>

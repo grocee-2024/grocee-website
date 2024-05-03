@@ -34,6 +34,7 @@ type CarouselProps = PropsWithChildren<{
     desktop?: SwiperOptions
   }
   swiperStyle?: CSSProperties
+  slideStyle?: CSSProperties
 }>
 
 export const Carousel: FC<CarouselProps> = ({
@@ -54,6 +55,7 @@ export const Carousel: FC<CarouselProps> = ({
   disableWidthLimit = false,
   breakpoints,
   swiperStyle,
+  slideStyle,
 }) => {
   const [isHovered, setIsHovered] = useState(false)
   const canHover = useCanHover()
@@ -203,7 +205,12 @@ export const Carousel: FC<CarouselProps> = ({
             const key = child?.key ?? `${carouselId}-${idx}`
 
             return (
-              <SwiperSlide key={key} virtualIndex={idx} className={slideClassName}>
+              <SwiperSlide
+                key={key}
+                virtualIndex={idx}
+                className={slideClassName}
+                style={slideStyle}
+              >
                 {child}
               </SwiperSlide>
             )
