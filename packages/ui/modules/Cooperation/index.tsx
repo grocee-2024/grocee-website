@@ -29,7 +29,6 @@ export const Cooperation: FC<Props> = ({ title = '', className = '', logos }) =>
 
     return 140
   }, [isMobile, isTablet])
-
   return (
     <section className={clsx('flex flex-col gap-8', className)}>
       {title && (

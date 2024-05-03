@@ -12,7 +12,6 @@ export type AnyBlock = NonNullable<Config['globals']['allBlocks']['blocks']>[num
 
 export const blocks: Record<
   AnyBlock['blockType'],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (...args: any[]) => JSX.Element | null | Promise<JSX.Element | null>
 > = {
   MainSlider,

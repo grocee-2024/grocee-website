@@ -5,10 +5,12 @@ import { useGlobalTypography } from '@/store/globalTypographyStore'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 import { FC, ComponentProps } from 'react'
 import { HelpBlock as HelpBlockUI } from 'ui'
+import { WithSkeletonLoader } from 'ui/hoc'
+import { HelpBlockSkeleton } from 'ui/skeletons'
 
 type Props = Pick<ComponentProps<typeof HelpBlockUI>, 'title' | 'accordionBlock'>
 
-export const HelpBlockClient: FC<Props> = props => {
+export const HelpBlockClient: FC = WithSkeletonLoader((props: Props) => {
   const { support } = useGlobalTypography()
 
   const mappedSupportLinks = (support?.links ?? []).map(
@@ -39,4 +41,4 @@ export const HelpBlockClient: FC<Props> = props => {
   }
 
   return <HelpBlockUI {...props} supportLinks={mappedSupportLinks} link={mappedSupportLink} />
-}
+}, HelpBlockSkeleton)
