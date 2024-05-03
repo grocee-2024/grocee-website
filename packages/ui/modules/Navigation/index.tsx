@@ -88,32 +88,55 @@ type NavigationProps = Pick<MainNavigation, 'search' | 'defaultMenuHeader'> & {
 
 export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, ...props }) => {
   const [burgerMenuOpened, setBurgerMenuOpened] = useState(false)
+  const navigationRef = useRef<HTMLDivElement | null>(null)
   const mobileAsideRef = useRef<HTMLElement | null>(null)
-  const desktopAsideRef = useRef<HTMLDivElement | null>(null)
 
   const pathname = usePathname()
 
-  const { isMobile, isTablet } = useWindowSize()
+  const { isMobile, isTablet, isLaptop, isDesktop, windowSize } = useWindowSize()
 
-  const fade = useMemo(() => (isMobile || isTablet ? 'mobile' : 'desktop'), [isMobile, isTablet])
+  const fade = useMemo(() => (isMobile || isTablet ? 'full' : 'showHeader'), [isMobile, isTablet])
+
+  const addHeaderRightOffset = useCallback(() => {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+    const offsetRight = isMobile ? 16 : isTablet ? 20 : isLaptop ? 48 : 100
+
+    const header = document.querySelector('.main-header-navigation') as HTMLElement
+
+    if (scrollbarWidth > 0) {
+      header.style.right = `${offsetRight + scrollbarWidth}px`
+    }
+  }, [isMobile, isDesktop, isLaptop, isDesktop, windowSize.width])
+
+  const clearHeaderRightOffset = useCallback(() => {
+    const header = document.querySelector('.main-header-navigation') as HTMLElement
+
+    header.style.right = ''
+  }, [isLaptop, isDesktop, windowSize.width])
 
   const handleOpenBurgerMenu = useCallback(() => {
+    addHeaderRightOffset()
+
     setBurgerMenuOpened(true)
     modalService.changeModalState('burgerMenu', true, { fade })
-  }, [fade])
+  }, [fade, windowSize.width])
 
   const handleCloseBurgerMenu = useCallback(() => {
+    clearHeaderRightOffset()
+
     setBurgerMenuOpened(false)
     modalService.changeModalState('burgerMenu', false, { fade })
-  }, [fade])
+  }, [fade, windowSize.width])
 
   useEffect(() => {
     modalService.addActionOnScreenChange('burgerMenu', {
       onCloseMobile() {
+        clearHeaderRightOffset()
         handleCloseBurgerMenu()
         modalService.clearFade()
       },
       onCloseDesktop() {
+        clearHeaderRightOffset()
         handleCloseBurgerMenu()
         modalService.clearFade()
       },
@@ -121,7 +144,7 @@ export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, ...prop
   }, [])
 
   useOnClickOutside(mobileAsideRef, handleCloseBurgerMenu)
-  useOnClickOutside(desktopAsideRef, () => {
+  useOnClickOutside(navigationRef, () => {
     if (!isMobile && !isTablet) {
       handleCloseBurgerMenu()
     }
@@ -134,7 +157,7 @@ export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, ...prop
   }, [pathname])
 
   return (
-    <div ref={desktopAsideRef}>
+    <div ref={navigationRef}>
       <div className='relative z-30 flex h-full w-full items-center justify-between rounded-[1000px] bg-white px-4 py-[15px] shadow-[0_8px_24px_0_rgba(179,179,179,0.3)] tablet:px-6 tablet:py-[28px]'>
         <BurgerMenu
           isOpen={burgerMenuOpened}
