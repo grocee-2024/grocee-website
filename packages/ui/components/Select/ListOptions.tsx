@@ -286,7 +286,7 @@ export function ListOptions<T>({
             ref={listBoxRef}
             {...mergeProps(restProps, listBoxProps)}
             className='flex flex-col gap-2 overflow-auto bg-white p-6 outline-none'
-            style={{ height: position.height, maxHeight, width: position.width }}
+            style={{ maxHeight, width: position.width }}
           >
             {[...selectState.collection].map(option => (
               <SelectOption

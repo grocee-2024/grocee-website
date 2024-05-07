@@ -6,20 +6,85 @@ export const createMainNavigation = async (pages: Pages, images: Images) => {
   await payload.updateGlobal({
     slug: 'mainNavigation',
     data: {
-      logo: {
-        image: images.logoDarkId,
-        page: {
-          type: 'reference',
-          reference: {
-            relationTo: 'pages',
-            value: pages.homePageId,
+      header: {
+        logo: {
+          image: images.logoDarkId,
+          page: {
+            type: 'reference',
+            reference: {
+              relationTo: 'pages',
+              value: pages.homePageId,
+            },
           },
         },
-      },
-      search: {
-        placeholder: 'Search...',
-        searchButtonLabel: 'Search',
-        closeButtonLabel: 'Close search',
+        search: {
+          placeholder: 'Search...',
+          searchButtonLabel: 'Search',
+          clearSearchButtonLabel: 'Clear',
+          emptySearchHistoryLabel: "You haven't looked for anything yet",
+        },
+        navLinks: {
+          delivery: {
+            defaultIcon: {
+              icon: 'Shipping',
+              size: {
+                width: 20,
+                height: 14,
+              },
+            },
+            activeIcon: {
+              icon: 'ShippingFilled',
+              size: {
+                width: 20,
+                height: 14,
+              },
+            },
+            link: {
+              type: 'custom',
+              url: '/delivery',
+            },
+          },
+          cart: {
+            defaultIcon: {
+              icon: 'ShoppingBasket',
+              size: {
+                width: 16,
+                height: 18,
+              },
+            },
+            activeIcon: {
+              icon: 'ShoppingBasketFilled',
+              size: {
+                width: 16,
+                height: 18,
+              },
+            },
+            link: {
+              type: 'custom',
+              url: '/cart',
+            },
+          },
+          profile: {
+            defaultIcon: {
+              icon: 'AccountCircle',
+              size: {
+                width: 18,
+                height: 18,
+              },
+            },
+            activeIcon: {
+              icon: 'ProfileFilled',
+              size: {
+                width: 18,
+                height: 18,
+              },
+            },
+            link: {
+              type: 'custom',
+              url: '/profile',
+            },
+          },
+        },
       },
       defaultMenuHeader: 'Main menu',
       navigation: {
@@ -288,16 +353,6 @@ export const createMainNavigation = async (pages: Pages, images: Images) => {
               },
             },
           ],
-        },
-        delivery: {
-          title: 'Delivery',
-          icon: {
-            icon: 'Shipping',
-            size: {
-              width: 18,
-              height: 18,
-            },
-          },
         },
         promotions: {
           title: 'Promotions and offers',

@@ -5,12 +5,14 @@ import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 import { MainNavigationClient } from './MainNavigationClient'
 
 export default async function MainNavigation({
-  logo,
+  header,
   navigation,
   helpNavigation,
   backButton,
-  ...props
+  defaultMenuHeader,
 }: MainNavigation) {
+  const { logo, navLinks, search } = header
+
   const resolvedLogo = resolveRelation(logo.image)
   const logoUrl = parsePayloadLink(logo.page)
 
@@ -29,13 +31,6 @@ export default async function MainNavigation({
         label,
         link: parsePayloadLink(link),
       })),
-    },
-    delivery: {
-      ...delivery,
-      icon: {
-        ...delivery.icon,
-        icon: delivery.icon.icon as AllIconNames,
-      },
     },
     promotions: {
       ...promotions,
@@ -58,6 +53,37 @@ export default async function MainNavigation({
     },
   }
 
+  const mappedNavLinks = Object.entries(navLinks).reduce(
+    (acc, [key, value]) => {
+      const navLink = key as keyof typeof navLinks
+      const { activeIcon, defaultIcon, link } = value
+
+      const parsedLink = parsePayloadLink(link)
+
+      acc[navLink] = {
+        link: parsedLink,
+        activeIcon: {
+          ...activeIcon,
+          icon: activeIcon.icon as AllIconNames,
+        },
+        defaultIcon: {
+          ...defaultIcon,
+          icon: defaultIcon.icon as AllIconNames,
+        },
+      }
+
+      return acc
+    },
+    {} as Record<
+      keyof typeof navLinks,
+      {
+        link: string
+        defaultIcon: { icon: AllIconNames; size: { width: number; height: number } }
+        activeIcon: { icon: AllIconNames; size: { width: number; height: number } }
+      }
+    >,
+  )
+
   const mappedHelpNavigation = helpNavigation.map(({ label, id, link }) => ({
     id: id!,
     label,
@@ -74,7 +100,9 @@ export default async function MainNavigation({
 
   return (
     <MainNavigationClient
-      {...props}
+      navLinks={mappedNavLinks}
+      defaultMenuHeader={defaultMenuHeader}
+      search={search}
       navigation={mappedNavigation}
       helpNavigation={mappedHelpNavigation}
       logo={resolvedLogo!}

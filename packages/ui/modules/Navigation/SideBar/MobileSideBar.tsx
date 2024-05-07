@@ -21,9 +21,12 @@ import { mapIcon } from '@oleksii-lavka/grocee-icons'
 import { Carousel as CarouselUI, Card as CardUI, PayloadImage } from 'ui'
 import clsx from 'clsx'
 import { useWindowSize } from '../../../hooks'
+import modalService from '../../../service/modalService'
 
-type Props = Pick<ComponentProps<typeof BurgerMenu>, 'isOpen' | 'onClose'> &
-  Omit<ComponentProps<typeof Navigation>, 'logo' | 'logoUrl' | 'search'>
+type Props = Pick<ComponentProps<typeof BurgerMenu>, 'isOpen'> &
+  Omit<ComponentProps<typeof Navigation>, 'logo' | 'logoUrl' | 'search' | 'navLinks'> & {
+    onClose: () => void
+  } & Pick<HTMLMotionProps<'aside'>, 'onAnimationComplete'>
 
 type NavigationTab = keyof ComponentProps<typeof Navigation>['navigation']
 
@@ -35,8 +38,6 @@ type DefaultNavigationPanelProps = Omit<
 }
 
 type CategoriesNavigationPanelProps = Props['navigation']['categories']
-
-type DeliveryNavigationPanelProps = Props['navigation']['delivery']
 
 type PromotionsNavigationPanelProps = Props['navigation']['promotions']
 
@@ -52,6 +53,7 @@ export const MobileSideBar = forwardRef<HTMLElement, Props>((props, ref) => {
     support,
     onClose,
     backButton,
+    onAnimationComplete,
   } = props
 
   const isSSR = useIsSSR()
@@ -143,7 +145,6 @@ export const MobileSideBar = forwardRef<HTMLElement, Props>((props, ref) => {
     const navigationPanels = {
       default: DefaultNavigationPanel,
       categories: CategoriesNavigationPanel,
-      delivery: DeliveryNavigationPanel,
       promotions: PromotionsNavigationPanel,
       integration: IntegrationNavigationPanel,
     }
@@ -163,15 +164,7 @@ export const MobileSideBar = forwardRef<HTMLElement, Props>((props, ref) => {
         <NavigationPanel {...currentNavigationProps} />
       </motion.div>
     )
-  }, [
-    selectedTab,
-    navigationTab,
-    navigation,
-    animationOptions,
-    accountField,
-    helpNavigation,
-    accountField,
-  ])
+  }, [selectedTab, navigationTab, navigation, animationOptions, helpNavigation, accountField])
 
   if (isSSR || isLaptop || isDesktop || !body.current) {
     return null
@@ -199,6 +192,7 @@ export const MobileSideBar = forwardRef<HTMLElement, Props>((props, ref) => {
           pointerEvents: 'none',
         },
       }}
+      onAnimationComplete={onAnimationComplete}
       className='fixed bottom-0 left-0 top-0 z-30 flex w-full origin-left flex-col overflow-y-auto overflow-x-hidden bg-white p-4 min-[375px]:max-w-[325px]'
     >
       <header className='mb-6 flex justify-between'>
@@ -238,7 +232,7 @@ function DefaultNavigationPanel({
     <>
       <FocusRing focusRingClass='ring ring-offset-2'>
         <Link
-          href={accountField?.mainMenuAccountField?.link!}
+          href={accountField?.mainMenuAccountField?.link ?? ''}
           className='mb-6 flex select-none justify-between gap-2 rounded-lg bg-gray-50 p-2'
         >
           <AccountCircle size={28} className='p-[3px] text-gray-900' />
@@ -355,10 +349,6 @@ function CategoriesNavigationPanel({ cardLinks, commonLinks }: CategoriesNavigat
       </ul>
     </nav>
   )
-}
-
-function DeliveryNavigationPanel(props: DeliveryNavigationPanelProps) {
-  return <div>Delivery Navigation Panel</div>
 }
 
 function PromotionsNavigationPanel({ cardLinks }: PromotionsNavigationPanelProps) {

@@ -63,12 +63,12 @@ export type ButtonProps<T> = PropsWithChildren<{
   backgroundColor?: string
   disableBorder?: boolean
   linkClassName?: string
-  onClick?: () => void
-  formAction?: () => void
+  onClick?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>
+  formAction?: (formData: FormData) => void
   onHoverStart?: HoverEvents['onHoverStart']
   onHoverEnd?: HoverEvents['onHoverEnd']
   onKeyPress?: KeyboardEventHandler<HTMLButtonElement | null>
-  onMouseEnter?: MouseEventHandler<HTMLButtonElement | null>
+  onMouseEnter?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement | null>
 }> &
   Pick<InputHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'aria-controls' | 'aria-expanded'>
 
@@ -108,12 +108,14 @@ export function Button<T>(props: ButtonProps<T>) {
   const isButtonDisabled = isDisabled || isLoading
 
   const { buttonProps, isPressed: isButtonPressed } = useButton(
+    // @ts-ignore
     { ...restProps, onPress: onClick, type, isDisabled: isButtonDisabled },
     refButton,
   )
   const { linkProps, isPressed: isLinkPressed } = useLink(
     {
       ...restProps,
+      // @ts-ignore
       onPress: onClick,
     },
     refLink,
@@ -216,6 +218,7 @@ export function Button<T>(props: ButtonProps<T>) {
         <Link
           ref={refLink}
           {...mergeProps(linkProps, hoverProps)}
+          onClick={onClick}
           className={clsx('rounded-[1000px]', linkClassName)}
           href={href}
           prefetch={prefetch}
@@ -238,6 +241,7 @@ export function Button<T>(props: ButtonProps<T>) {
         ref={refButton}
         {...mergeProps(restButtonProps, parentProps, hoverProps)}
         style={style}
+        onClick={onClick}
         onPointerDown={event => {
           if (event.button !== 0) {
             return
@@ -253,7 +257,6 @@ export function Button<T>(props: ButtonProps<T>) {
           onPointerUp && onPointerUp(event)
           isButtonPressed && event.currentTarget.click()
         }}
-        onMouseEnter={onMouseEnter}
         onKeyPress={onKeyPress}
         //@ts-ignore
         formAction={formAction}

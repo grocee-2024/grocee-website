@@ -41,5 +41,12 @@ export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'created
         },
       },
     },
+    account: {
+      mainMenuAccountField: {
+        title: '',
+        description: '',
+        link: {},
+      },
+    },
   }),
 )

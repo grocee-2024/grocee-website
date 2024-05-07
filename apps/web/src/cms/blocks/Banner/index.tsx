@@ -13,8 +13,8 @@ export async function Banner({ heading, previewImage }: BannerBlock) {
   return (
     //@ts-ignore
     <BannerClient
-      //@ts-ignore
       previewImage={parsedPreviewImage}
+      //@ts-ignore
       heading={{ ...mappedHeading, orderDeliveryFormTypography: {} }}
       type={mappedHeading.type}
     />

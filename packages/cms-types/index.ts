@@ -644,26 +644,118 @@ export interface PayloadMigration {
  */
 export interface MainNavigation {
   id: string
-  logo: {
-    image: string | Image
-    page?: {
-      type?: ('reference' | 'custom') | null
-      reference?:
-        | ({
-            relationTo: 'pages'
-            value: string | Page
-          } | null)
-        | ({
-            relationTo: 'productPages'
-            value: string | ProductPage
-          } | null)
-      url?: string | null
+  header: {
+    logo: {
+      image: string | Image
+      page?: {
+        type?: ('reference' | 'custom') | null
+        reference?:
+          | ({
+              relationTo: 'pages'
+              value: string | Page
+            } | null)
+          | ({
+              relationTo: 'productPages'
+              value: string | ProductPage
+            } | null)
+        url?: string | null
+      }
     }
-  }
-  search: {
-    placeholder: string
-    searchButtonLabel: string
-    closeButtonLabel: string
+    search: {
+      placeholder: string
+      searchButtonLabel: string
+      clearSearchButtonLabel: string
+      emptySearchHistoryLabel: string
+    }
+    navLinks: {
+      delivery: {
+        defaultIcon: {
+          icon?: string | null
+          size: {
+            width: number
+            height: number
+          }
+        }
+        activeIcon: {
+          icon?: string | null
+          size: {
+            width: number
+            height: number
+          }
+        }
+        link?: {
+          type?: ('reference' | 'custom') | null
+          reference?:
+            | ({
+                relationTo: 'pages'
+                value: string | Page
+              } | null)
+            | ({
+                relationTo: 'productPages'
+                value: string | ProductPage
+              } | null)
+          url?: string | null
+        }
+      }
+      cart: {
+        defaultIcon: {
+          icon?: string | null
+          size: {
+            width: number
+            height: number
+          }
+        }
+        activeIcon: {
+          icon?: string | null
+          size: {
+            width: number
+            height: number
+          }
+        }
+        link?: {
+          type?: ('reference' | 'custom') | null
+          reference?:
+            | ({
+                relationTo: 'pages'
+                value: string | Page
+              } | null)
+            | ({
+                relationTo: 'productPages'
+                value: string | ProductPage
+              } | null)
+          url?: string | null
+        }
+      }
+      profile: {
+        defaultIcon: {
+          icon?: string | null
+          size: {
+            width: number
+            height: number
+          }
+        }
+        activeIcon: {
+          icon?: string | null
+          size: {
+            width: number
+            height: number
+          }
+        }
+        link?: {
+          type?: ('reference' | 'custom') | null
+          reference?:
+            | ({
+                relationTo: 'pages'
+                value: string | Page
+              } | null)
+            | ({
+                relationTo: 'productPages'
+                value: string | ProductPage
+              } | null)
+          url?: string | null
+        }
+      }
+    }
   }
   defaultMenuHeader: string
   navigation: {
@@ -696,16 +788,6 @@ export interface MainNavigation {
             id?: string | null
           }[]
         | null
-    }
-    delivery: {
-      title: string
-      icon: {
-        icon?: string | null
-        size: {
-          width: number
-          height: number
-        }
-      }
     }
     promotions: {
       title: string
