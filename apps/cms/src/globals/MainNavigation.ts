@@ -3,8 +3,8 @@ import type { GlobalConfig } from 'payload/types'
 import { isAdmin } from '../access/isAdmin'
 import { isAnyone } from '../access/isAnyone'
 import { link } from '../fields/link'
-import iconPicker from '../fields/iconPicker'
 import { Card } from '../blocks/Card'
+import iconPicker from '../fields/iconPicker'
 
 export const MainNavigation: GlobalConfig = {
   slug: 'mainNavigation',
@@ -18,41 +18,147 @@ export const MainNavigation: GlobalConfig = {
   },
   fields: [
     {
-      name: 'logo',
+      name: 'header',
       type: 'group',
       fields: [
         {
-          name: 'image',
-          type: 'upload',
-          relationTo: 'images',
-          required: true,
-        },
-        link({ name: 'page' }),
-      ],
-    },
-    {
-      name: 'search',
-      type: 'group',
-      fields: [
-        {
-          name: 'placeholder',
-          type: 'text',
-          required: true,
-          localized: true,
+          name: 'logo',
+          type: 'group',
+          fields: [
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'images',
+              required: true,
+            },
+            link({ name: 'page' }),
+          ],
         },
         {
-          name: 'searchButtonLabel',
-          label: 'Search Button Label',
-          type: 'text',
-          required: true,
-          localized: true,
+          name: 'search',
+          type: 'group',
+          fields: [
+            {
+              name: 'placeholder',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'searchButtonLabel',
+              label: 'Search Button Label',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'clearSearchButtonLabel',
+              label: 'Clear Search Button Label',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'emptySearchHistoryLabel',
+              label: 'Empty Search History Label',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+          ],
         },
         {
-          name: 'closeButtonLabel',
-          label: 'Close Button Label',
-          type: 'text',
-          required: true,
-          localized: true,
+          name: 'navLinks',
+          type: 'group',
+          fields: [
+            {
+              label: 'Delivery Link',
+              type: 'collapsible',
+              fields: [
+                {
+                  name: 'delivery',
+                  type: 'group',
+                  fields: [
+                    {
+                      type: 'row',
+                      fields: [
+                        {
+                          name: 'defaultIcon',
+                          type: 'group',
+                          fields: [iconPicker],
+                        },
+                        {
+                          name: 'activeIcon',
+                          type: 'group',
+                          fields: [iconPicker],
+                        },
+                      ],
+                    },
+                    link(),
+                  ],
+                  admin: {
+                    description: 'This link will only appear on navigation on large screens.',
+                  },
+                },
+              ],
+            },
+            {
+              label: 'Cart Link',
+              type: 'collapsible',
+              fields: [
+                {
+                  name: 'cart',
+                  type: 'group',
+                  fields: [
+                    {
+                      type: 'row',
+                      fields: [
+                        {
+                          name: 'defaultIcon',
+                          type: 'group',
+                          fields: [iconPicker],
+                        },
+                        {
+                          name: 'activeIcon',
+                          type: 'group',
+                          fields: [iconPicker],
+                        },
+                      ],
+                    },
+                    link(),
+                  ],
+                },
+              ],
+            },
+            {
+              label: 'Profile Link',
+              type: 'collapsible',
+              fields: [
+                {
+                  name: 'profile',
+                  type: 'group',
+                  fields: [
+                    {
+                      type: 'row',
+                      fields: [
+                        {
+                          name: 'defaultIcon',
+                          type: 'group',
+                          fields: [iconPicker],
+                        },
+                        {
+                          name: 'activeIcon',
+                          type: 'group',
+                          fields: [iconPicker],
+                        },
+                      ],
+                    },
+                    link(),
+                  ],
+                },
+              ],
+            },
+          ],
         },
       ],
     },
@@ -104,29 +210,6 @@ export const MainNavigation: GlobalConfig = {
                     },
                     link(),
                   ],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          name: 'delivery',
-          type: 'group',
-          fields: [
-            {
-              label: 'Delivery Navigation Item',
-              type: 'collapsible',
-              fields: [
-                {
-                  name: 'title',
-                  type: 'text',
-                  localized: true,
-                  required: true,
-                },
-                {
-                  name: 'icon',
-                  type: 'group',
-                  fields: [iconPicker],
                 },
               ],
             },

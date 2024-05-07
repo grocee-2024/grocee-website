@@ -1,57 +1,53 @@
-import { FC } from 'react'
-import {
-  Shipping,
-  ShoppingBasket,
-  AccountCircle,
-  ShippingFilled,
-  ShoppingBasketFilled,
-  ProfileFilled,
-  Search,
-} from '@oleksii-lavka/grocee-icons/icons'
-import { NavLink, NavLinkType } from './NavLink'
+'use client'
+
+import { ComponentProps, FC } from 'react'
+import { Search } from '@oleksii-lavka/grocee-icons/icons'
+import { NavLink } from './NavLink'
 import { FocusRing } from 'react-aria'
+import { Navigation } from 'ui'
+import { motion } from 'framer-motion'
+import clsx from 'clsx'
 
 type Props = {
-  onClickOnLink?: () => void
+  onLinkClick?: () => void
+  links: ComponentProps<typeof Navigation>['navLinks']
+  onSearchClick: () => void
+  showNavItems?: boolean
 }
 
-const navLinks: NavLinkType[] = [
-  {
-    href: '/delivery',
-    linkClassName: 'flex h-6 w-6 items-center justify-center pt-[4px]',
-    defaultIcon: <Shipping width={20} height={14} />,
-    activeIcon: <ShippingFilled width={20} height={14} />,
-  },
-  {
-    href: '/cart',
-    linkClassName: 'flex h-6 w-6 items-center justify-center',
-    defaultIcon: <ShoppingBasket width={16} height={18} />,
-    activeIcon: <ShoppingBasketFilled width={16} height={18} />,
-    badge: 3,
-  },
-  {
-    href: '/profile',
-    linkClassName: 'flex h-6 w-6 items-center justify-center',
-    defaultIcon: <AccountCircle size={18} />,
-    activeIcon: <ProfileFilled size={18} />,
-  },
-]
-
-export const NavItems: FC<Props> = ({ onClickOnLink }) => {
+export const NavItems: FC<Props> = ({ onLinkClick, onSearchClick, showNavItems, links }) => {
   return (
-    <ul className='flex gap-4 mobile:gap-6'>
+    <motion.ul
+      variants={{
+        initial: { x: 0, opacity: 1 },
+        hide: { x: 15, opacity: 0 },
+      }}
+      initial='initial'
+      animate={showNavItems ? 'initial' : 'hide'}
+      className={clsx('flex gap-4 mobile:gap-5 tablet:gap-6', {
+        'pointer-events-none': !showNavItems,
+      })}
+    >
       <li className='flex items-center justify-center tablet:hidden'>
         <FocusRing focusRingClass='ring ring-offset-2'>
-          <button className='border-none bg-transparent text-gray-900 outline-none transition-colors duration-300 hover:text-gray-700'>
-            <Search width={18} height={18} />
+          <button
+            onClick={onSearchClick}
+            aria-label='search-input-trigger'
+            className='border-none bg-transparent text-gray-900 outline-none transition-colors duration-300 hover:text-gray-700'
+          >
+            <Search width={18} height={24} />
           </button>
         </FocusRing>
       </li>
-      {navLinks.map((link, idx) => (
-        <li key={`${link.href}-${idx}`} className='hidden tablet:block'>
-          <NavLink {...link} onClick={onClickOnLink} />
-        </li>
-      ))}
-    </ul>
+      <li>
+        <NavLink {...links.delivery} onClick={onLinkClick} className='pt-1' />
+      </li>
+      <li>
+        <NavLink {...links.cart} onClick={onLinkClick} />
+      </li>
+      <li className='hidden min-[375px]:block'>
+        <NavLink {...links.profile} onClick={onLinkClick} />
+      </li>
+    </motion.ul>
   )
 }

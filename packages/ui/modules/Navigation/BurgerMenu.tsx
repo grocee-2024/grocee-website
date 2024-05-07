@@ -6,16 +6,15 @@ import { FocusRing } from 'react-aria'
 
 type BurgerMenuProps = {
   isOpen?: boolean
-  onOpen?: () => void
-  onClose?: () => void
+  onClick?: () => void
 }
 
-export const BurgerMenu: FC<BurgerMenuProps> = ({ isOpen, onClose, onOpen }) => {
+export const BurgerMenu: FC<BurgerMenuProps> = ({ isOpen, onClick }) => {
   return (
     <FocusRing focusRingClass='ring ring-offset-2'>
       <motion.button
         aria-label={isOpen ? 'Close Menu' : 'Open Menu'}
-        onClick={isOpen ? onClose : onOpen}
+        onClick={onClick}
         className='relative top-[2px] h-[18px] w-4'
         animate={isOpen ? 'opened' : 'closed'}
       >

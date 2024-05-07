@@ -22,9 +22,10 @@ export type ComplexProps = {
   start?: Icon
   end?: EndPartObject | ReactNode
   disableDivider?: boolean
+  className?: string
 }
 
-export function Complex({ type, start, end, disableDivider }: ComplexProps) {
+export function Complex({ type, start, end, disableDivider, className = '' }: ComplexProps) {
   const { icon: StartIcon } = parseIcon({ icon: start?.icon })
 
   const endPartIsObject = !!(
@@ -38,12 +39,16 @@ export function Complex({ type, start, end, disableDivider }: ComplexProps) {
 
   return (
     <div
-      className={clsx('flex gap-2 text-gray-800', {
-        'pr-2': type === 'left',
-        'pl-2': type === 'right',
-        'mr-2 border-r-[1px] border-r-gray-100': type === 'left' && end && !disableDivider,
-        'ml-2 border-l-[1px] border-l-gray-100': type === 'right' && end && !disableDivider,
-      })}
+      className={clsx(
+        'flex gap-2 text-gray-800',
+        {
+          'pr-2': type === 'left',
+          'pl-2': type === 'right',
+          'mr-2 border-r-[1px] border-r-gray-100': type === 'left' && end && !disableDivider,
+          'ml-2 border-l-[1px] border-l-gray-100': type === 'right' && end && !disableDivider,
+        },
+        className,
+      )}
     >
       {StartIcon && (
         <StartIcon

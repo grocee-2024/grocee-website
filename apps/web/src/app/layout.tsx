@@ -3,7 +3,7 @@ import './globals.css'
 import { ReactNode } from 'react'
 import { getMetadata, getGlobal } from '@/cms'
 import { cookies } from 'next/headers'
-import { useGlobalTypography } from '@/store/globalTypographyStore'
+import { useGlobalTypography } from '@/store'
 import SetupClientComponent from '@/components/SetupClientComponent'
 import MainNavigation from '@/cms/globals/MainNavigation'
 import BottomNavigation from '@/cms/globals/BottomNavigation'
@@ -33,8 +33,9 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className='overflow-x-hidden bg-white desktop:mb-10'>
         <Providers>
-          <NextTopLoader color='#5E5E5E' height={4} initialPosition={0.3} />
-          <div className='fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
+          <NextTopLoader color='#5E5E5E' height={4} initialPosition={0.3} showSpinner={false} />
+          <div className='burgermenu-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
+          <div className='searchbar-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
           <SetupClientComponent globalTypography={globalTypography} />
           <MainNavigation {...mainNavigation} />
           <main className='mx-auto min-h-[80vh] max-w-[1440px] laptop:mt-8'>{children}</main>

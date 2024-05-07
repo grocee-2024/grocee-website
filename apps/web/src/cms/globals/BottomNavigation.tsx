@@ -5,7 +5,7 @@ import { resolveRelation } from '../helpers'
 import { parsePayloadLink } from '@/helpers'
 import { Footer } from 'ui'
 import clsx from 'clsx'
-import { useEdgeBlocksOnPage } from '@/store/edgeBlocksOnPage'
+import { useEdgeBlocksOnPage } from '@/store'
 
 export default function BottomNavigation({
   logo,

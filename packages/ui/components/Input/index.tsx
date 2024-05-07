@@ -1,15 +1,27 @@
 /* eslint-disable no-unused-vars */
 'use client'
 
-import { InputHTMLAttributes, useCallback, useRef, useState } from 'react'
+import {
+  InputHTMLAttributes,
+  MutableRefObject,
+  forwardRef,
+  useCallback,
+  useRef,
+  useState,
+  FC,
+  ChangeEvent,
+} from 'react'
 import { Complex, ComplexProps } from './Complex'
 import { clsx } from 'clsx'
 import { AriaTextFieldOptions, useTextField } from 'react-aria'
-import { DatePicker, TimePicker, TimePickerProps } from 'antd'
+import { DatePicker, TimePicker } from 'antd'
+import { motion } from 'framer-motion'
 import dayjs, { Dayjs } from 'dayjs'
+import mergeRefs from 'merge-refs'
 
-export type InputProps<T> = {
+export type InputProps = {
   type: 'text' | 'password' | 'date' | 'tel' | 'email' | 'time'
+  ref?: MutableRefObject<HTMLInputElement | null>
   status?: 'success' | 'error'
   isDisabled?: boolean
   className?: string
@@ -19,8 +31,8 @@ export type InputProps<T> = {
   errorMessage?: string
   leadingComplex?: Omit<ComplexProps, 'type'>
   trailingComplex?: Omit<ComplexProps, 'type'>
-  value?: T
-  onChange?: (value: T) => void
+  value?: string
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange'>
 
 const dateRegexp = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/
@@ -28,7 +40,72 @@ const timeRegexp = /^(?:[01]\d|2[0-3]):(?:[0-5]\d)$/
 const dateFormat = 'DD/MM/YYYY'
 const timeFormat = 'HH:mm'
 
-export function Input<T>(props: InputProps<T>) {
+const CommonInput = forwardRef((props: InputProps, ref) => {
+  const {
+    status = '',
+    isDisabled,
+    label,
+    errorMessage,
+    type,
+    leadingComplex,
+    trailingComplex,
+    className = '',
+    inputClassName = '',
+    innerClassName = '',
+    ...restProps
+  } = props
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const { labelProps, inputProps, errorMessageProps } = useTextField(
+    props as AriaTextFieldOptions<'input'>,
+    inputRef,
+  )
+
+  return (
+    <div className={clsx('inline-block', className)}>
+      {label && (
+        <label {...labelProps} className='gilroy-xs text-gray-400'>
+          {label}
+        </label>
+      )}
+      <div
+        className={clsx(
+          'flex items-center rounded-[1000px] border-[1px] px-4 py-3 transition-colors duration-300',
+          {
+            'border-gray-200': !status && !errorMessage,
+            'border-primary-500': status === 'success' && !errorMessage && !isDisabled,
+            'border-error-500': (status === 'error' || errorMessage) && !isDisabled,
+            'focus-within:border-gray-800 hover:border-gray-400 focus-within:hover:border-gray-800':
+              !isDisabled && !status && !errorMessage,
+          },
+          innerClassName,
+        )}
+      >
+        <Complex type='left' {...leadingComplex} />
+        <motion.input
+          // @ts-ignore
+          ref={mergeRefs(inputRef, ref)}
+          {...inputProps}
+          {...restProps}
+          type={type}
+          className={clsx(
+            'placeholder:gilroy-md !min-w-0 grow bg-transparent text-gray-900 placeholder:text-gray-400',
+            inputClassName,
+          )}
+        />
+        <Complex type='right' {...trailingComplex} />
+      </div>
+      {errorMessageProps && (
+        <span {...errorMessageProps} className='gilroy-xs text-error-500'>
+          {errorMessage}
+        </span>
+      )}
+    </div>
+  )
+})
+
+//@ts-ignore
+export const Input: FC<InputProps> = forwardRef((props: InputProps, ref) => {
   const { type } = props
 
   const [open, setOpen] = useState(false)
@@ -84,11 +161,12 @@ export function Input<T>(props: InputProps<T>) {
       <div className='relative'>
         <CommonInput
           {...props}
+          ref={ref}
           type='text'
           onFocus={onOpen}
           autoComplete='off'
           value={dateStr}
-          onChange={onDateChange}
+          onChange={event => onDateChange(event.target.value)}
           maxLength={10}
         />
         <DatePicker
@@ -116,11 +194,12 @@ export function Input<T>(props: InputProps<T>) {
       <div className='relative'>
         <CommonInput
           {...props}
+          ref={ref}
           type='text'
           onFocus={onOpen}
           autoComplete='off'
           value={dateStr}
-          onChange={onTimeChange}
+          onChange={event => onTimeChange(event.target.value)}
           maxLength={5}
         />
         <TimePicker
@@ -160,67 +239,5 @@ export function Input<T>(props: InputProps<T>) {
     )
   }
 
-  return <CommonInput {...props} />
-}
-
-function CommonInput<T>(props: InputProps<T>) {
-  const {
-    status = '',
-    isDisabled,
-    label,
-    errorMessage,
-    type,
-    leadingComplex,
-    trailingComplex,
-    className = '',
-    inputClassName = '',
-    innerClassName = '',
-  } = props
-  const inputRef = useRef<HTMLInputElement | null>(null)
-
-  const { labelProps, inputProps, errorMessageProps } = useTextField(
-    props as AriaTextFieldOptions<'input'>,
-    inputRef,
-  )
-
-  return (
-    <div className={clsx('inline-block', className)}>
-      {label && (
-        <label {...labelProps} className='gilroy-xs text-gray-400'>
-          {label}
-        </label>
-      )}
-      <div
-        className={clsx(
-          'flex items-center rounded-[1000px] border-[1px] px-4 py-3 transition-colors duration-300',
-          {
-            'border-gray-200': !status && !errorMessage,
-            'border-primary-500': status === 'success' && !errorMessage && !isDisabled,
-            'border-error-500': (status === 'error' || errorMessage) && !isDisabled,
-            'focus-within:border-gray-800 hover:border-gray-400 focus-within:hover:border-gray-800':
-              !isDisabled && !status && !errorMessage,
-          },
-          innerClassName,
-        )}
-      >
-        <Complex type='left' {...leadingComplex} />
-        <input
-          ref={inputRef}
-          {...inputProps}
-          role={props?.role}
-          type={type}
-          className={clsx(
-            'placeholder:gilroy-md !min-w-0 grow bg-transparent text-gray-900 placeholder:text-gray-400',
-            inputClassName,
-          )}
-        />
-        <Complex type='right' {...trailingComplex} />
-      </div>
-      {errorMessageProps && (
-        <span {...errorMessageProps} className='gilroy-xs text-error-500'>
-          {errorMessage}
-        </span>
-      )}
-    </div>
-  )
-}
+  return <CommonInput {...props} ref={ref} />
+})

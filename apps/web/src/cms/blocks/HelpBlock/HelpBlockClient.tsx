@@ -1,7 +1,7 @@
 'use client'
 
 import { parsePayloadLink } from '@/helpers'
-import { useGlobalTypography } from '@/store/globalTypographyStore'
+import { useGlobalTypography } from '@/store'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 import { FC, ComponentProps } from 'react'
 import { HelpBlock as HelpBlockUI } from 'ui'
@@ -10,7 +10,7 @@ import { HelpBlockSkeleton } from 'ui/skeletons'
 
 type Props = Pick<ComponentProps<typeof HelpBlockUI>, 'title' | 'accordionBlock'>
 
-export const HelpBlockClient: FC = WithSkeletonLoader((props: Props) => {
+export const HelpBlockClient: FC<Props> = WithSkeletonLoader((props: Props) => {
   const { support } = useGlobalTypography()
 
   const mappedSupportLinks = (support?.links ?? []).map(

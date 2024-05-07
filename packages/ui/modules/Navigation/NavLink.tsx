@@ -1,16 +1,29 @@
 'use client'
 
-import { FC, ReactNode, useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
 import { FocusRing } from 'react-aria'
+import { AllIconNames, mapIcon } from '@oleksii-lavka/grocee-icons'
 
-export type NavLinkType = {
-  href: string
-  linkClassName: string
-  defaultIcon: ReactNode
-  activeIcon: ReactNode
+type NavLinkType = {
+  className?: string
+  link: string
+  defaultIcon: {
+    icon: AllIconNames
+    size: {
+      width: number
+      height: number
+    }
+  }
+  activeIcon: {
+    icon: AllIconNames
+    size: {
+      width: number
+      height: number
+    }
+  }
   badge?: number
   onClick?: () => void
 }
@@ -18,26 +31,34 @@ export type NavLinkType = {
 export const NavLink: FC<NavLinkType> = ({
   activeIcon,
   defaultIcon,
-  href,
-  linkClassName,
+  link,
   badge,
   onClick,
+  className = '',
 }) => {
   const pathname = usePathname()
 
-  const currentIcon = useMemo(
-    () => (pathname.startsWith(href) ? activeIcon : defaultIcon),
-    [pathname, href, activeIcon, defaultIcon],
-  )
+  const currentIcon = useMemo(() => {
+    const { icon, size } = pathname.startsWith(link) ? activeIcon : defaultIcon
+
+    const Icon = mapIcon(icon)
+
+    if (Icon) {
+      return <Icon width={size.width} height={size.height} />
+    }
+
+    return null
+  }, [pathname, link, activeIcon, defaultIcon])
 
   return (
     <FocusRing focusRingClass='ring ring-offset-2'>
       <Link
         onClick={onClick}
-        href={href}
+        href={link}
         className={clsx(
           'relative transition-colors duration-300 hover:text-gray-700',
-          linkClassName,
+          'flex h-6 w-6 items-center justify-center',
+          className,
         )}
       >
         {badge && (

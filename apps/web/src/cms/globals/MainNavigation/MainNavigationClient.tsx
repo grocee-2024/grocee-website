@@ -6,10 +6,9 @@ import { useScroll, useTransform, motion } from 'framer-motion'
 import { useWindowSize } from 'ui/hooks'
 import clsx from 'clsx'
 import { useSSR } from '@/hooks'
-import { useGlobalTypography } from '@/store/globalTypographyStore'
+import { useEdgeBlocksOnPage, useGlobalTypography } from '@/store'
 import { parsePayloadLink } from '@/helpers'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
-import { useEdgeBlocksOnPage } from '@/store/edgeBlocksOnPage'
 
 type Props = Omit<ComponentProps<typeof Navigation>, 'support' | 'accountField'>
 
@@ -18,7 +17,7 @@ export function MainNavigationClient(props: Props) {
   const headerRef = useRef<HTMLElement>(null)
   const scrollOffset = useRef(0)
   const { account, support } = useGlobalTypography()
-  const { firstBlockOnPage } = useEdgeBlocksOnPage()
+  const { firstBlockOnPage, loaded: blocksLoaded } = useEdgeBlocksOnPage()
 
   const { scrollY } = useScroll()
   const { isTablet, isLaptop, isMobile } = useWindowSize()

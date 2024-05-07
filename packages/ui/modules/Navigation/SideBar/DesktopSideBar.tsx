@@ -1,7 +1,7 @@
 'use client'
 
 import { ComponentProps, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion'
 import { FocusRing, useIsSSR } from 'react-aria'
 import { useWindowSize } from '../../../hooks'
 import { Navigation } from '..'
@@ -15,7 +15,7 @@ type Props = Pick<
   'helpNavigation' | 'support' | 'navigation'
 > & {
   isOpen?: boolean
-}
+} & Pick<HTMLMotionProps<'aside'>, 'onAnimationComplete'>
 
 type NavigationTab = keyof Props['navigation']
 
@@ -29,7 +29,12 @@ type IntegrationNavigationPanelProps = Props['navigation']['integration'] & {
   asideHeight: number | null
 }
 
-export const DesktopSideBar: FC<Props> = ({ navigation, helpNavigation, isOpen }) => {
+export const DesktopSideBar: FC<Props> = ({
+  navigation,
+  helpNavigation,
+  isOpen,
+  onAnimationComplete,
+}) => {
   const isSSR = useIsSSR()
   const { isMobile, isTablet } = useWindowSize()
   const asideRef = useRef<HTMLElement | null>(null)
@@ -60,9 +65,9 @@ export const DesktopSideBar: FC<Props> = ({ navigation, helpNavigation, isOpen }
       categories: CategoriesNavigationPanel,
       promotions: PromotionsNavigationPanel,
       integration: IntegrationNavigationPanel,
-    }[selectedTab as keyof Omit<Props['navigation'], 'delivery'>]
+    }[selectedTab as keyof Props['navigation']]
 
-    const navigationProps = navigation[selectedTab as keyof Omit<Props['navigation'], 'delivery'>]
+    const navigationProps = navigation[selectedTab as keyof Props['navigation']]
 
     // @ts-ignore
     return <NavigationPanel {...navigationProps} asideHeight={asideHeight} />
@@ -100,6 +105,7 @@ export const DesktopSideBar: FC<Props> = ({ navigation, helpNavigation, isOpen }
           pointerEvents: 'none',
         },
       }}
+      onAnimationComplete={onAnimationComplete}
       className='absolute left-0 right-0 top-0 z-20 origin-top rounded-b-2xl rounded-t-[50px] bg-white px-6 pb-6 pt-[120px]'
     >
       <motion.nav ref={asideRef} className='grid grid-cols-4 gap-4'>
@@ -107,10 +113,6 @@ export const DesktopSideBar: FC<Props> = ({ navigation, helpNavigation, isOpen }
           <ul className='mb-4 flex flex-col gap-2 border-b-[1px] border-gray-100 pb-4'>
             {Object.entries(navigation).map(([key, navItem]) => {
               const navKey = key as NavigationTab
-
-              if (navKey === 'delivery') {
-                return null
-              }
 
               const Icon = mapIcon(navItem.icon.icon)
 
