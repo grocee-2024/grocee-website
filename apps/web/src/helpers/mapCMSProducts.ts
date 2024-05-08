@@ -2,21 +2,47 @@ import { getCollectionItem } from '@/cms'
 import { pageToUrl, resolveRelation } from '@/cms/helpers'
 import { Product, ProductCardBlock, ProductPage } from 'cms-types'
 
-export const mapCMSProductsForProductCard = async (products: ProductCardBlock[]) => {
+const CMS_URL = process.env.PAYLOAD_INTERNAL_URL ?? process.env.NEXT_PUBLIC_PAYLOAD_URL
+
+export const mapCMSProductsForProductCard = async (
+  products: ProductCardBlock[] | Product[],
+  locale: string,
+) => {
   const mappedProducts = await Promise.all(
-    (products ?? []).map(async ({ page }) => {
-      const productPage = resolveRelation(page) as ProductPage
+    (products ?? []).map(async productData => {
+      let product: Product
+      let page: ProductCardBlock['page'] | ProductPage
 
-      let product = productPage?.product
+      if ('blockType' in productData && productData?.blockType === 'ProductCard') {
+        page = productData.page
+        const productPage = resolveRelation(productData.page) as ProductPage
 
-      if (typeof product === 'string') {
-        product = await getCollectionItem(product, 'products')
+        if (typeof productPage?.product === 'string') {
+          product = await getCollectionItem(productPage?.product as string, 'products', {
+            searchParams: { locale },
+          })
+        } else {
+          product = productPage?.product as Product
+        }
+      } else {
+        product = productData as Product
+
+        page = await fetch(
+          `${CMS_URL}/api/productPages?where[product][in]=${product.id}&locale=${locale}`,
+          {
+            next: { revalidate: 0 },
+          },
+        )
+          .then(res => res.json() as Promise<{ docs: ProductPage[] }>)
+          .then(res => res.docs[0])
       }
 
-      let previewImage = (product as Product).productDetails.image
+      let previewImage = product.productDetails.image
 
       if (typeof previewImage === 'string') {
-        previewImage = await getCollectionItem(previewImage, 'images')
+        previewImage = await getCollectionItem(previewImage, 'images', {
+          searchParams: { locale },
+        })
       }
 
       const pageUrl = pageToUrl(page) as string

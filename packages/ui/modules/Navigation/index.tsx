@@ -16,7 +16,7 @@ import { CommonLink, MappedCard } from '../../types'
 import { useWindowSize } from '../../hooks'
 import { DesktopSideBar } from './SideBar/DesktopSideBar'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useSearchHistory } from '../../../../apps/web/src/store'
+import { useEdgeBlocksOnPage, useSearchHistory } from '../../../../apps/web/src/store'
 import { SearchField } from './SearchBar/SearchField'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
@@ -124,6 +124,7 @@ export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, navLink
 
   const { isMobile, isTablet, isLaptop, isDesktop, windowSize } = useWindowSize()
   const { addHistoryItem, setItemForPush } = useSearchHistory()
+  const { firstBlockOnPage } = useEdgeBlocksOnPage()
 
   const navigationFade = useMemo(
     () => (isMobile || isTablet ? 'full' : 'showHeader'),
@@ -139,12 +140,16 @@ export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, navLink
       return 20
     }
 
-    if (isLaptop) {
-      return 48
+    if (firstBlockOnPage === 'Banner' || firstBlockOnPage === 'MainSlider') {
+      if (isLaptop) {
+        return 48
+      }
+
+      return 100
     }
 
-    return 100
-  }, [isMobile, isTablet, isLaptop, isDesktop])
+    return 32
+  }, [isMobile, isTablet, isLaptop, isDesktop, firstBlockOnPage])
 
   const showEdgeNavItems = useMemo(
     () => isMobile || (!searchBarOpened && !isMobile),

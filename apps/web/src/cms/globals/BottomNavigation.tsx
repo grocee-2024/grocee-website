@@ -6,6 +6,7 @@ import { parsePayloadLink } from '@/helpers'
 import { Footer } from 'ui'
 import clsx from 'clsx'
 import { useEdgeBlocksOnPage } from '@/store'
+import { useIsSSR } from 'react-aria'
 
 export default function BottomNavigation({
   logo,
@@ -15,7 +16,7 @@ export default function BottomNavigation({
 }: BottomNavigation) {
   const resolvedLogo = resolveRelation(logo.image)
   const logoUrl = parsePayloadLink(logo.page)
-  const { lastBlockOnPage } = useEdgeBlocksOnPage()
+  const { lastBlockOnPage, loaded } = useEdgeBlocksOnPage()
 
   const mappedNavGroups = (navGroups ?? []).map(({ title, links }) => {
     const mappedLinks = (links ?? []).map(({ page, id }) => {

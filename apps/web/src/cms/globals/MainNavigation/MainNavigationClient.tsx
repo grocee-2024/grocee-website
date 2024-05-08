@@ -10,14 +10,14 @@ import { useEdgeBlocksOnPage, useGlobalTypography } from '@/store'
 import { parsePayloadLink } from '@/helpers'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 
-type Props = Omit<ComponentProps<typeof Navigation>, 'support' | 'accountField'>
+type Props = Omit<ComponentProps<typeof Navigation>, 'support' | 'accountField' | 'backButton'>
 
 export function MainNavigationClient(props: Props) {
-  const { isClient, isServer } = useSSR()
+  const { isServer } = useSSR()
   const headerRef = useRef<HTMLElement>(null)
   const scrollOffset = useRef(0)
-  const { account, support } = useGlobalTypography()
-  const { firstBlockOnPage, loaded: blocksLoaded } = useEdgeBlocksOnPage()
+  const { account, support, backButton } = useGlobalTypography()
+  const { firstBlockOnPage } = useEdgeBlocksOnPage()
 
   const { scrollY } = useScroll()
   const { isTablet, isLaptop, isMobile } = useWindowSize()
@@ -112,25 +112,35 @@ export function MainNavigationClient(props: Props) {
     }
   }, [account])
 
+  const mappedBackButton = {
+    ...backButton,
+    icon: {
+      icon: backButton.icon.icon as AllIconNames,
+      size: backButton.icon.size,
+    },
+  }
+
   return (
     <motion.header
       style={{ transform }}
       ref={headerRef}
       className={clsx(
         'main-header-navigation',
-        'left-4 right-4 top-8 z-10 mx-auto max-h-20 max-w-[1240px] bg-transparent transition-transform duration-300 ease-in-out',
+        'fixed left-4 right-4 top-8 z-10 mx-auto max-h-20 bg-transparent transition-transform duration-300 ease-in-out',
         'tablet:left-5 tablet:right-5',
-        'laptop:left-12 laptop:right-12',
-        'desktop:left-[100px] desktop:right-[100px]',
         {
-          'laptop:top-16': headerHasOffsetTop,
-          'laptop:top-8': !headerHasOffsetTop,
-          hidden: isServer,
-          fixed: isClient,
+          'max-w-[1240px] laptop:left-12 laptop:right-12 laptop:top-16 desktop:left-[100px] desktop:right-[100px]':
+            headerHasOffsetTop || isServer,
+          'max-w-[1376px] laptop:left-8 laptop:right-8 laptop:top-8': !headerHasOffsetTop,
         },
       )}
     >
-      <Navigation {...props} accountField={mappedAccountField} support={mappedSupport} />
+      <Navigation
+        {...props}
+        backButton={mappedBackButton}
+        accountField={mappedAccountField}
+        support={mappedSupport}
+      />
     </motion.header>
   )
 }

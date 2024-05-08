@@ -9,6 +9,7 @@ export * from './components/Radio'
 export * from './components/Checkbox'
 export * from './components/NextImage'
 export * from './components/HorizontalInfiniteSlider'
+export * from './components/Pagination'
 
 export * from './modules/Navigation'
 export * from './modules/Footer'

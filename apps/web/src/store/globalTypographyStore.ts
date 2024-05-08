@@ -48,5 +48,28 @@ export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'created
         link: {},
       },
     },
+    productButtons: {
+      addToCartButton: '',
+      buyNowButton: '',
+    },
+    newsCardButtons: {
+      reviewButton: '',
+    },
+    backButton: {
+      label: '',
+      icon: {
+        icon: '',
+        size: {
+          width: 16,
+          height: 16,
+        },
+      },
+    },
+    searchPage: {
+      productsCountTitle: '',
+      searchResultTitle: '',
+      emptySearchResultTitle: '',
+      errorSearchResultTitle: '',
+    },
   }),
 )

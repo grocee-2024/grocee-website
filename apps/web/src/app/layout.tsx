@@ -9,6 +9,7 @@ import MainNavigation from '@/cms/globals/MainNavigation'
 import BottomNavigation from '@/cms/globals/BottomNavigation'
 import { Providers } from '@/components/Providers'
 import NextTopLoader from 'nextjs-toploader'
+import { QueryProvider } from '@/components/QueryProvider'
 
 export async function generateMetadata({ searchParams }: any) {
   return await getMetadata('pages', 'home', { searchParams })
@@ -33,13 +34,17 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className='overflow-x-hidden bg-white desktop:mb-10'>
         <Providers>
-          <NextTopLoader color='#5E5E5E' height={4} initialPosition={0.3} showSpinner={false} />
-          <div className='burgermenu-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
-          <div className='searchbar-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
-          <SetupClientComponent globalTypography={globalTypography} />
-          <MainNavigation {...mainNavigation} />
-          <main className='mx-auto min-h-[80vh] max-w-[1440px] laptop:mt-8'>{children}</main>
-          <BottomNavigation {...bottomNavigation} />
+          <QueryProvider>
+            <NextTopLoader color='#5E5E5E' height={4} initialPosition={0.3} showSpinner={false} />
+            <div className='burgermenu-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
+            <div className='searchbar-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
+            <SetupClientComponent globalTypography={globalTypography} />
+            <MainNavigation {...mainNavigation} />
+            <div className='mx-auto flex min-h-full max-w-[1440px] flex-col'>
+              <main className='grow laptop:mt-8'>{children}</main>
+              <BottomNavigation {...bottomNavigation} />
+            </div>
+          </QueryProvider>
         </Providers>
       </body>
     </html>
