@@ -8,6 +8,8 @@ import { FocusRing } from 'react-aria'
 import { Image as PayloadImageType } from 'cms-types'
 import clsx from 'clsx'
 import { HTMLMotionProps, motion } from 'framer-motion'
+import { useGlobalTypography } from '../../../../apps/web/src/store'
+import Skeleton from 'react-loading-skeleton'
 
 export type ProductCardProps = {
   tag?: string
@@ -27,6 +29,7 @@ export type ProductCardProps = {
   animationProps?: HTMLMotionProps<'div'>
   onClickLikeButton?: () => void
   onAddToCart?: () => void
+  disableAddToCartButtonLabel?: boolean
 }
 
 export const ProductCard: FC<ProductCardProps> = props => {
@@ -46,7 +49,10 @@ export const ProductCard: FC<ProductCardProps> = props => {
     link,
     animationProps = {},
     objectFit = 'cover',
+    disableAddToCartButtonLabel = false,
   } = props
+
+  const { productButtons } = useGlobalTypography()
 
   return (
     <motion.div
@@ -57,7 +63,7 @@ export const ProductCard: FC<ProductCardProps> = props => {
         <FocusRing focusRingClass='ring ring-offset-2'>
           <Link href={link ?? ''} className='inline-block w-full no-underline'>
             {tag && (
-              <div className='absolute left-0 top-0 z-10'>
+              <div style={{ zIndex: 2 }} className='absolute left-0 top-0'>
                 <Tag text={tag} />
               </div>
             )}
@@ -78,7 +84,7 @@ export const ProductCard: FC<ProductCardProps> = props => {
           </Link>
         </FocusRing>
 
-        <div className='absolute right-0 top-0 z-50'>
+        <div style={{ zIndex: 2 }} className='absolute right-0 top-0'>
           <Button className='p-3' variant='tertiary' onClick={onClickLikeButton}>
             <Heart width={18} height={16} className='text-gray-900' />
           </Button>
@@ -97,12 +103,19 @@ export const ProductCard: FC<ProductCardProps> = props => {
         </div>
       </div>
 
-      <div className='flex items-center justify-between gap-2 rounded-[1000px] bg-white pl-6'>
-        <span className='gilroy-md text-gray-900'>{price} UAH</span>
-        <Button standartButton onClick={onAddToCart}>
-          <span>Add to cart</span>
-          <AddShoppingCart width={18} height={19} className='text-white' />
-        </Button>
+      <div className='flex items-center justify-between gap-1 rounded-[1000px] bg-white pl-6'>
+        <span className='gilroy-md text-center text-gray-900'>{price} UAH</span>
+
+        {productButtons.addToCartButton ? (
+          <Button standartButton onClick={onAddToCart}>
+            {!disableAddToCartButtonLabel && <span>{productButtons.addToCartButton}</span>}
+            <AddShoppingCart width={18} height={19} className='text-white' />
+          </Button>
+        ) : (
+          <div className='min-h-full w-[120px]'>
+            <Skeleton borderRadius={1000} className='inline-block min-h-12 w-full' />
+          </div>
+        )}
       </div>
     </motion.div>
   )

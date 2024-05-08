@@ -7,6 +7,8 @@ import { Tag, Button, PayloadImage } from 'ui'
 import { HTMLMotionProps, motion } from 'framer-motion'
 import { useCanHover } from '../../hooks'
 import { useHover } from 'react-aria'
+import { useGlobalTypography } from '../../../../apps/web/src/store'
+import Skeleton from 'react-loading-skeleton'
 
 type Props = {
   tag?: string
@@ -37,6 +39,7 @@ export const NewsCard: FC<Props> = props => {
 
   const canHover = useCanHover()
   const { hoverProps, isHovered } = useHover({})
+  const { newsCardButtons } = useGlobalTypography()
 
   return (
     //@ts-ignore
@@ -83,15 +86,21 @@ export const NewsCard: FC<Props> = props => {
             {title}
           </h3>
 
-          <Button
-            href={link}
-            standartButton
-            variant='tertiary'
-            className='!inline-block'
-            linkClassName='max-w-fit'
-          >
-            Review
-          </Button>
+          {newsCardButtons.reviewButton ? (
+            <Button
+              href={link}
+              standartButton
+              variant='tertiary'
+              className='!inline-block'
+              linkClassName='max-w-fit'
+            >
+              {newsCardButtons.reviewButton}
+            </Button>
+          ) : (
+            <div className='min-h-12 w-[120px]'>
+              <Skeleton borderRadius={1000} className='inline-block min-h-full w-full' />
+            </div>
+          )}
         </div>
       </div>
     </motion.div>

@@ -86,6 +86,10 @@ export const MobileSideBar = forwardRef<HTMLElement, Props>((props, ref) => {
   }, [selectedTab, defaultMenuHeader, navigation])
 
   const mappedBackButton = useMemo(() => {
+    if (!backButton.icon.icon) {
+      return null
+    }
+
     const Icon = mapIcon(backButton.icon.icon)
 
     if (!Icon) {

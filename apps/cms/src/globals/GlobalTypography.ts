@@ -148,5 +148,94 @@ export const GlobalTypography: GlobalConfig = {
         },
       ],
     },
+    {
+      name: 'productButtons',
+      type: 'group',
+      fields: [
+        {
+          name: 'addToCartButton',
+          type: 'text',
+          localized: true,
+          required: true,
+        },
+        {
+          name: 'buyNowButton',
+          type: 'text',
+          localized: true,
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'newsCardButtons',
+      type: 'group',
+      fields: [
+        {
+          name: 'reviewButton',
+          type: 'text',
+          localized: true,
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'backButton',
+      type: 'group',
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          localized: true,
+          required: true,
+        },
+        {
+          name: 'icon',
+          type: 'group',
+          fields: [iconPicker],
+        },
+      ],
+    },
+    {
+      name: 'searchPage',
+      type: 'group',
+      fields: [
+        {
+          name: 'searchResultTitle',
+          type: 'text',
+          localized: true,
+          required: true,
+          admin: {
+            description:
+              'If you need to insert the search string, you can use this template: "...{{query}}...".',
+          },
+        },
+        {
+          name: 'emptySearchResultTitle',
+          type: 'text',
+          localized: true,
+          required: true,
+          admin: {
+            description:
+              'If you need to insert the search string, you can use this template: "...{{query}}...".',
+          },
+        },
+        {
+          name: 'errorSearchResultTitle',
+          type: 'text',
+          localized: true,
+          required: true,
+        },
+        {
+          name: 'productsCountTitle',
+          type: 'text',
+          localized: true,
+          required: true,
+          admin: {
+            description:
+              'If you need to insert the products count, you can use this template: "...{{count}}...".',
+          },
+        },
+      ],
+    },
   ],
 }

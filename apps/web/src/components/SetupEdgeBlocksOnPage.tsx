@@ -8,15 +8,14 @@ type Props = {
   layout?: AnyBlock[] | null
 }
 
-export const SetupEdgeBlocksOnPageStore: FC<Props> = ({ layout }) => {
-  const { updateBlock, setLoaded } = useEdgeBlocksOnPage()
+export const SetupEdgeBlocksOnPage: FC<Props> = ({ layout }) => {
+  const { updateBlock } = useEdgeBlocksOnPage()
 
   useEffect(() => {
     const firstBlockOnPage = !layout?.length ? null : layout[0].blockType
     const lastBlockOnPage = !layout?.length ? null : layout.at(-1)?.blockType
 
     updateBlock({ firstBlockOnPage, lastBlockOnPage })
-    setLoaded(true)
   }, [layout])
 
   return null

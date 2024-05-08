@@ -834,16 +834,6 @@ export interface MainNavigation {
     }
     id?: string | null
   }[]
-  backButton: {
-    label: string
-    icon: {
-      icon?: string | null
-      size: {
-        width: number
-        height: number
-      }
-    }
-  }
   updatedAt?: string | null
   createdAt?: string | null
 }
@@ -998,6 +988,29 @@ export interface GlobalTypography {
         url?: string | null
       }
     }
+  }
+  productButtons: {
+    addToCartButton: string
+    buyNowButton: string
+  }
+  newsCardButtons: {
+    reviewButton: string
+  }
+  backButton: {
+    label: string
+    icon: {
+      icon?: string | null
+      size: {
+        width: number
+        height: number
+      }
+    }
+  }
+  searchPage: {
+    searchResultTitle: string
+    emptySearchResultTitle: string
+    errorSearchResultTitle: string
+    productsCountTitle: string
   }
   updatedAt?: string | null
   createdAt?: string | null

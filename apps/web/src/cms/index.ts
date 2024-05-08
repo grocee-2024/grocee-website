@@ -192,7 +192,7 @@ export const getPaginatedCollection = async <T extends keyof Config['collections
   }: {
     searchParams?: Record<string, string | string[]>
   } = {},
-): Promise<{ items: Config['collections'][T][]; totalPages: number }> => {
+) => {
   const url = `${CMS_URL}/api/${collection}?${getCmsSearchParams(searchParams)}&${
     where && equals && `where[${where}][equals]=${equals}&`
   }page=${page}&limit=${pageLimit}&sort=${sortBy}`
@@ -205,13 +205,18 @@ export const getPaginatedCollection = async <T extends keyof Config['collections
 
   const responseJson = (await response.json()) as {
     docs: Config['collections'][T][]
+    totalDocs: number
     totalPages: number
+    limit: number
+    page: number
+    pagingCounter: number
+    hasPrevPage: boolean
+    hasNextPage: boolean
+    prevPage: number | null
+    nextPage: number | null
   }
 
-  return {
-    items: responseJson.docs,
-    totalPages: responseJson.totalPages, // Extract total pages from the response
-  }
+  return responseJson
 }
 
 export const getMetadata = async (
@@ -259,19 +264,21 @@ type SearchInCollectionOptions = {
   query: string
   sort?: string
   page?: number
+  limit?: number
 }
 
 export const searchInCollection = async <T extends keyof Config['collections']>(
   collection: T,
-  { key, query, sort = 'id', page = 1 }: SearchInCollectionOptions,
+  { key, query, sort = 'id', page = 1, limit = 10 }: SearchInCollectionOptions,
+  { searchParams = {} }: { searchParams?: Record<string, string | string[]> } = {},
 ) => {
   const keysPath = Array.isArray(key)
     ? key.map((key, index) => `[or][${index}][${key}][contains]=${encodeURI(query)}`).join('&')
     : `[${key}]`
 
-  const url = `${CMS_URL}/api/${collection}?where${keysPath}[contains]=${encodeURI(
-    query,
-  )}&sort=${sort}&page=${page}`
+  const url = `${CMS_URL}/api/${collection}?${getCmsSearchParams(
+    searchParams,
+  )}&where${keysPath}[contains]=${encodeURI(query)}&sort=${sort}&limit=${limit}&page=${page}`
 
   const response = await fetch(url)
 
@@ -282,6 +289,13 @@ export const searchInCollection = async <T extends keyof Config['collections']>(
   return (await response.json()) as {
     docs: Config['collections'][T][]
     totalDocs: number
+    totalPages: number
+    limit: number
+    page: number
+    pagingCounter: number
+    hasPrevPage: boolean
     hasNextPage: boolean
+    prevPage: number | null
+    nextPage: number | null
   }
 }

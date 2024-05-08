@@ -3,20 +3,22 @@ import { resolveRelation } from '../../helpers'
 import { mapCMSCards, parsePayloadLink } from '@/helpers'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 import { MainNavigationClient } from './MainNavigationClient'
+import { cookies } from 'next/headers'
 
 export default async function MainNavigation({
   header,
   navigation,
   helpNavigation,
-  backButton,
   defaultMenuHeader,
 }: MainNavigation) {
+  const locale = cookies().get('locale')?.value || 'en'
+
   const { logo, navLinks, search } = header
 
   const resolvedLogo = resolveRelation(logo.image)
   const logoUrl = parsePayloadLink(logo.page)
 
-  const { categories, delivery, integration, promotions } = navigation
+  const { categories, integration, promotions } = navigation
 
   const mappedNavigation = {
     categories: {
@@ -25,7 +27,7 @@ export default async function MainNavigation({
         ...categories.icon,
         icon: categories.icon.icon as AllIconNames,
       },
-      cardLinks: await mapCMSCards(categories.cardLinks),
+      cardLinks: await mapCMSCards(categories.cardLinks, locale),
       commonLinks: (categories.commonLinks ?? []).map(({ label, id, link }) => ({
         id: id!,
         label,
@@ -38,7 +40,7 @@ export default async function MainNavigation({
         ...promotions.icon,
         icon: promotions.icon.icon as AllIconNames,
       },
-      cardLinks: await mapCMSCards(promotions.cardLinks),
+      cardLinks: await mapCMSCards(promotions.cardLinks, locale),
     },
     integration: {
       ...integration,
@@ -90,14 +92,6 @@ export default async function MainNavigation({
     link: parsePayloadLink(link),
   }))
 
-  const mappedBackButton = {
-    ...backButton,
-    icon: {
-      icon: backButton.icon.icon as AllIconNames,
-      size: backButton.icon.size,
-    },
-  }
-
   return (
     <MainNavigationClient
       navLinks={mappedNavLinks}
@@ -107,7 +101,6 @@ export default async function MainNavigation({
       helpNavigation={mappedHelpNavigation}
       logo={resolvedLogo!}
       logoUrl={logoUrl}
-      backButton={mappedBackButton}
     />
   )
 }

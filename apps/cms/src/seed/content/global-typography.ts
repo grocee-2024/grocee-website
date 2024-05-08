@@ -101,6 +101,29 @@ export const createGlobalTypography = async (pages: Pages) => {
           },
         },
       },
+      productButtons: {
+        addToCartButton: 'Add to cart',
+        buyNowButton: 'Buy now',
+      },
+      newsCardButtons: {
+        reviewButton: 'Review',
+      },
+      backButton: {
+        label: 'Back',
+        icon: {
+          icon: 'ArrowLeft',
+          size: {
+            width: 16,
+            height: 16,
+          },
+        },
+      },
+      searchPage: {
+        searchResultTitle: 'Search results for "{{query}}"',
+        productsCountTitle: 'A total of {{count}} products were found',
+        emptySearchResultTitle: 'Nothing was found for the query "{{query}}"',
+        errorSearchResultTitle: 'An error occurred while searching, please try again later',
+      },
     },
   })
 

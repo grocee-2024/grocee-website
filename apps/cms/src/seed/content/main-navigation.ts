@@ -500,16 +500,6 @@ export const createMainNavigation = async (pages: Pages, images: Images) => {
           },
         },
       ],
-      backButton: {
-        label: 'Back',
-        icon: {
-          icon: 'ArrowLeft',
-          size: {
-            width: 16,
-            height: 16,
-          },
-        },
-      },
     },
   })
 

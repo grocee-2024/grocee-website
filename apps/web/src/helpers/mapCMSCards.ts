@@ -2,7 +2,7 @@ import { getCollectionItem } from '@/cms'
 import { CardBlock, Image } from 'cms-types'
 import { parsePayloadLink } from '.'
 
-export const mapCMSCards = async (cards: CardBlock[]) => {
+export const mapCMSCards = async (cards: CardBlock[], locale: string) => {
   const mappedCards = await Promise.all(
     (cards ?? []).map(async card => {
       const { image, link, id, text, gap } = card
@@ -10,7 +10,9 @@ export const mapCMSCards = async (cards: CardBlock[]) => {
       let previewImage = image
 
       if (typeof previewImage === 'string') {
-        previewImage = (await getCollectionItem(previewImage, 'images')) as Image
+        previewImage = (await getCollectionItem(previewImage, 'images', {
+          searchParams: { locale },
+        })) as Image
       }
 
       const parsedLink = parsePayloadLink(link)

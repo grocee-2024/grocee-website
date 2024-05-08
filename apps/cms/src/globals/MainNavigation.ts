@@ -296,22 +296,5 @@ export const MainNavigation: GlobalConfig = {
       ],
       required: true,
     },
-    {
-      name: 'backButton',
-      type: 'group',
-      fields: [
-        {
-          name: 'label',
-          type: 'text',
-          localized: true,
-          required: true,
-        },
-        {
-          name: 'icon',
-          type: 'group',
-          fields: [iconPicker],
-        },
-      ],
-    },
   ],
 }
