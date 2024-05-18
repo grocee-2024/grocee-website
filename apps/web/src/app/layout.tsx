@@ -12,7 +12,9 @@ import NextTopLoader from 'nextjs-toploader'
 import { QueryProvider } from '@/components/QueryProvider'
 
 export async function generateMetadata({ searchParams }: any) {
-  return await getMetadata('pages', 'home', { searchParams })
+  const locale = cookies().get('locale')?.value ?? 'en'
+
+  return await getMetadata('pages', 'home', { searchParams: { ...searchParams, locale } })
 }
 
 export default async function RootLayout({
@@ -36,8 +38,9 @@ export default async function RootLayout({
         <Providers>
           <QueryProvider>
             <NextTopLoader color='#5E5E5E' height={4} initialPosition={0.3} showSpinner={false} />
-            <div className='burgermenu-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
+            <div className='burgermenu-bottom-modal-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
             <div className='searchbar-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
+            <div className='sidebar-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
             <SetupClientComponent globalTypography={globalTypography} />
             <MainNavigation {...mainNavigation} />
             <div className='mx-auto flex min-h-full max-w-[1440px] flex-col'>

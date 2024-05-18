@@ -128,14 +128,9 @@ export const SearchBar: FC<Props> = ({
         <CarouselUI
           disableWidthLimit
           speed={500}
-          slideClassName='max-w-[292px]'
+          slideClassName='mr-6 max-w-[212px] tablet:max-w-[292px]'
           disableLink
           disableNavigationButtons
-          breakpoints={{
-            laptop: {
-              slidesPerView: 'auto',
-            },
-          }}
         >
           {mappedCardLinks}
         </CarouselUI>

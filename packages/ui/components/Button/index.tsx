@@ -63,6 +63,7 @@ export type ButtonProps<T> = PropsWithChildren<{
   backgroundColor?: string
   disableBorder?: boolean
   linkClassName?: string
+  contentClassName?: string
   onClick?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>
   formAction?: (formData: FormData) => void
   onHoverStart?: HoverEvents['onHoverStart']
@@ -85,6 +86,7 @@ export function Button<T>(props: ButtonProps<T>) {
     isLoading,
     className = '',
     linkClassName = '',
+    contentClassName = '',
     isFocused,
     style,
     disableBorder,
@@ -153,6 +155,10 @@ export function Button<T>(props: ButtonProps<T>) {
           'gilroy-md min-h-12 px-6 py-3': standartButton && variant !== 'defaultLink',
         },
         {
+          'cursor-pointer': !isDisabled,
+          'cursor-not-allowed': isDisabled,
+        },
+        {
           primary: clsx({
             'text-white': !isButtonDisabled,
             'after:border-transparent': !isPressed,
@@ -200,7 +206,7 @@ export function Button<T>(props: ButtonProps<T>) {
     if (variant !== 'defaultLink') {
       return (
         <IconsWrapper
-          className='flex items-center justify-center gap-2'
+          className={clsx('flex items-center justify-center gap-2', contentClassName)}
           leftIcon={leftIcon}
           rightIcon={rightIcon}
         >
@@ -241,7 +247,6 @@ export function Button<T>(props: ButtonProps<T>) {
         ref={refButton}
         {...mergeProps(restButtonProps, parentProps, hoverProps)}
         style={style}
-        onClick={onClick}
         onPointerDown={event => {
           if (event.button !== 0) {
             return

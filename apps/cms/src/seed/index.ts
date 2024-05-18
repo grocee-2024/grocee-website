@@ -12,14 +12,18 @@ import { createNews } from './content/news'
 import { createProducts } from './content/products'
 import { createProductPages } from './content/product-pages'
 import { createGlobalTypography } from './content/global-typography'
+import { createUnits } from './content/units'
+import { createSubcategories } from './content/subcategories'
+import { createCategories } from './content/categories'
+import { createCountries } from './content/countries'
 
 export const seedLocalData = async () => {
-  await dropDataFromMongoDB()
+  await dropDatabase()
 
   await createData()
 }
 
-async function dropDataFromMongoDB() {
+async function dropDatabase() {
   try {
     payload.logger.info('Dropping local data')
 
@@ -43,47 +47,32 @@ async function dropDataFromMongoDB() {
   }
 }
 
-// async function dropDataFromSqlDB() {
-//   payload.logger.info('Dropping local data...')
-
-//   try {
-//     const tables = Object.entries(payload.db.tables)
-
-//     for (const [tableName, table] of tables) {
-//       await payload.db.drizzle.delete(table)
-
-//       payload.logger.info(`Table ${tableName} dropped successfully`)
-//     }
-
-//     const mediaDir = path.resolve(__dirname, '../', 'images')
-
-//     if (fs.existsSync(mediaDir)) {
-//       const files = fs.readdirSync(mediaDir)
-
-//       for (const file of files) {
-//         fs.unlinkSync(path.resolve(mediaDir, file))
-//       }
-//     }
-
-//     payload.logger.info('All tables dropped successfully')
-//   } catch (error: unknown) {
-//     payload.logger.error('Error dropping tables: ', error)
-//   }
-// }
-
 async function createData() {
   payload.logger.info('Seeding local data')
 
   try {
     await createUsers()
 
-    const [images, pages] = await Promise.all([createImages(), createPages()])
-    const [news, products] = await Promise.all([createNews(images), createProducts(images)])
+    const [images, units, subcategories, pages, countries] = await Promise.all([
+      createImages(),
+      createUnits(),
+      createSubcategories(),
+      createPages(),
+      createCountries(),
+    ])
+
+    const categories = await createCategories(subcategories)
+
+    const [news, products] = await Promise.all([
+      createNews(images),
+      createProducts(images, units, categories, subcategories),
+    ])
+
     const productPages = await createProductPages(products)
 
     await Promise.all([
       populatePagesData(pages, productPages, news, images),
-      createMainNavigation(pages, images),
+      createMainNavigation(pages, images, categories),
       createBottomNavigation(pages, images),
       createGlobalTypography(pages),
     ])

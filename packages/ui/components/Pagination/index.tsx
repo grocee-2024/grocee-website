@@ -11,9 +11,10 @@ import { getSearchWith } from '../../helpers'
 export type PaginationProps = {
   totalPages: number
   page: number
+  className?: string
 }
 
-export const Pagination: FC<PaginationProps> = ({ page, totalPages }) => {
+export const Pagination: FC<PaginationProps> = ({ page, className = '', totalPages }) => {
   const searchParams = useSearchParams()
   const normalizedPage = useMemo(
     () => (page > totalPages || page < 1 ? 1 : page),
@@ -80,7 +81,9 @@ export const Pagination: FC<PaginationProps> = ({ page, totalPages }) => {
   )
 
   return (
-    <ul className='flex select-none items-center justify-center gap-4 tablet:gap-8'>
+    <ul
+      className={clsx('flex select-none items-center justify-center gap-4 tablet:gap-8', className)}
+    >
       <li
         role='link'
         aria-label='prev'

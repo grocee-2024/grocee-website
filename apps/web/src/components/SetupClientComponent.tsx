@@ -4,6 +4,7 @@ import { GlobalTypography } from 'cms-types'
 import { useEffect } from 'react'
 import { useGlobalTypography, useSearchHistory, usePrevPath } from '@/store'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { Toaster } from 'react-hot-toast'
 
 type SetupClientComponentProps = {
   globalTypography: GlobalTypography
@@ -28,7 +29,19 @@ const SetupClientComponent = ({ globalTypography }: SetupClientComponentProps) =
     }
   }, [pathname, searchParams])
 
-  return null
+  return (
+    <Toaster
+      position='top-center'
+      reverseOrder={false}
+      gutter={8}
+      toastOptions={{
+        duration: 3000,
+        success: {
+          duration: 3000,
+        },
+      }}
+    />
+  )
 }
 
 export default SetupClientComponent

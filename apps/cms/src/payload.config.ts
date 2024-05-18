@@ -6,7 +6,6 @@ import seo from '@payloadcms/plugin-seo'
 import redirects from '@payloadcms/plugin-redirects'
 
 import { payloadCloud } from '@payloadcms/plugin-cloud'
-import { postgresAdapter } from '@payloadcms/db-postgres'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { webpackBundler } from '@payloadcms/bundler-webpack'
 import {
@@ -24,10 +23,17 @@ import { News } from './collections/News'
 
 import { Products } from './collections/shop/Products'
 import { Categories } from './collections/shop/Categories'
+import { Subcategories } from './collections/shop/Subcategories'
 import { Orders } from './collections/shop/Orders'
+import { Units } from './collections/shop/Units'
 
 import { Pages } from './collections/pages/Pages'
 import { ProductPages } from './collections/pages/ProductPages'
+
+import { Countries } from './collections/filters/Countries'
+import { Trademarks } from './collections/filters/Trademarks'
+import { Tags } from './collections/filters/Tags'
+import { Specials } from './collections/filters/Specials'
 
 import { AllBlocks } from './globals/AllBlocks'
 import { MainNavigation } from './globals/MainNavigation'
@@ -39,6 +45,10 @@ import { customersProxy } from './endpoints/customers'
 import { productsProxy } from './endpoints/products'
 import { priceUpdated } from './stripe/webhooks/priceUpdated'
 import { productUpdated } from './stripe/webhooks/productUpdated'
+import { getPageSlug } from './utilities/getPageSlug'
+import { getProductsCountByFilters } from './endpoints/getProductsCountByFilters'
+import { getSubcategories } from './endpoints/getSubcategories'
+import { getFilteredProducts } from './endpoints/getFilteredProducts'
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}
@@ -81,7 +91,22 @@ export default buildConfig({
       HTMLConverterFeature({}),
     ],
   }),
-  collections: [Users, Products, Categories, Images, Orders, Pages, ProductPages, News],
+  collections: [
+    Users,
+    Products,
+    Categories,
+    Subcategories,
+    Images,
+    Orders,
+    Pages,
+    Units,
+    ProductPages,
+    News,
+    Countries,
+    Trademarks,
+    Tags,
+    Specials,
+  ],
   globals: [MainNavigation, BottomNavigation, GlobalTypography, AllBlocks],
   typescript: {
     outputFile: path.resolve(__dirname, '../../../packages/cms-types/index.ts'),
@@ -103,14 +128,19 @@ export default buildConfig({
       },
     }),
     seo({
-      collections: ['pages', 'news', 'productPages'],
+      collections: ['pages', 'categories', 'productPages'],
       uploadsCollection: 'images',
       tabbedUI: true,
     }),
     nestedDocs({
-      collections: ['categories'],
-      generateLabel: (_, doc) => doc.title as string,
-      generateURL: docs => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
+      collections: ['pages'],
+      // @ts-ignore
+      generateLabel: (_, doc) => doc.breadcrumbsTitle,
+      generateURL: docs =>
+        docs.reduce(
+          (url, doc) => `${url}${url === '/' ? '' : '/'}${getPageSlug(doc.slug as string)}`,
+          '',
+        ),
     }),
     redirects({
       collections: ['pages', 'productPages', 'news'],
@@ -119,13 +149,10 @@ export default buildConfig({
   ],
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
+    connectOptions: {
+      dbName: 'grocee-db-test',
+    },
   }),
-  // db: postgresAdapter({
-  //   pool: {
-  //     connectionString: process.env.DATABASE_URI,
-  //   },
-  //   idType: 'uuid',
-  // }),
   localization: {
     locales: ['en', 'ua'],
     defaultLocale: 'en',
@@ -162,11 +189,26 @@ export default buildConfig({
       method: 'get',
       handler: productsProxy,
     },
+    {
+      path: '/products-count-by-filters',
+      method: 'post',
+      handler: getProductsCountByFilters,
+    },
+    {
+      path: '/products-count-by-subcategories',
+      method: 'post',
+      handler: getSubcategories,
+    },
+    {
+      path: '/filtered-products',
+      method: 'post',
+      handler: getFilteredProducts,
+    },
   ],
-  // rateLimit: {
-  //   trustProxy: true,
-  //   max: 1000,
-  //   skip: () => true,
-  //   window: 60 * 1000,
-  // },
+  rateLimit: {
+    trustProxy: true,
+    max: 1000,
+    skip: () => true,
+    window: 60 * 1000,
+  },
 })

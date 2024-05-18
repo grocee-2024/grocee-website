@@ -3,15 +3,13 @@
 import { CSSProperties, Children, FC, PropsWithChildren, useCallback, useId, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperType } from 'swiper'
-import { Virtual } from 'swiper/modules'
 import { Button } from 'ui'
 import { AllIconNames, IconType } from '@oleksii-lavka/grocee-icons'
 import { useCanHover } from '../../hooks'
 import { SwiperOptions } from 'swiper/types'
+import clsx from 'clsx'
 
 import 'swiper/css'
-import 'swiper/css/virtual'
-import clsx from 'clsx'
 
 type CarouselProps = PropsWithChildren<{
   title?: string
@@ -22,7 +20,6 @@ type CarouselProps = PropsWithChildren<{
   buttonIcon?: AllIconNames | IconType | null
   speed?: number
   loop?: boolean
-  virtual?: boolean
   className?: string
   containerClassName?: string
   innerContainerClassName?: string
@@ -48,7 +45,6 @@ export const Carousel: FC<CarouselProps> = ({
   containerClassName = '',
   innerContainerClassName = '',
   loop = false,
-  virtual = false,
   disableLink = false,
   disableNavigationButtons = false,
   slideClassName = '',
@@ -60,6 +56,7 @@ export const Carousel: FC<CarouselProps> = ({
   const [isHovered, setIsHovered] = useState(false)
   const canHover = useCanHover()
   const [swiper, setSwiper] = useState<SwiperType | null>(null)
+  // const [allowTouchMove, setAllowTouckMove] = useState()
   const [disabledNavigation, setDisabledNavigation] = useState<{ prev: boolean; next: boolean }>({
     prev: true,
     next: true,
@@ -113,9 +110,7 @@ export const Carousel: FC<CarouselProps> = ({
       {hasSwiperHeader && (
         <div className='flex items-center justify-between gap-4'>
           {title && (
-            <h3 className='helvetica-xs tablet:helvetica-md grow justify-start font-light text-gray-900'>
-              {title}
-            </h3>
+            <h3 className='helvetica grow justify-start font-light text-gray-900'>{title}</h3>
           )}
 
           {hasSwiperNavigation && (
@@ -163,11 +158,7 @@ export const Carousel: FC<CarouselProps> = ({
 
       <div className={clsx('h-full min-w-0', innerContainerClassName)}>
         <Swiper
-          modules={[Virtual]}
-          spaceBetween={24}
-          slidesPerGroup={1}
           slidesPerView='auto'
-          virtual={virtual}
           loop={loop}
           allowTouchMove
           onResize={({ isBeginning, isEnd, originalParams }) => {
@@ -181,13 +172,16 @@ export const Carousel: FC<CarouselProps> = ({
           breakpoints={{
             768: {
               ...(breakpoints?.tablet ?? {}),
+              slidesPerGroup: 2,
             },
             1024: {
-              slidesPerView: 3,
+              slidesPerGroup: 3,
               ...(breakpoints?.laptop ?? {}),
             },
             1280: {
+              spaceBetween: 24,
               slidesPerView: 4,
+              slidesPerGroup: 4,
               allowTouchMove: false,
               ...(breakpoints?.desktop ?? {}),
             },

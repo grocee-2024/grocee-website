@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Select, useField, useFormFields } from 'payload/components/forms'
+import { Select, useField } from 'payload/components/forms'
 import CopyToClipboard from 'payload/dist/admin/components/elements/CopyToClipboard'
 import { Props } from 'payload/components/fields/Text'
 

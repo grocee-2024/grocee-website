@@ -6,8 +6,9 @@ const stripe = new Stripe(stripeSecretKey || '', { apiVersion: '2022-08-01' })
 
 const logs = false
 
-export const beforeProductChange: BeforeChangeHook = async ({ req, data }) => {
+export const beforeProductChange: BeforeChangeHook = async ({ req, originalDoc, data }) => {
   const { payload } = req
+
   const newDoc: Record<string, unknown> = {
     ...data,
     skipSync: false, // Set back to 'false' so that all changes continue to sync to Stripe
@@ -29,12 +30,61 @@ export const beforeProductChange: BeforeChangeHook = async ({ req, data }) => {
   if (logs) payload.logger.info(`Looking up product from Stripe...`)
 
   try {
-    const stripeProduct = await stripe.products.retrieve(data?.productDetails?.stripeProductID)
+    const stripeProduct = await stripe.products.retrieve(data.productDetails?.stripeProductID)
     if (logs) payload.logger.info(`Found product from Stripe: ${stripeProduct.name}`)
-    newDoc.name = stripeProduct.name
+
+    const weight = stripeProduct.metadata?.weight
+    const weightStep = stripeProduct.metadata?.weightStep
+    const stripeCountry = stripeProduct.metadata?.country
+
+    const stripeUnitLabel = stripeProduct.unit_label
+    const [targetUnit] = (
+      await payload.find({ collection: 'units', where: { label: { equals: stripeUnitLabel } } })
+    ).docs
+    const targetCountry = (
+      await payload.find({ collection: 'countries', pagination: false })
+    ).docs.find(({ label, slug }) =>
+      [label.toLowerCase(), slug.toLowerCase()].includes(stripeCountry.toLowerCase()),
+    )
+
+    if (weight) {
+      // @ts-ignore
+      newDoc.productDetails.weight = weight
+    }
+
+    if (weightStep) {
+      // @ts-ignore
+      newDoc.productDetails.weightStep = weightStep
+    }
+
+    if (targetUnit) {
+      // @ts-ignore
+      newDoc.productDetails.unit = targetUnit.id
+    }
+
+    if (targetCountry && newDoc) {
+      // @ts-ignore
+      newDoc.productDetails.country = targetCountry.id
+    }
   } catch (error: unknown) {
     payload.logger.error(`Error fetching product from Stripe: ${error}`)
     return newDoc
+  }
+
+  if (logs) payload.logger.info(`Looking up price from Stripe...`)
+
+  try {
+    const allPrices = await stripe.prices.list({
+      product: data.productDetails.stripeProductID,
+      limit: 100,
+    })
+
+    // @ts-ignore
+    newDoc.productDetails.priceJSON = allPrices
+    // @ts-ignore
+    newDoc.productDetails.price = allPrices.data[0].unit_amount / 100
+  } catch (error: unknown) {
+    payload.logger.error(`Error fetching prices from Stripe: ${error}`)
   }
 
   return newDoc

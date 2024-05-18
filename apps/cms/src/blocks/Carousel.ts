@@ -23,41 +23,27 @@ export const Carousel: Block = {
       type: 'group',
       fields: [
         {
-          name: 'type',
-          type: 'select',
-          options: [
-            {
-              label: 'Product Card',
-              value: 'productCard',
-            },
-            {
-              label: 'News Card',
-              value: 'newsCard',
-            },
-            {
-              label: 'Simple Card',
-              value: 'simpleCard',
-            },
-          ],
-          defaultValue: 'productCard',
-          required: true,
-        },
-        {
           type: 'row',
           fields: [
             {
-              name: 'loop',
-              type: 'checkbox',
-              admin: {
-                width: '31%',
-              },
-            },
-            {
-              name: 'virtual',
-              type: 'checkbox',
-              admin: {
-                width: '31%',
-              },
+              name: 'type',
+              type: 'select',
+              options: [
+                {
+                  label: 'Product Card',
+                  value: 'productCard',
+                },
+                {
+                  label: 'News Card',
+                  value: 'newsCard',
+                },
+                {
+                  label: 'Simple Card',
+                  value: 'simpleCard',
+                },
+              ],
+              defaultValue: 'productCard',
+              required: true,
             },
             {
               name: 'speed',
@@ -68,6 +54,10 @@ export const Carousel: Block = {
               },
             },
           ],
+        },
+        {
+          name: 'loop',
+          type: 'checkbox',
         },
         {
           name: 'showLink',

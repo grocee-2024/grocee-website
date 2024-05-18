@@ -21,7 +21,6 @@ import { mapIcon } from '@oleksii-lavka/grocee-icons'
 import { Carousel as CarouselUI, Card as CardUI, PayloadImage } from 'ui'
 import clsx from 'clsx'
 import { useWindowSize } from '../../../hooks'
-import modalService from '../../../service/modalService'
 
 type Props = Pick<ComponentProps<typeof BurgerMenu>, 'isOpen'> &
   Omit<ComponentProps<typeof Navigation>, 'logo' | 'logoUrl' | 'search' | 'navLinks'> & {
@@ -102,6 +101,7 @@ export const MobileSideBar = forwardRef<HTMLElement, Props>((props, ref) => {
           onClick={() => {
             onChangeSelectedTab(null)
           }}
+          tabIndex={0}
           className='gilroy-md absolute top-full mt-2 flex items-center gap-2 border-none bg-transparent font-light text-gray-600 outline-none'
         >
           <Icon width={backButton.icon.size.width} height={backButton.icon.size.height} />
@@ -332,7 +332,7 @@ function CategoriesNavigationPanel({ cardLinks, commonLinks }: CategoriesNavigat
       <div className='mb-6 border-b-[1px] border-gray-100 pb-6'>
         <CarouselUI
           className='!p-2'
-          slideClassName='max-w-[180px] tablet:min-w-[180px]'
+          slideClassName='mr-6 max-w-[212px] tablet:max-w-[292px]'
           disableWidthLimit
           speed={500}
           disableLink

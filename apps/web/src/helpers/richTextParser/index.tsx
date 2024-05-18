@@ -182,7 +182,7 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
                     <h1
                       key={`${node.tag}-${index}`}
                       {...headingProps(
-                        'helvetica-lg tablet:helvetica-2xl font-light text-gray-900',
+                        'helvetica-lg tablet:text-[60px] tablet:leading-[120%] laptop:text-[72px] laptop:leading-[125%] font-light text-gray-900',
                       )}
                     >
                       {parse(node.children)}
@@ -193,7 +193,9 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
                   return (
                     <h2
                       key={`${node.tag}-${index}`}
-                      {...headingProps('helvetica-md tablet:helvetica-xl font-light text-gray-900')}
+                      {...headingProps(
+                        'helvetica-md tablet:leading-[125%] tablet:text-[48px] laptop:text-[60px] laptop:leading-[120%] font-light text-gray-900',
+                      )}
                     >
                       {parse(node.children)}
                     </h2>
@@ -203,7 +205,9 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
                   return (
                     <h3
                       key={`${node.tag}-${index}`}
-                      {...headingProps('helvetica-sm tablet:helvetica-lg font-light text-gray-900')}
+                      {...headingProps(
+                        'helvetica-sm tablet:text-[36px] tablet:leading-[122%] laptop:text-[48px] laptop:leading-[125%] tablet:tracking-tightest font-light text-gray-900',
+                      )}
                     >
                       {parse(node.children)}
                     </h3>
@@ -213,7 +217,9 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
                   return (
                     <h4
                       key={`${node.tag}-${index}`}
-                      {...headingProps('helvetica-xs tablet:helvetica-md font-light text-gray-900')}
+                      {...headingProps(
+                        'helvetica-xs tablet:text-[32px] tablet:leading-[125%] laptop:text-[36px] laptop:leading-[122%] laptop:tracking-tightest font-light text-gray-900',
+                      )}
                     >
                       {parse(node.children)}
                     </h4>
@@ -223,7 +229,9 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
                   return (
                     <h5
                       key={`${node.tag}-${index}`}
-                      {...headingProps('helvetica-xs tablet:helvetica-sm font-light text-gray-900')}
+                      {...headingProps(
+                        'helvetica-xs tablet:text-[32px] tablet:leading-[125%] font-light text-gray-900',
+                      )}
                     >
                       {parse(node.children)}
                     </h5>

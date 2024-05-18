@@ -14,6 +14,7 @@ export const BannerClient: FC<BannerProps> = WithSkeletonLoader(
       // @ts-ignore
       <BannerUI
         {...props}
+        // @ts-ignore
         heading={{ ...heading, orderDeliveryFormTypography: orderDeliveryForm }}
       />
     )

@@ -6,26 +6,31 @@ import { SetupEdgeBlocksOnPage } from '../components/SetupEdgeBlocksOnPage'
 import { SearchPage } from '@/components/SearchPage'
 import { parseSearchParams } from 'ui/helpers'
 import { Suspense } from 'react'
+import { notFound } from 'next/navigation'
 
 export default async function HomePage({ searchParams }: NextRoute) {
   const locale = cookies().get('locale')?.value || 'en'
 
-  if ('search' in searchParams) {
-    const query = parseSearchParams(searchParams, 'search')
+  try {
+    if ('search' in searchParams) {
+      const query = parseSearchParams(searchParams, 'search')
+
+      return (
+        <Suspense fallback={null}>
+          <SearchPage query={query} />
+        </Suspense>
+      )
+    }
+
+    const page = await getPage('pages', 'home', { searchParams: { ...searchParams, locale } })
 
     return (
-      <Suspense fallback={null}>
-        <SearchPage query={query} />
-      </Suspense>
+      <>
+        <SetupEdgeBlocksOnPage layout={page.layout} />
+        <div className='flex flex-col gap-16 laptop:gap-20'>{renderBlocks(page.layout)}</div>
+      </>
     )
+  } catch (err: unknown) {
+    notFound()
   }
-
-  const page = await getPage('pages', 'home', { searchParams: { ...searchParams, locale } })
-
-  return (
-    <>
-      <SetupEdgeBlocksOnPage layout={page.layout} />
-      <div className='flex flex-col gap-16 laptop:gap-20'>{renderBlocks(page.layout)}</div>
-    </>
-  )
 }

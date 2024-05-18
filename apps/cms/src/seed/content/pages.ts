@@ -4,11 +4,24 @@ import { ProductPages } from './product-pages'
 import { News } from './news'
 
 export const createPages = async () => {
-  const [homePage] = await Promise.all([
+  const [homePage, categoryPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       data: {
         slug: 'home',
+        breadcrumbsTitle: 'Home page',
+        meta: {
+          title: 'Grocee - The freshest products with the fastest delivery.',
+          description:
+            'Grocee is an online platform for convenient and fast purchases of food and other goods online.',
+        },
+      },
+    }),
+    payload.create({
+      collection: 'pages',
+      data: {
+        slug: 'category',
+        breadcrumbsTitle: '{{category}}',
         meta: {
           title: 'Grocee - The freshest products with the fastest delivery.',
           description:
@@ -22,6 +35,7 @@ export const createPages = async () => {
 
   return {
     homePageId: homePage.id,
+    categoryPageId: categoryPage.id,
   }
 }
 
@@ -734,6 +748,116 @@ export const populatePagesData = async (
               },
             ],
           },
+          {
+            blockType: 'HelpBlock',
+            title: 'Need Help?',
+            accordion: [
+              {
+                blockType: 'Accordion',
+                link: {
+                  label: 'See all',
+                  icon: {
+                    icon: 'ArrowCircleRight',
+                    size: {
+                      width: 18,
+                      height: 18,
+                    },
+                  },
+                  type: 'reference',
+                  reference: {
+                    relationTo: 'pages',
+                    value: pages.homePageId,
+                  },
+                },
+                accordionList: [
+                  {
+                    title: 'How can I place an order?',
+                    content:
+                      'Placing an order with Grocee is easy! Simply browse our website or app, select the items you want, add them to your cart, and proceed to checkout.',
+                  },
+                  {
+                    title: 'How can I place an order?',
+                    content:
+                      'Placing an order with Grocee is easy! Simply browse our website or app, select the items you want, add them to your cart, and proceed to checkout.',
+                  },
+                  {
+                    title: 'How can I place an order?',
+                    content:
+                      'Placing an order with Grocee is easy! Simply browse our website or app, select the items you want, add them to your cart, and proceed to checkout.',
+                  },
+                  {
+                    title: 'How can I place an order?',
+                    content:
+                      'Placing an order with Grocee is easy! Simply browse our website or app, select the items you want, add them to your cart, and proceed to checkout.',
+                  },
+                  {
+                    title: 'How can I place an order?',
+                    content:
+                      'Placing an order with Grocee is easy! Simply browse our website or app, select the items you want, add them to your cart, and proceed to checkout.',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            blockType: 'Banner',
+            previewImage: images.deliveryBannerId,
+            heading: {
+              type: 'orderDelivery',
+              title: 'Order delivery',
+              logo: {
+                image: images.logoDarkId,
+                page: {
+                  type: 'reference',
+                  reference: {
+                    relationTo: 'pages',
+                    value: pages.homePageId,
+                  },
+                },
+              },
+              orderDelivery: {
+                subtitle:
+                  'Enter your details and delivery address to receive the current product range and prices.',
+              },
+              links: [
+                {
+                  linkOrButton: {
+                    appearance: 'primary',
+                    linkType: 'reference',
+                    reference: {
+                      relationTo: 'pages',
+                      value: pages.homePageId,
+                    },
+                    isStandartButton: true,
+                    label: 'Order Delivery',
+                    type: 'link',
+                  },
+                },
+                {
+                  linkOrButton: {
+                    appearance: 'tertiary',
+                    linkType: 'reference',
+                    reference: {
+                      relationTo: 'pages',
+                      value: pages.homePageId,
+                    },
+                    isStandartButton: true,
+                    label: 'Learn More',
+                    type: 'link',
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    }),
+    payload.update({
+      id: pages.categoryPageId,
+      collection: 'pages',
+      data: {
+        parent: pages.homePageId,
+        layout: [
           {
             blockType: 'HelpBlock',
             title: 'Need Help?',

@@ -1,7 +1,7 @@
 import { AtLeastOne } from '../types'
 
 export type ModalStates = Record<
-  'burgerMenu' | 'searchBar' | 'confirmModal',
+  'burgerMenu' | 'searchBar' | 'confirmModal' | 'bottomModal' | 'sideBar',
   {
     state: boolean
     onCloseDesktop?: () => void
@@ -15,8 +15,10 @@ type Options = {
 }
 
 const fadeSelectors = {
-  burgerMenu: '.burgermenu-fade-container',
+  burgerMenu: '.burgermenu-bottom-modal-fade-container',
   searchBar: '.searchbar-fade-container',
+  bottomModal: '.burgermenu-bottom-modal-fade-container',
+  sideBar: '.sidebar-fade-container',
 }
 
 class ModalService {
@@ -28,6 +30,12 @@ class ModalService {
       state: false,
     },
     confirmModal: {
+      state: false,
+    },
+    bottomModal: {
+      state: false,
+    },
+    sideBar: {
       state: false,
     },
   }

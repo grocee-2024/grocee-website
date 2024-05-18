@@ -23,11 +23,17 @@ export interface Config {
     users: User
     products: Product
     categories: Category
+    subcategories: Subcategory
     images: Image
     orders: Order
     pages: Page
+    units: Unit
     productPages: ProductPage
     news: News
+    countries: Country
+    trademarks: Trademark
+    tags: Tag
+    specials: Special
     redirects: Redirect
     'payload-preferences': PayloadPreference
     'payload-migrations': PayloadMigration
@@ -74,9 +80,28 @@ export interface Product {
   productDetails: {
     image: string | Image
     stripeProductID?: string | null
+    tag?: (string | null) | Tag
+    trademark?: (string | null) | Trademark
+    specials?: (string | Special)[] | null
+    country?: (string | null) | Country
+    weight?: number | null
+    weightStep?: number | null
+    priceJSON?:
+      | {
+          [k: string]: unknown
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null
+    price?: number | null
+    unit?: (string | null) | Unit
+    weightUnit: string | Unit
     rating?: number | null
   }
   categories?: (string | Category)[] | null
+  subcategories?: (string | Subcategory)[] | null
   skipSync?: boolean | null
   updatedAt: string
   createdAt: string
@@ -125,21 +150,89 @@ export interface Image {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string
+  slug: string
+  label: string
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trademarks".
+ */
+export interface Trademark {
+  id: string
+  slug: string
+  label: string
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "specials".
+ */
+export interface Special {
+  id: string
+  slug: string
+  label: string
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries".
+ */
+export interface Country {
+  id: string
+  slug: string
+  label: string
+  flag?: {
+    png?: string | null
+    svg?: string | null
+    alt?: string | null
+  }
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "units".
+ */
+export interface Unit {
+  id: string
+  label: string
+  text: string
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
   id: string
   slug: string
-  title?: string | null
-  parent?: (string | null) | Category
-  breadcrumbs?:
-    | {
-        doc?: (string | null) | Category
-        url?: string | null
-        label?: string | null
-        id?: string | null
-      }[]
-    | null
+  label: string
+  subcategories: (string | Subcategory)[]
+  meta?: {
+    title?: string | null
+    description?: string | null
+    image?: string | Image | null
+  }
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subcategories".
+ */
+export interface Subcategory {
+  id: string
+  slug: string
+  label: string
   updatedAt: string
   createdAt: string
 }
@@ -170,6 +263,7 @@ export interface Order {
 export interface Page {
   id: string
   slug: string
+  breadcrumbsTitle?: string | null
   layout?:
     | (
         | MainSliderBlock
@@ -186,6 +280,15 @@ export interface Page {
     description?: string | null
     image?: string | Image | null
   }
+  parent?: (string | null) | Page
+  breadcrumbs?:
+    | {
+        doc?: (string | null) | Page
+        url?: string | null
+        label?: string | null
+        id?: string | null
+      }[]
+    | null
   updatedAt: string
   createdAt: string
   _status?: ('draft' | 'published') | null
@@ -200,7 +303,6 @@ export interface MainSliderBlock {
     effect?: ('slide' | 'fade') | null
     loop?: boolean | null
     autoplay?: boolean | null
-    virtual?: boolean | null
   }
   slides?:
     | {
@@ -215,15 +317,10 @@ export interface MainSliderBlock {
             appearance?: ('defaultLink' | 'primary' | 'secondary' | 'tertiary' | 'danger') | null
             isStandartButton?: boolean | null
             linkType?: ('reference' | 'custom') | null
-            reference?:
-              | ({
-                  relationTo: 'pages'
-                  value: string | Page
-                } | null)
-              | ({
-                  relationTo: 'productPages'
-                  value: string | ProductPage
-                } | null)
+            reference?: {
+              relationTo: 'pages'
+              value: string | Page
+            } | null
             url?: string | null
             newTab?: boolean | null
             icons?: {
@@ -253,32 +350,14 @@ export interface MainSliderBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productPages".
- */
-export interface ProductPage {
-  id: string
-  slug: string
-  product?: (string | null) | Product
-  meta?: {
-    title?: string | null
-    description?: string | null
-    image?: string | Image | null
-  }
-  updatedAt: string
-  createdAt: string
-  _status?: ('draft' | 'published') | null
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CarouselBlock".
  */
 export interface CarouselBlock {
   title?: string | null
   settings: {
     type: 'productCard' | 'newsCard' | 'simpleCard'
-    loop?: boolean | null
-    virtual?: boolean | null
     speed?: number | null
+    loop?: boolean | null
     showLink?: boolean | null
     linkText?: string | null
     link?: {
@@ -289,8 +368,8 @@ export interface CarouselBlock {
             value: string | Page
           } | null)
         | ({
-            relationTo: 'productPages'
-            value: string | ProductPage
+            relationTo: 'categories'
+            value: string | Category
           } | null)
       url?: string | null
     }
@@ -324,6 +403,23 @@ export interface ProductCardBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productPages".
+ */
+export interface ProductPage {
+  id: string
+  slug: string
+  product?: (string | null) | Product
+  meta?: {
+    title?: string | null
+    description?: string | null
+    image?: string | Image | null
+  }
+  updatedAt: string
+  createdAt: string
+  _status?: ('draft' | 'published') | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CardBlock".
  */
 export interface CardBlock {
@@ -338,8 +434,8 @@ export interface CardBlock {
           value: string | Page
         } | null)
       | ({
-          relationTo: 'productPages'
-          value: string | ProductPage
+          relationTo: 'categories'
+          value: string | Category
         } | null)
     url?: string | null
   }
@@ -396,11 +492,6 @@ export interface News {
         | RichTextBlock
       )[]
     | null
-  meta?: {
-    title?: string | null
-    description?: string | null
-    image?: string | Image | null
-  }
   updatedAt: string
   createdAt: string
   _status?: ('draft' | 'published') | null
@@ -424,8 +515,8 @@ export interface BannerBlock {
               value: string | Page
             } | null)
           | ({
-              relationTo: 'productPages'
-              value: string | ProductPage
+              relationTo: 'categories'
+              value: string | Category
             } | null)
         url?: string | null
       }
@@ -453,15 +544,10 @@ export interface BannerBlock {
         appearance?: ('defaultLink' | 'primary' | 'secondary' | 'tertiary' | 'danger') | null
         isStandartButton?: boolean | null
         linkType?: ('reference' | 'custom') | null
-        reference?:
-          | ({
-              relationTo: 'pages'
-              value: string | Page
-            } | null)
-          | ({
-              relationTo: 'productPages'
-              value: string | ProductPage
-            } | null)
+        reference?: {
+          relationTo: 'pages'
+          value: string | Page
+        } | null
         url?: string | null
         newTab?: boolean | null
         icons?: {
@@ -532,8 +618,8 @@ export interface AccordionBlock {
           value: string | Page
         } | null)
       | ({
-          relationTo: 'productPages'
-          value: string | ProductPage
+          relationTo: 'categories'
+          value: string | Category
         } | null)
     url?: string | null
   }
@@ -655,8 +741,8 @@ export interface MainNavigation {
               value: string | Page
             } | null)
           | ({
-              relationTo: 'productPages'
-              value: string | ProductPage
+              relationTo: 'categories'
+              value: string | Category
             } | null)
         url?: string | null
       }
@@ -691,8 +777,8 @@ export interface MainNavigation {
                 value: string | Page
               } | null)
             | ({
-                relationTo: 'productPages'
-                value: string | ProductPage
+                relationTo: 'categories'
+                value: string | Category
               } | null)
           url?: string | null
         }
@@ -720,8 +806,8 @@ export interface MainNavigation {
                 value: string | Page
               } | null)
             | ({
-                relationTo: 'productPages'
-                value: string | ProductPage
+                relationTo: 'categories'
+                value: string | Category
               } | null)
           url?: string | null
         }
@@ -749,8 +835,8 @@ export interface MainNavigation {
                 value: string | Page
               } | null)
             | ({
-                relationTo: 'productPages'
-                value: string | ProductPage
+                relationTo: 'categories'
+                value: string | Category
               } | null)
           url?: string | null
         }
@@ -780,8 +866,8 @@ export interface MainNavigation {
                     value: string | Page
                   } | null)
                 | ({
-                    relationTo: 'productPages'
-                    value: string | ProductPage
+                    relationTo: 'categories'
+                    value: string | Category
                   } | null)
               url?: string | null
             }
@@ -827,8 +913,8 @@ export interface MainNavigation {
             value: string | Page
           } | null)
         | ({
-            relationTo: 'productPages'
-            value: string | ProductPage
+            relationTo: 'categories'
+            value: string | Category
           } | null)
       url?: string | null
     }
@@ -853,8 +939,8 @@ export interface BottomNavigation {
             value: string | Page
           } | null)
         | ({
-            relationTo: 'productPages'
-            value: string | ProductPage
+            relationTo: 'categories'
+            value: string | Category
           } | null)
       url?: string | null
     }
@@ -874,8 +960,8 @@ export interface BottomNavigation {
                       value: string | Page
                     } | null)
                   | ({
-                      relationTo: 'productPages'
-                      value: string | ProductPage
+                      relationTo: 'categories'
+                      value: string | Category
                     } | null)
                 url?: string | null
               }
@@ -964,8 +1050,8 @@ export interface GlobalTypography {
             value: string | Page
           } | null)
         | ({
-            relationTo: 'productPages'
-            value: string | ProductPage
+            relationTo: 'categories'
+            value: string | Category
           } | null)
       url?: string | null
     }
@@ -982,8 +1068,8 @@ export interface GlobalTypography {
               value: string | Page
             } | null)
           | ({
-              relationTo: 'productPages'
-              value: string | ProductPage
+              relationTo: 'categories'
+              value: string | Category
             } | null)
         url?: string | null
       }
@@ -1011,6 +1097,47 @@ export interface GlobalTypography {
     emptySearchResultTitle: string
     errorSearchResultTitle: string
     productsCountTitle: string
+  }
+  categoryPage: {
+    allSubcategoriesFilterLabel: string
+    errorMessage: string
+    notFoundProductsMessage: string
+    backToHomePageLabel: string
+    filterProducts: {
+      label: string
+      applyFilterButtonLabel: string
+      filterLabels: {
+        promotionalOffers: string
+        trademarks: string
+        countries: string
+        specials: string
+        price: {
+          label: string
+          minPrice: string
+          maxPrice: string
+        }
+      }
+      filterParamsChangingMessages: {
+        success: string
+        pending: string
+      }
+    }
+    sortProducts: {
+      label: string
+      applySortButtonLabel: string
+      sortOptions?:
+        | {
+            label: string
+            productFieldToSort?: string | null
+            sortOrder?: ('asc' | 'desc') | null
+            id?: string | null
+          }[]
+        | null
+      sortParamsChangingMessages: {
+        success: string
+        pending: string
+      }
+    }
   }
   updatedAt?: string | null
   createdAt?: string | null

@@ -12,10 +12,10 @@ export const getSearchWith = (currentParams: URLSearchParams, paramsToUpdate: Se
       newParams.delete(key)
 
       value.forEach(part => {
-        newParams.append(key, encodeURIComponent(part.trim()))
+        newParams.append(key, part.trim())
       })
     } else {
-      newParams.set(key, encodeURIComponent(value.trim()))
+      newParams.set(key, value.trim())
     }
   })
 

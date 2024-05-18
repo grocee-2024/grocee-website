@@ -29,6 +29,7 @@ type CheckboxGroupComponent = FC<
     disableLabel?: boolean
     isDisabled?: boolean
     defaultValue?: string[]
+    value?: string[]
     onChange?: (value: string[]) => void
     name?: string
     className?: string
