@@ -203,7 +203,7 @@ function CategoriesNavigationPanel({ cardLinks, commonLinks }: CategoriesNavigat
         <CarouselUI
           disableWidthLimit
           speed={500}
-          slideClassName='max-w-[232px]'
+          slideClassName='mr-6 max-w-[212px]'
           disableLink
           disableNavigationButtons
           breakpoints={{

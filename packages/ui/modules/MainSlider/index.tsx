@@ -1,13 +1,12 @@
 'use client'
 
 import 'swiper/css'
-import 'swiper/css/virtual'
 import 'swiper/css/effect-fade'
 
 import { FC, useCallback, useMemo, useState } from 'react'
 import { Swiper, SwiperProps, SwiperSlide, useSwiper, useSwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperType } from 'swiper'
-import { Virtual, Autoplay, EffectFade } from 'swiper/modules'
+import { Autoplay, EffectFade } from 'swiper/modules'
 import type { Image as PayloadImageType } from 'cms-types'
 import { clsx } from 'clsx'
 import { PayloadImage, Button, ButtonProps } from 'ui'
@@ -26,10 +25,7 @@ export type SlideProps = {
   }
 }
 
-export type SliderProps = Pick<
-  SwiperProps,
-  'autoplay' | 'loop' | 'virtual' | 'speed' | 'effect'
-> & {
+export type SliderProps = Pick<SwiperProps, 'autoplay' | 'loop' | 'speed' | 'effect'> & {
   className?: string
   slides: SlideProps[]
   slideClassName?: string
@@ -67,7 +63,7 @@ export const MainSlider: FC<SliderProps> = ({
   return (
     <section className={className} role='slider'>
       <Swiper
-        modules={[Virtual, Autoplay, EffectFade]}
+        modules={[Autoplay, EffectFade]}
         centeredSlides
         spaceBetween={20}
         allowTouchMove
@@ -145,7 +141,7 @@ function Slide({
           >
             <div className='flex flex-col gap-2'>
               {heading.title && (
-                <h3 className='helvetica-xs tablet:helvetica-sm font-light text-gray-900'>
+                <h3 className='helvetica-xs font-light text-gray-900 tablet:text-[32px] tablet:leading-[125%]'>
                   {heading.title}
                 </h3>
               )}

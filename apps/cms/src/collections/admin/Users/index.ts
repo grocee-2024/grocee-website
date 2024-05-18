@@ -29,7 +29,9 @@ export const Users: CollectionConfig = {
     beforeChange: [createStripeCustomer],
     afterChange: [loginAfterCreate],
   },
-  auth: true,
+  auth: {
+    tokenExpiration: 60 * 60 * 24 * 7, // 1 week
+  },
   endpoints: [
     {
       path: '/:teamID/customer',

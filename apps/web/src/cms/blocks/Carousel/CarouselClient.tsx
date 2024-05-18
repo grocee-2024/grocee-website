@@ -32,25 +32,15 @@ type Props = Pick<CarouselBlock, 'title'> & { settings: Settings } & (
   )
 
 export const CarouselClient: FC<Props> = ({ title, settings, type, slides }) => {
-  const { icon, link, linkText, loop, showLink, speed, virtual } = settings
+  const { icon, link, linkText, loop, showLink, speed } = settings
 
   const parsedIcon = parseIcon({ icon: (icon?.icon as AllIconNames) ?? undefined })
   const buttonLink = parsePayloadLink(link)
 
   const mappedSlides = useMemo(() => {
     if (type === 'productCard') {
-      return slides.map(({ id, name, pageUrl, previewImage, price, rating, weight }, idx) => (
-        <ProductCardUI
-          key={`${id}-${idx}`}
-          link={pageUrl}
-          price={price}
-          rating={rating}
-          title={name}
-          weight={weight}
-          image={previewImage}
-          className='grow'
-          tag='Tag'
-        />
+      return slides.map((product, idx) => (
+        <ProductCardUI key={`${product.id}-${idx}`} product={product} className='grow' />
       ))
     }
 
@@ -80,7 +70,6 @@ export const CarouselClient: FC<Props> = ({ title, settings, type, slides }) => 
     <CarouselUI
       loop={loop ?? false}
       speed={speed ?? 500}
-      virtual={virtual ?? false}
       title={title ?? undefined}
       disableLink={!showLink ?? false}
       buttonIcon={parsedIcon.icon}

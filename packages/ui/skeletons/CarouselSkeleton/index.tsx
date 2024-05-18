@@ -21,18 +21,18 @@ export function CarouselSkeleton({ type }: Props) {
 
   return (
     <div className='width-limit flex flex-col gap-6 tablet:gap-8'>
-      <div className='flex w-full justify-between gap-6 '>
+      <div className='flex w-full justify-between gap-6'>
         <Skeleton className='block h-[32px] min-w-[100px] tablet:h-[44px] tablet:min-w-[130px]' />
         <Skeleton className='block h-[32px] min-w-[70px] tablet:h-[44px] tablet:min-w-[170px]' />
       </div>
-      <div className='grid grid-cols-1 grid-rows-1 gap-6 overflow-hidden mobile:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4'>
+      <div className='grid grid-cols-1 grid-rows-1 gap-6 overflow-hidden min-[400px]:grid-cols-2 min-[715px]:grid-cols-3 desktop:grid-cols-4'>
         <div className='col-span-1'>
           <SkeletonCard />
         </div>
-        <div className='col-span-1 hidden mobile:block'>
+        <div className='col-span-1 hidden min-[400px]:block'>
           <SkeletonCard />
         </div>
-        <div className='col-span-1 hidden h-[250px] laptop:block'>
+        <div className='col-span-1 hidden h-[250px] min-[715px]:block'>
           <SkeletonCard />
         </div>
         <div className='col-span-1 hidden h-[250px] desktop:block'>

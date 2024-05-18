@@ -87,6 +87,17 @@ export const createImages = async () => {
     'Delivery Banner',
   )
 
+  const potato = await createSingleImage(
+    path.resolve(__dirname, '../media/potato-card.png'),
+    'Potato',
+  )
+
+  const apple = await createSingleImage(path.resolve(__dirname, '../media/apple-card.png'), 'Apple')
+
+  const bread = await createSingleImage(path.resolve(__dirname, '../media/bread-card.png'), 'Bread')
+
+  const milk = await createSingleImage(path.resolve(__dirname, '../media/milk-card.png'), 'milk')
+
   return {
     logoDarkId: logoDark.id,
     logoLightId: logoLight.id,
@@ -103,6 +114,10 @@ export const createImages = async () => {
     cookAndEatLogoId: cookAndEatLogo.id,
     marketBannerId: marketBanner.id,
     deliveryBannerId: deliveryBanner.id,
+    potatoId: potato.id,
+    appleId: apple.id,
+    breadId: bread.id,
+    milkId: milk.id,
   }
 }
 

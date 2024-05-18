@@ -154,7 +154,9 @@ function OrderDeliveryHeading({
 
       <div className='flex flex-col gap-4'>
         <div className='flex flex-col gap-1'>
-          <h3 className='helvetica-xs tablet:helvetica-sm font-light text-gray-900'>{title}</h3>
+          <h3 className='helvetica-xs font-light text-gray-900 tablet:text-[32px] tablet:leading-[125%]'>
+            {title}
+          </h3>
 
           <p className='gilroy-sm text-gray-700'>{subtitle}</p>
         </div>

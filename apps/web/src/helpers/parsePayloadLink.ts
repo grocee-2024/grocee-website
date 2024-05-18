@@ -15,7 +15,10 @@ export const parsePayloadLink = (link?: PayloadLink) => {
   }
 
   const url =
-    link.type === 'custom' ? (link?.url as string) : (pageToUrl(link.reference?.value) as string)
+    link.type === 'custom'
+      ? (link?.url as string)
+      : // @ts-ignore
+        (pageToUrl({ ...(link.reference || {}) }) as string)
 
   return url ?? ''
 }

@@ -1,7 +1,18 @@
 import { AxiosError } from 'axios'
-import { Config, Image, Page } from 'cms-types'
+import {
+  Config,
+  Country,
+  Image,
+  Page,
+  Product,
+  Special,
+  Subcategory,
+  Tag,
+  Trademark,
+} from 'cms-types'
 import { Metadata, ResolvedMetadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
+import { Where } from 'payload/types'
 
 import { resolveRelation } from './helpers'
 
@@ -16,10 +27,31 @@ const isAxiosError = (error: unknown): error is AxiosError => {
   )
 }
 
-const getCmsSearchParams = (searchParams: Record<string, string | string[]> = {}) =>
-  `${
-    searchParams.locale ? `&locale=${searchParams.locale}` : ''
-  }${searchParams.depth ? `&depth=${searchParams.depth}` : ''}`
+const getCmsSearchParams = (searchParams: Record<string, string | string[]> = {}) => {
+  const validParams = ['locale', 'depth', 'limit', 'page']
+
+  const params = Object.entries(searchParams)
+    .filter(param => {
+      const [key] = param
+
+      return validParams.includes(key)
+    })
+    .reduce((acc, param) => {
+      const [key, value] = param
+
+      if (acc.some((p: string) => p.includes(key))) {
+        return acc
+      }
+
+      // @ts-ignore
+      acc.push(`${key as string}=${Array.isArray(value) ? value[0] : value}`)
+
+      return acc
+    }, [])
+    .join('&')
+
+  return params
+}
 
 type PageTypes = {
   pages: Page
@@ -177,12 +209,14 @@ export const getPaginatedCollection = async <T extends keyof Config['collections
   {
     where = '',
     equals = '',
+    greater_than_equal = '',
     page = 1, // Add page parameter with a default value of 1
     pageLimit = 10, // Add pageSize parameter with a default value of 10
     sortBy = '',
   }: {
     where?: string
     equals?: string
+    greater_than_equal?: string | number
     page?: number
     pageLimit?: number
     sortBy?: string
@@ -193,8 +227,12 @@ export const getPaginatedCollection = async <T extends keyof Config['collections
     searchParams?: Record<string, string | string[]>
   } = {},
 ) => {
+  const whereParam = equals ? 'equals' : 'greater_than_equal'
+
   const url = `${CMS_URL}/api/${collection}?${getCmsSearchParams(searchParams)}&${
-    where && equals && `where[${where}][equals]=${equals}&`
+    where &&
+    (equals || greater_than_equal) &&
+    `where[${where}][${whereParam}]=${equals ? equals : greater_than_equal}&`
   }page=${page}&limit=${pageLimit}&sort=${sortBy}`
 
   const response = await fetch(url)
@@ -288,6 +326,93 @@ export const searchInCollection = async <T extends keyof Config['collections']>(
 
   return (await response.json()) as {
     docs: Config['collections'][T][]
+    totalDocs: number
+    totalPages: number
+    limit: number
+    page: number
+    pagingCounter: number
+    hasPrevPage: boolean
+    hasNextPage: boolean
+    prevPage: number | null
+    nextPage: number | null
+  }
+}
+
+export const getProductsCountByFilters = async (params: Record<string, string | string[]>) => {
+  const url = `${CMS_URL}/api/products-count-by-filters`
+
+  const response = await fetch(url, {
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    method: 'post',
+    body: JSON.stringify(params),
+    next: { tags: ['productsCount'] },
+  })
+
+  if (process.env['NODE_ENV'] === 'production') {
+    console.log(`CMS REQ PAGINATED [${response.status}]:`, url)
+  }
+
+  const data = await response.json()
+
+  return data as {
+    totalProducts: number
+    filters: {
+      tags: { doc: Tag; count: number }[]
+      trademarks: { doc: Trademark; count: number }[]
+      countries: { doc: Country; count: number }[]
+      specials: { doc: Special; count: number }[]
+      price: {
+        min?: number
+        max?: number
+      }
+    }
+  }
+}
+
+export const getProductsCountBySubcategories = async (
+  params: Record<string, string | string[]>,
+) => {
+  const url = `${CMS_URL}/api/products-count-by-subcategories`
+
+  const response = await fetch(url, {
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    method: 'post',
+    body: JSON.stringify(params),
+    next: { tags: ['productsCount'] },
+  })
+
+  if (process.env['NODE_ENV'] === 'production') {
+    console.log(`CMS REQ PAGINATED [${response.status}]:`, url)
+  }
+
+  const data = await response.json()
+
+  return data as {
+    totalProducts: number
+    subcategories: { doc: Subcategory; count: number }[]
+  }
+}
+
+export const getFilteredProducts = async (
+  params: Record<string, string | string[] | Record<string, string | string[]>>,
+) => {
+  const url = `${CMS_URL}/api/filtered-products`
+
+  const response = await fetch(url, {
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    method: 'post',
+    body: JSON.stringify(params),
+    next: { tags: ['filteredProducts'] },
+  })
+
+  if (process.env['NODE_ENV'] === 'production') {
+    console.log(`CMS REQ PAGINATED [${response.status}]:`, url)
+  }
+
+  const data = await response.json()
+
+  return data as {
+    docs: Product[]
     totalDocs: number
     totalPages: number
     limit: number

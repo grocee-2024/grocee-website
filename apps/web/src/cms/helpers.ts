@@ -26,11 +26,13 @@ export const pageToUrl = (
       case 'news':
         return `/news${pageToUrl(page.value)}`
 
+      case 'categories':
+        return `/category${pageToUrl(page.value)}`
+
       default:
         return pageToUrl(page.value)
     }
   }
-
   return page.slug === 'home' ? '/' : `/${page.slug}`
 }
 

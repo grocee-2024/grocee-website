@@ -50,3 +50,7 @@
 .helvetica-2xl {
   @apply font-helvetica text-[72px] leading-[125%] tracking-tightest transition-[font-size];
 }
+
+.helvetica {
+  @apply font-helvetica text-[24px] leading-[133%] transition-[font-size] tablet:text-[32px] tablet:leading-[125%] laptop:text-[36px] laptop:leading-[122%] laptop:tracking-tightest;
+}

@@ -43,9 +43,7 @@ export const HelpBlock: FC<Props> = ({ title, accordionBlock, supportLinks, link
   return (
     <section className='width-limit flex grid-cols-12 flex-col gap-8 laptop:grid laptop:gap-x-8 laptop:gap-y-6'>
       <div className='flex grow flex-col gap-6 tablet:gap-8 laptop:col-span-6'>
-        {title && (
-          <h3 className='helvetica-xs tablet:helvetica-md font-light text-gray-900'>{title}</h3>
-        )}
+        {title && <h3 className='helvetica font-light text-gray-900'>{title}</h3>}
 
         <ul className='flex flex-col gap-6'>
           {supportLinks.map(({ info, caption, href, id, icon }) => {

@@ -62,7 +62,6 @@ export async function MainSlider({ slides, settings }: MainSliderBlock) {
       slides={mappedSlides}
       autoplay={settings?.autoplay ? { delay: 4000, pauseOnMouseEnter: true } : false}
       loop={settings?.loop || false}
-      virtual={settings?.virtual || false}
       speed={settings?.speed || 500}
       effect={settings?.effect || 'slide'}
       className='laptop:px-8'

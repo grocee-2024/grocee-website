@@ -20,7 +20,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import mergeRefs from 'merge-refs'
 
 export type InputProps = {
-  type: 'text' | 'password' | 'date' | 'tel' | 'email' | 'time'
+  type: 'text' | 'password' | 'date' | 'tel' | 'email' | 'time' | 'number'
   ref?: MutableRefObject<HTMLInputElement | null>
   status?: 'success' | 'error'
   isDisabled?: boolean
@@ -52,6 +52,9 @@ const CommonInput = forwardRef((props: InputProps, ref) => {
     className = '',
     inputClassName = '',
     innerClassName = '',
+    defaultValue,
+    min,
+    max,
     ...restProps
   } = props
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -87,6 +90,9 @@ const CommonInput = forwardRef((props: InputProps, ref) => {
           ref={mergeRefs(inputRef, ref)}
           {...inputProps}
           {...restProps}
+          defaultValue={defaultValue}
+          min={min}
+          max={max}
           type={type}
           className={clsx(
             'placeholder:gilroy-md !min-w-0 grow bg-transparent text-gray-900 placeholder:text-gray-400',

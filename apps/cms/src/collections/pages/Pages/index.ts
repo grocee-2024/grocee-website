@@ -23,6 +23,11 @@ export const Pages: CollectionConfig = {
   fields: [
     slugField(),
     {
+      name: 'breadcrumbsTitle',
+      type: 'text',
+      localized: true,
+    },
+    {
       name: 'layout',
       type: 'blocks',
       blocks: ALL_BLOCKS,

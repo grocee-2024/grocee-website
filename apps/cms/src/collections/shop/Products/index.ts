@@ -5,6 +5,7 @@ import { deleteProductFromCarts } from './hooks/deleteProductFromCarts'
 import { ProductSelect } from './ui/ProductSelect'
 import { isAnyone } from '../../../access/isAnyone'
 import { isAdmin } from '../../../access/isAdmin'
+import { SubcategorySelect } from './ui/SubcategorySelect'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -32,6 +33,7 @@ export const Products: CollectionConfig = {
       type: 'text',
       required: true,
       localized: true,
+      unique: true,
     },
     {
       name: 'description',
@@ -60,6 +62,71 @@ export const Products: CollectionConfig = {
           },
         },
         {
+          name: 'tag',
+          type: 'relationship',
+          relationTo: 'tags',
+        },
+        {
+          name: 'trademark',
+          type: 'relationship',
+          relationTo: 'trademarks',
+        },
+        {
+          name: 'specials',
+          type: 'relationship',
+          relationTo: 'specials',
+          hasMany: true,
+        },
+        {
+          name: 'country',
+          type: 'relationship',
+          relationTo: 'countries',
+        },
+        {
+          name: 'weight',
+          type: 'number',
+          admin: {
+            readOnly: true,
+            hidden: true,
+          },
+        },
+        {
+          name: 'weightStep',
+          type: 'number',
+          admin: {
+            readOnly: true,
+            hidden: true,
+          },
+        },
+        {
+          name: 'priceJSON',
+          label: 'Price JSON',
+          type: 'json',
+          admin: {
+            readOnly: true,
+            hidden: true,
+          },
+        },
+        {
+          name: 'price',
+          type: 'number',
+          admin: {
+            readOnly: true,
+            hidden: true,
+          },
+        },
+        {
+          name: 'unit',
+          type: 'relationship',
+          relationTo: 'units',
+        },
+        {
+          name: 'weightUnit',
+          type: 'relationship',
+          relationTo: 'units',
+          required: true,
+        },
+        {
           name: 'rating',
           type: 'number',
           admin: {
@@ -77,6 +144,19 @@ export const Products: CollectionConfig = {
       hasMany: true,
       admin: {
         position: 'sidebar',
+      },
+    },
+    {
+      name: 'subcategories',
+      type: 'relationship',
+      relationTo: 'subcategories',
+      hasMany: true,
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: SubcategorySelect,
+        },
+        condition: (_, siblingData) => siblingData?.categories?.length > 0,
       },
     },
     {

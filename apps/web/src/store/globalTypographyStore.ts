@@ -71,5 +71,39 @@ export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'created
       emptySearchResultTitle: '',
       errorSearchResultTitle: '',
     },
+    categoryPage: {
+      allSubcategoriesFilterLabel: '',
+      errorMessage: '',
+      notFoundProductsMessage: '',
+      backToHomePageLabel: '',
+      filterProducts: {
+        label: '',
+        applyFilterButtonLabel: '',
+        filterLabels: {
+          promotionalOffers: '',
+          trademarks: '',
+          countries: '',
+          specials: '',
+          price: {
+            label: '',
+            minPrice: '',
+            maxPrice: '',
+          },
+        },
+        filterParamsChangingMessages: {
+          success: '',
+          pending: '',
+        },
+      },
+      sortProducts: {
+        applySortButtonLabel: '',
+        label: '',
+        sortOptions: [],
+        sortParamsChangingMessages: {
+          success: '',
+          pending: '',
+        },
+      },
+    },
   }),
 )

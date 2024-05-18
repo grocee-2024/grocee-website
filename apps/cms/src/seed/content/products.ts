@@ -1,8 +1,16 @@
 import payload from 'payload'
 
 import { Images } from './images'
+import { Units } from './units'
+import { Categories } from './categories'
+import { Subcategories } from './subcategories'
 
-export const createProducts = async (images: Images) => {
+export const createProducts = async (
+  images: Images,
+  units: Units,
+  categories: Categories,
+  subcategories: Subcategories,
+) => {
   const [potato, apple, bread, milk] = await Promise.all([
     payload.create({
       collection: 'products',
@@ -10,10 +18,13 @@ export const createProducts = async (images: Images) => {
         name: 'Potato',
         description: 'Potato',
         productDetails: {
-          image: images.tempImageId,
+          image: images.potatoId,
           rating: 4,
+          weightUnit: units.kgId,
           stripeProductID: 'prod_PzMCeis5cSASsB',
         },
+        categories: [categories.fruitsVegetablesPicklesId],
+        subcategories: [subcategories.vegetablesId],
       },
     }),
     payload.create({
@@ -22,10 +33,13 @@ export const createProducts = async (images: Images) => {
         name: 'Apple',
         description: 'Apple',
         productDetails: {
-          image: images.tempImageId,
+          image: images.appleId,
           rating: 4,
+          weightUnit: units.kgId,
           stripeProductID: 'prod_Q3wRvzwRTIWpvW',
         },
+        categories: [categories.fruitsVegetablesPicklesId],
+        subcategories: [subcategories.fruitsId],
       },
     }),
     payload.create({
@@ -34,8 +48,9 @@ export const createProducts = async (images: Images) => {
         name: 'Bread',
         description: 'Bread',
         productDetails: {
-          image: images.tempImageId,
+          image: images.breadId,
           rating: 4,
+          weightUnit: units.kgId,
           stripeProductID: 'prod_Q3wSM2ngzIEYOH',
         },
       },
@@ -46,8 +61,9 @@ export const createProducts = async (images: Images) => {
         name: 'Milk',
         description: 'Milk',
         productDetails: {
-          image: images.tempImageId,
+          image: images.milkId,
           rating: 4,
+          weightUnit: units.kgId,
           stripeProductID: 'prod_Q3wX9LLM7QxbaQ',
         },
       },

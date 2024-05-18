@@ -61,13 +61,6 @@ export const MainSlider: Block = {
                 width: '31%',
               },
             },
-            {
-              name: 'virtual',
-              type: 'checkbox',
-              admin: {
-                width: '31%',
-              },
-            },
           ],
         },
       ],

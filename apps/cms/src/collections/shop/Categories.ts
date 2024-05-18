@@ -6,7 +6,7 @@ import { slugField } from '../../fields/slug'
 export const Categories: CollectionConfig = {
   slug: 'categories',
   admin: {
-    useAsTitle: 'title',
+    useAsTitle: 'label',
     group: 'Shop',
   },
   versions: {
@@ -21,8 +21,17 @@ export const Categories: CollectionConfig = {
   fields: [
     slugField(),
     {
-      name: 'title',
+      name: 'label',
       type: 'text',
+      localized: true,
+      required: true,
+    },
+    {
+      name: 'subcategories',
+      type: 'relationship',
+      relationTo: 'subcategories',
+      hasMany: true,
+      required: true,
     },
   ],
 }

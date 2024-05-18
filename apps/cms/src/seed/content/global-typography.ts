@@ -124,6 +124,71 @@ export const createGlobalTypography = async (pages: Pages) => {
         emptySearchResultTitle: 'Nothing was found for the query "{{query}}"',
         errorSearchResultTitle: 'An error occurred while searching, please try again later',
       },
+      categoryPage: {
+        allSubcategoriesFilterLabel: 'All',
+        errorMessage: 'Something went wrong!',
+        notFoundProductsMessage: 'No products were found according to your filters',
+        backToHomePageLabel: 'Back to Home',
+        filterProducts: {
+          label: 'Filter',
+          applyFilterButtonLabel: 'Apply filters',
+          filterLabels: {
+            promotionalOffers: 'Promotional offers',
+            trademarks: 'Trademark',
+            countries: 'Country',
+            specials: 'Special',
+            price: {
+              label: 'Price',
+              minPrice: 'Min price',
+              maxPrice: 'Max price',
+            },
+          },
+          filterParamsChangingMessages: {
+            success: 'The filter parameters have been successfully updated',
+            pending: 'Updating the filter parameters...',
+          },
+        },
+        sortProducts: {
+          label: 'Sort',
+          applySortButtonLabel: 'Apply sort',
+          sortOptions: [
+            {
+              label: 'Popular at first',
+              productFieldToSort: 'createdAt',
+              sortOrder: 'asc',
+            },
+            {
+              label: 'By rating',
+              productFieldToSort: 'productDetails.rating',
+              sortOrder: 'asc',
+            },
+            {
+              label: 'From A to Z',
+              productFieldToSort: 'name',
+              sortOrder: 'asc',
+            },
+            {
+              label: 'From Z to A',
+              productFieldToSort: 'name',
+              sortOrder: 'desc',
+            },
+            {
+              label: 'Cheaper at first',
+              productFieldToSort: 'productDetails.price',
+              sortOrder: 'asc',
+            },
+            {
+              label: 'Epensive at first',
+              productFieldToSort: 'productDetails.price',
+              sortOrder: 'desc',
+            },
+          ],
+          sortParamsChangingMessages: {
+            success: 'The sorting parameters have been successfully updated',
+            pending: 'Updating the sorting parameters...',
+          },
+        },
+      },
     },
   })
 

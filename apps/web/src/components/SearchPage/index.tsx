@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { searchInCollection } from '@/cms'
 import { mapCMSProductsForProductCard } from '@/helpers'
 import { useCookies } from 'next-client-cookies'
@@ -13,6 +13,7 @@ import { SearchPageSkeleton } from './SearchPageSkeleton'
 import { mapIcon } from '@oleksii-lavka/grocee-icons'
 import { FocusRing } from 'react-aria'
 import Link from 'next/link'
+import Skeleton from 'react-loading-skeleton'
 
 type Props = {
   query: string
@@ -22,7 +23,9 @@ export function SearchPage({ query }: Props) {
   const cookies = useCookies()
   const locale = cookies.get('locale') || 'en'
 
-  const [totalPages, setTotalPages] = useState(0)
+  const totalPagesCount = useRef(0)
+  const totalProductsCount = useRef(0)
+
   const [startPageChange, setStartPageChange] = useState(false)
   const { updateBlock } = useEdgeBlocksOnPage()
   const searchParams = useSearchParams()
@@ -63,10 +66,11 @@ export function SearchPage({ query }: Props) {
           page,
         },
         { searchParams: { locale } },
-      ).then(async ({ docs = [], totalPages }) => {
+      ).then(async ({ docs = [], totalDocs, totalPages }) => {
         const productsForProductCard = await mapCMSProductsForProductCard(docs, locale)
 
-        setTotalPages(totalPages)
+        totalPagesCount.current = totalPages
+        totalProductsCount.current = totalDocs
 
         return productsForProductCard
       })
@@ -82,7 +86,7 @@ export function SearchPage({ query }: Props) {
       const errorSearchResultTitle = searchPage.errorSearchResultTitle
       const productsCountTitle = searchPage.productsCountTitle.replace(
         '{{count}}',
-        `${(products ?? []).length}`,
+        `${totalProductsCount.current ?? 0}`,
       )
 
       return {
@@ -91,7 +95,7 @@ export function SearchPage({ query }: Props) {
         emptySearchResultTitle,
         errorSearchResultTitle,
       }
-    }, [searchPage, query, products])
+    }, [searchPage, query, products, totalProductsCount.current])
 
   const mappedBackButton = useMemo(() => {
     if (!backButton.icon.icon) {
@@ -108,7 +112,7 @@ export function SearchPage({ query }: Props) {
       <FocusRing focusRingClass='ring ring-offset-2'>
         <Link
           href={prevPath ?? '/'}
-          className='gilroy-md tablet:gilroy-xl my-4 inline-flex items-center gap-2 border-none bg-transparent font-light text-gray-900 no-underline outline-none'
+          className='gilroy-md tablet:[text-20px] my-4 inline-flex items-center gap-2 border-none bg-transparent font-light text-gray-900 no-underline outline-none'
         >
           <Icon width={backButton.icon.size.width} height={backButton.icon.size.height} />
           <span>{backButton.label}</span>
@@ -127,8 +131,8 @@ export function SearchPage({ query }: Props) {
 
   if (isError) {
     return (
-      <div className='width-limit mt-[120px] tablet:mt-[185px]'>
-        <h1 className='helvetica-xs tablet:helvetica-md font-light text-error-600'>
+      <div className='width-limit mt-[120px] tablet:mt-[150px]'>
+        <h1 className='helvetica font-light text-error-600'>
           {errorSearchResultTitle || error.message}
         </h1>
         {mappedBackButton && mappedBackButton}
@@ -137,36 +141,57 @@ export function SearchPage({ query }: Props) {
   }
 
   return (
-    <div className='width-limit mt-[120px] tablet:mt-[185px]'>
+    <div className='width-limit mt-[120px] tablet:mt-[150px]'>
+      {!mappedBackButton ||
+      !emptySearchResultTitle ||
+      !searchResultTitle ||
+      !productsCountTitle ||
+      !totalProductsCount.current ? (
+        <>
+          <div className='mr-4 w-3/4 tablet:hidden'>
+            <Skeleton height={44} />
+          </div>
+          <div className='hidden tablet:block'>
+            <Skeleton width={500} height={44} />
+          </div>
+          <Skeleton width={61} height={24} className='mb-8 mt-4' />
+        </>
+      ) : (
+        <>
+          <h1 className='helvetica font-light text-gray-900'>
+            {!totalProductsCount.current && !isFetching && !isLoading && !isPending
+              ? `${emptySearchResultTitle}`
+              : `${searchResultTitle} (${productsCountTitle})`}
+          </h1>
+          {mappedBackButton && mappedBackButton}
+        </>
+      )}
+
       {isLoading || isPending || isFetching || startPageChange ? (
         <div className='mt-6 tablet:mt-8'>
           <SearchPageSkeleton />
         </div>
       ) : (
         <>
-          <h1 className='helvetica-xs tablet:helvetica-md font-light text-gray-900'>
-            {!products?.length
-              ? `${emptySearchResultTitle}`
-              : `${searchResultTitle} (${productsCountTitle})`}
-          </h1>
-          {mappedBackButton && mappedBackButton}
           <div className='grid-layout mt-6 tablet:mt-8'>
-            {products?.map(({ id, name, pageUrl, previewImage, ...restProduct }) => (
+            {products?.map((product, idx) => (
               <ProductCardUI
                 className='col-span-2 !p-2 laptop:col-span-4 laptop:!p-4 desktop:col-span-3'
-                key={id}
-                link={pageUrl}
-                title={name}
-                image={previewImage}
-                tag='Tag'
+                key={`${product.id}-${idx}`}
+                product={product}
                 disableAddToCartButtonLabel={disableAddToCartButtonLabel}
-                {...restProduct}
               />
             ))}
           </div>
         </>
       )}
-      {totalPages > 1 && <Pagination page={page} totalPages={totalPages} />}
+      {(totalPagesCount.current ?? 0) > 1 && (
+        <Pagination
+          className='mt-4 laptop:mt-8'
+          page={page}
+          totalPages={totalPagesCount.current ?? 0}
+        />
+      )}
     </div>
   )
 }

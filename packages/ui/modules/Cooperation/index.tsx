@@ -32,7 +32,7 @@ export const Cooperation: FC<Props> = ({ title = '', className = '', logos }) =>
   return (
     <section className={clsx('flex flex-col gap-8', className)}>
       {title && (
-        <h3 className='width-limit helvetica-xs tablet:helvetica-md grow justify-start font-light text-gray-900'>
+        <h3 className='width-limit helvetica grow justify-start font-light text-gray-900'>
           {title}
         </h3>
       )}

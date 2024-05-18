@@ -27,7 +27,7 @@ export const Tag: FC<TagProps> = ({
         'after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:rounded-[1000px] after:border-[1px] after:border-transparent after:transition-colors after:duration-300 after:content-[""]',
         {
           texted: 'bg-transparent text-gray-900',
-          bordered: 'bg-transparent text-gray-900 after:border-gray-700',
+          bordered: 'bg-transparent text-gray-900 after:!border-gray-700',
           selected: 'bg-gray-900 text-white',
         }[type],
         className,

@@ -1,6 +1,7 @@
 import { getCollectionItem } from '@/cms'
 import { pageToUrl, resolveRelation } from '@/cms/helpers'
-import { Product, ProductCardBlock, ProductPage } from 'cms-types'
+import { Image, Product, ProductCardBlock, ProductPage, Unit } from 'cms-types'
+import { StripePiceJSON } from 'ui/types'
 
 const CMS_URL = process.env.PAYLOAD_INTERNAL_URL ?? process.env.NEXT_PUBLIC_PAYLOAD_URL
 
@@ -48,16 +49,34 @@ export const mapCMSProductsForProductCard = async (
       const pageUrl = pageToUrl(page) as string
 
       const { id, name, productDetails } = product as Product
-      const { rating } = productDetails
+      const { rating, priceJSON, stripeProductID, unit, weightUnit } = productDetails
+
+      const resolvedUnit = (
+        typeof unit === 'string' ? await getCollectionItem(unit, 'units') : unit
+      ) as Unit
+      const resolvedWeightUnit = (
+        typeof weightUnit === 'string' ? await getCollectionItem(weightUnit, 'units') : weightUnit
+      ) as Unit
+
+      const [price] = (priceJSON as unknown as StripePiceJSON).data
+      const priceAmount = (price.unit_amount as number) / 100
 
       return {
         id,
         name,
         rating: rating as number | string,
         pageUrl,
-        previewImage,
-        price: 10,
-        weight: '0.5 kg',
+        previewImage: previewImage as Image,
+        price: {
+          id: price.id,
+          amount: productDetails?.weightStep
+            ? ((100 / productDetails.weightStep) * priceAmount).toFixed(2)
+            : priceAmount,
+        },
+        stripeProductID,
+        weight: `${(productDetails?.weight || 100) / 1000} ${resolvedWeightUnit.text}`,
+        unit: resolvedUnit,
+        tag: 'Tag',
       }
     }),
   )

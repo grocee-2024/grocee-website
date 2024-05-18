@@ -1,8 +1,13 @@
 import payload from 'payload'
 import { Images } from './images'
 import { Pages } from './pages'
+import { Categories } from './categories'
 
-export const createMainNavigation = async (pages: Pages, images: Images) => {
+export const createMainNavigation = async (
+  pages: Pages,
+  images: Images,
+  categories: Categories,
+) => {
   await payload.updateGlobal({
     slug: 'mainNavigation',
     data: {
@@ -157,8 +162,8 @@ export const createMainNavigation = async (pages: Pages, images: Images) => {
               link: {
                 type: 'reference',
                 reference: {
-                  relationTo: 'pages',
-                  value: pages.homePageId,
+                  relationTo: 'categories',
+                  value: categories.fruitsVegetablesPicklesId,
                 },
               },
             },
