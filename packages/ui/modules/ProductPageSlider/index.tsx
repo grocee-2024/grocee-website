@@ -9,126 +9,132 @@ import { Button, PayloadImage } from '../..'
 import type { Swiper as SwiperType } from 'swiper'
 import { Thumbs } from 'swiper/modules'
 import { motion, AnimatePresence } from 'framer-motion'
+import { ProductSliderSkeleton } from '../../../../apps/web/src/components/ProductPageSkeletons'
+import { WithSkeletonLoader } from '../../hoc'
 
 type Props = {
+  className?: string
   productGallery: {
     id: string
     image: PayloadImageType
   }[]
 }
 
-export const ProductPageSlider: FC<Props> = ({ productGallery }) => {
-  const [swiper, setSwiper] = useState<SwiperType | null>(null)
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null)
-  const [activeSlide, setActiveSlide] = useState(0)
+export const ProductPageSlider: FC<Props> = WithSkeletonLoader(
+  ({ productGallery, className = '' }: Props) => {
+    const [swiper, setSwiper] = useState<SwiperType | null>(null)
+    const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null)
+    const [activeSlide, setActiveSlide] = useState(0)
 
-  const [disabledNavigation, setDisabledNavigation] = useState<{ prev: boolean; next: boolean }>({
-    prev: true,
-    next: true,
-  })
+    const [disabledNavigation, setDisabledNavigation] = useState<{ prev: boolean; next: boolean }>({
+      prev: true,
+      next: true,
+    })
 
-  const onUpdateDisableNavigation = useCallback(
-    ({ isBeginning, isEnd }: Pick<SwiperType, 'isBeginning' | 'isEnd'>) => {
-      setDisabledNavigation(prevState => ({
-        ...prevState,
-        prev: isBeginning,
-        next: isEnd,
-      }))
-    },
-    [swiper],
-  )
+    const onUpdateDisableNavigation = useCallback(
+      ({ isBeginning, isEnd }: Pick<SwiperType, 'isBeginning' | 'isEnd'>) => {
+        setDisabledNavigation(prevState => ({
+          ...prevState,
+          prev: isBeginning,
+          next: isEnd,
+        }))
+      },
+      [swiper],
+    )
 
-  const onSwipeToNextSlide = useCallback(() => {
-    if (!swiper) {
-      return () => {}
-    }
+    const onSwipeToNextSlide = useCallback(() => {
+      if (!swiper) {
+        return () => {}
+      }
 
-    return swiper.slideNext(500)
-  }, [swiper])
+      return swiper.slideNext(500)
+    }, [swiper])
 
-  const onSwipeToPrevSlide = useCallback(() => {
-    if (!swiper) {
-      return () => {}
-    }
+    const onSwipeToPrevSlide = useCallback(() => {
+      if (!swiper) {
+        return () => {}
+      }
 
-    return swiper.slidePrev(500)
-  }, [swiper])
+      return swiper.slidePrev(500)
+    }, [swiper])
 
-  return (
-    <section>
-      <Swiper
-        modules={[Thumbs]}
-        onSlideChange={swiper => {
-          onUpdateDisableNavigation(swiper)
-          setActiveSlide(swiper.activeIndex)
-        }}
-        onSwiper={swiper => {
-          setSwiper(swiper)
-          onUpdateDisableNavigation({ isBeginning: swiper.isBeginning, isEnd: swiper.isEnd })
-        }}
-        speed={500}
-        spaceBetween={24}
-        slidesPerGroup={1}
-        slidesPerView={1}
-        thumbs={{ swiper: thumbsSwiper }}
-      >
-        {productGallery.map(({ id, image }) => (
-          <SwiperSlide key={id}>
-            <div className='relative w-full overflow-hidden rounded-[32px] bg-gray-50 pb-[262px]'>
-              <PayloadImage
-                src={image}
-                skipBlur
-                imgProps={{
-                  className: 'absolute left-0 top-0 object-contain mix-blend-multiply',
-                }}
-              />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <div className='mt-4 flex justify-between gap-4'>
-        <div className='!min-w-0'>
-          <Swiper
-            onSwiper={setThumbsSwiper}
-            spaceBetween={8}
-            watchSlidesProgress
-            slidesPerView={3}
-            style={{ marginLeft: 0 }}
-            className='max-w-[150px]'
-          >
-            {productGallery.map(({ id, image }, idx) => (
-              <SwiperSlide key={id} className='relative mix-blend-exclusion'>
-                <div className='relative !h-10 !w-10 overflow-hidden'>
-                  <PayloadImage
-                    src={image}
-                    skipBlur
-                    imgProps={{
-                      className: 'absolute left-0 top-0 w-full object-contain mix-blend-multiply',
-                    }}
-                  />
-                </div>
-                <AnimatePresence>
-                  {idx === activeSlide && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className='absolute inset-0 max-w-10 rounded border-[1px] border-gray-900'
+    return (
+      <section className={className}>
+        <Swiper
+          modules={[Thumbs]}
+          onSlideChange={swiper => {
+            onUpdateDisableNavigation(swiper)
+            setActiveSlide(swiper.activeIndex)
+          }}
+          onSwiper={swiper => {
+            setSwiper(swiper)
+            onUpdateDisableNavigation({ isBeginning: swiper.isBeginning, isEnd: swiper.isEnd })
+          }}
+          speed={500}
+          spaceBetween={24}
+          slidesPerGroup={1}
+          slidesPerView={1}
+          thumbs={{ swiper: thumbsSwiper }}
+        >
+          {productGallery.map(({ id, image }) => (
+            <SwiperSlide key={id}>
+              <div className='relative w-full overflow-hidden rounded-[32px] bg-gray-50 pb-[262px] tablet:pb-[500px] laptop:pb-[600px] desktop:pb-[700px]'>
+                <PayloadImage
+                  src={image}
+                  skipBlur
+                  imgProps={{
+                    className: 'absolute left-0 top-0 object-contain mix-blend-multiply',
+                  }}
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <div className='mt-4 flex items-center justify-between gap-4'>
+          <div className='!min-w-0'>
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              spaceBetween={8}
+              watchSlidesProgress
+              slidesPerView={3}
+              style={{ marginLeft: 0 }}
+              className='max-w-[150px] tablet:max-w-[220px]'
+            >
+              {productGallery.map(({ id, image }, idx) => (
+                <SwiperSlide key={id} className='relative mix-blend-exclusion'>
+                  <div className='relative h-10 w-10 overflow-hidden tablet:h-16 tablet:w-16'>
+                    <PayloadImage
+                      src={image}
+                      skipBlur
+                      imgProps={{
+                        className: 'absolute left-0 top-0 w-full object-contain mix-blend-multiply',
+                      }}
                     />
-                  )}
-                </AnimatePresence>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                  </div>
+                  <AnimatePresence>
+                    {idx === activeSlide && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className='absolute inset-0 max-w-10 rounded border-[1px] border-gray-900 tablet:max-w-16'
+                      />
+                    )}
+                  </AnimatePresence>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+          <div className='flex gap-2'>
+            <PrevSlide onSwipe={onSwipeToPrevSlide} isDisabled={disabledNavigation.prev} />
+            <NextSlide onSwipe={onSwipeToNextSlide} isDisabled={disabledNavigation.next} />
+          </div>
         </div>
-        <div className='flex gap-2'>
-          <PrevSlide onSwipe={onSwipeToPrevSlide} isDisabled={disabledNavigation.prev} />
-          <NextSlide onSwipe={onSwipeToNextSlide} isDisabled={disabledNavigation.next} />
-        </div>
-      </div>
-    </section>
-  )
-}
+      </section>
+    )
+  },
+  ProductSliderSkeleton,
+)
 
 function NextSlide({ isDisabled, onSwipe }: { isDisabled?: boolean; onSwipe: () => void }) {
   return (

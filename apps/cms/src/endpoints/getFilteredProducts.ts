@@ -71,15 +71,8 @@ function mapSortParams(product: Product, params: { sort?: string; order?: 'asc' 
   const { sort = 'id', order = 'asc' } = params
 
   const { category, skipSync, subcategory, productDetails, ...restProduct } = product
-  const {
-    image,
-    stripeProductID,
-    unit,
-    weightStep,
-    weight,
-    priceJSON,
-    ...restProductDetails
-  } = productDetails
+  const { image, stripeProductID, unit, weightStep, weight, priceJSON, ...restProductDetails } =
+    productDetails
 
   const productKeys = Object.keys(restProduct)
   const productDetailsKeys = Object.keys(restProductDetails)
