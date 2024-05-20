@@ -26,6 +26,9 @@ import { Categories } from './collections/shop/Categories'
 import { Subcategories } from './collections/shop/Subcategories'
 import { Orders } from './collections/shop/Orders'
 import { Units } from './collections/shop/Units'
+import { Currencies } from './collections/shop/Currencies'
+import { Tastes } from './collections/shop/Tastes'
+import { Feedbacks } from './collections/shop/Feedbacks'
 
 import { Pages } from './collections/pages/Pages'
 import { ProductPages } from './collections/pages/ProductPages'
@@ -106,6 +109,9 @@ export default buildConfig({
     Trademarks,
     Tags,
     Specials,
+    Currencies,
+    Tastes,
+    Feedbacks,
   ],
   globals: [MainNavigation, BottomNavigation, GlobalTypography, AllBlocks],
   typescript: {

@@ -56,7 +56,6 @@ export const Carousel: FC<CarouselProps> = ({
   const [isHovered, setIsHovered] = useState(false)
   const canHover = useCanHover()
   const [swiper, setSwiper] = useState<SwiperType | null>(null)
-  // const [allowTouchMove, setAllowTouckMove] = useState()
   const [disabledNavigation, setDisabledNavigation] = useState<{ prev: boolean; next: boolean }>({
     prev: true,
     next: true,
@@ -171,14 +170,16 @@ export const Carousel: FC<CarouselProps> = ({
           }}
           breakpoints={{
             768: {
-              ...(breakpoints?.tablet ?? {}),
+              slidesPerView: 'auto',
               slidesPerGroup: 2,
+              ...(breakpoints?.tablet ?? {}),
             },
             1024: {
+              slidesPerView: 'auto',
               slidesPerGroup: 3,
               ...(breakpoints?.laptop ?? {}),
             },
-            1280: {
+            1440: {
               spaceBetween: 24,
               slidesPerView: 4,
               slidesPerGroup: 4,

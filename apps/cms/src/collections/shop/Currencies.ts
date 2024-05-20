@@ -1,17 +1,16 @@
 import type { CollectionConfig } from 'payload/types'
 import { isAnyone } from '../../access/isAnyone'
 import { isAdmin } from '../../access/isAdmin'
-import { slugField } from '../../fields/slug'
 
-export const Subcategories: CollectionConfig = {
-  slug: 'subcategories',
+export const Currencies: CollectionConfig = {
+  slug: 'currencies',
   admin: {
     useAsTitle: 'label',
     group: 'Shop',
   },
   labels: {
-    plural: 'Subcategories',
-    singular: 'Subcategory',
+    plural: 'Currencies',
+    singular: 'Currency',
   },
   versions: {
     drafts: false,
@@ -23,9 +22,13 @@ export const Subcategories: CollectionConfig = {
     delete: isAdmin,
   },
   fields: [
-    slugField(),
     {
       name: 'label',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'text',
       type: 'text',
       localized: true,
       required: true,

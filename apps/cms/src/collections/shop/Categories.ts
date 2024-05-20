@@ -9,6 +9,10 @@ export const Categories: CollectionConfig = {
     useAsTitle: 'label',
     group: 'Shop',
   },
+  labels: {
+    plural: 'Categories',
+    singular: 'Category',
+  },
   versions: {
     drafts: false,
   },

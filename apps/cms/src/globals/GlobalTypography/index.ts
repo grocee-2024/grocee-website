@@ -176,6 +176,12 @@ export const GlobalTypography: GlobalConfig = {
               required: true,
             },
             {
+              name: 'addedToCartButton',
+              type: 'text',
+              localized: true,
+              required: true,
+            },
+            {
               name: 'buyNowButton',
               type: 'text',
               localized: true,
@@ -208,7 +214,7 @@ export const GlobalTypography: GlobalConfig = {
       type: 'group',
       fields: [
         {
-          label: 'Backk Button Label',
+          label: 'Back Button Label',
           type: 'collapsible',
           fields: [
             {
@@ -469,6 +475,174 @@ export const GlobalTypography: GlobalConfig = {
               ],
             },
           ],
+        },
+      ],
+    },
+    {
+      name: 'productPage',
+      type: 'group',
+      fields: [
+        {
+          name: 'generalInfo',
+          type: 'group',
+          fields: [
+            {
+              label: 'General Info Labels',
+              type: 'collapsible',
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+                {
+                  name: 'country',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+                {
+                  name: 'trademark',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+                {
+                  name: 'weight',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+                {
+                  name: 'numberOfUnits',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+                {
+                  name: 'taste',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+                {
+                  name: 'alcoholPercentage',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'nutritionalValue',
+          type: 'group',
+          fields: [
+            {
+              label: 'Nutritional Value Labels',
+              type: 'collapsible',
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+                {
+                  name: 'energyValue',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+                {
+                  name: 'proteins',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+                {
+                  name: 'fats',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+                {
+                  name: 'carbohydrates',
+                  type: 'text',
+                  required: true,
+                  localized: true,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'deliveryBlock',
+          type: 'group',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'shop',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'fastestDeliveryTime',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'shippingCost',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+          ],
+        },
+        {
+          name: 'reviewsBlock',
+          type: 'group',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'logInToLeaveRivewLabel',
+              type: 'text',
+              localized: true,
+              required: true,
+            },
+            {
+              name: 'emptyReviewListLabel',
+              type: 'text',
+              localized: true,
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'quantityLabel',
+          type: 'text',
+          required: true,
+          localized: true,
+        },
+        {
+          name: 'descriptionLabel',
+          type: 'text',
+          required: true,
+          localized: true,
         },
       ],
     },

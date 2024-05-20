@@ -4,77 +4,62 @@ import { Props } from 'payload/components/fields/Relationship'
 import { SelectComponent } from 'payload/components/fields/Select'
 import { Category, Subcategory } from 'cms-types'
 
-type Pagination = {
-  hasNextPage: boolean
-  hasPrevPage: boolean
-  limit: number
-  nextPage: null | number
-  page: number
-  pagingCounter: number
-  prevPage: null | number
-  totalDocs: number
-  totalPages: number
-}
+export const SubcategorySelect: FC<Props> = ({ path = '', name, hasMany, required, label }) => {
+  const { value: categoryId } = useField<string>({ path: 'category' })
+  const { setValue: setSubcategoryId } = useField<string>({ path })
 
-export const SubcategorySelect: FC<Props> = ({ path = '', name, hasMany, label }) => {
-  const { value: categoriesIds } = useField<string[]>({ path: 'categories' })
-
-  const [categories, setCategories] = useState<Category[]>([])
+  const [category, setCategory] = useState<Category | null>(null)
   const [finishLoading, setFinishLoading] = useState(true)
 
   const options = useMemo(() => {
-    if (!categories?.length) {
-      return []
+    if (!category) {
+      return null
     }
 
-    return categories.flatMap(({ subcategories }) =>
-      subcategories.map(({ id, label }: Subcategory) => ({
-        label,
-        value: id,
-      })),
-    )
-  }, [categories])
+    return category.subcategories.map(({ id, label }: Subcategory) => ({
+      label,
+      value: id,
+    }))
+  }, [category])
 
   useEffect(() => {
-    if (!categoriesIds?.length) {
+    if (!categoryId) {
       return
     }
 
-    const fetchCategories = async (page?: number) => {
-      const currentPage = page || 1
+    const fetchCategory = async () => {
+      const { docs } = (await (
+        await fetch(`/api/categories?[where][id][equals]=${categoryId}`)
+      ).json()) as { docs: Category[] }
 
-      const { docs, nextPage, hasNextPage } = (await (
-        await fetch(
-          `/api/categories?[where][id][in]=${categoriesIds.join(',')}&page=${currentPage}`,
-        )
-      ).json()) as { docs: Category[] } & Pagination
-
-      setCategories(prev => Array.from(new Set([...prev, ...docs])))
-
-      if (hasNextPage) {
-        fetchCategories(nextPage)
-      }
+      setCategory(docs?.[0] || null)
     }
 
     try {
       setFinishLoading(false)
-      setCategories([])
-      fetchCategories()
+      setCategory(null)
+      fetchCategory()
     } finally {
       setFinishLoading(true)
     }
-  }, [categoriesIds])
+  }, [categoryId])
+
+  useEffect(() => {
+    if (category) {
+      setSubcategoryId(null)
+    }
+  }, [categoryId])
 
   return (
     <>
-      {finishLoading && categoriesIds?.length > 0 && categories?.length > 0 && (
+      {finishLoading && categoryId && category && (
         <SelectComponent
           name={name}
           label={label}
           path={path}
           hasMany={hasMany}
           options={options}
-          required
+          required={required}
         />
       )}
     </>

@@ -8,6 +8,10 @@ export const Units: CollectionConfig = {
     useAsTitle: 'label',
     group: 'Shop',
   },
+  labels: {
+    plural: 'Units',
+    singular: 'Unit',
+  },
   versions: {
     drafts: false,
   },
@@ -21,7 +25,6 @@ export const Units: CollectionConfig = {
     {
       name: 'label',
       type: 'text',
-      localized: true,
       required: true,
     },
     {

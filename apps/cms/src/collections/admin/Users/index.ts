@@ -19,7 +19,7 @@ export const Users: CollectionConfig = {
     group: 'Admin',
   },
   access: {
-    read: isAdminOrSelfUser,
+    read: isAnyone,
     create: isAnyone,
     update: isAdminOrSelfUser,
     delete: isAdminsOrOrderedBy,
@@ -47,6 +47,11 @@ export const Users: CollectionConfig = {
   fields: [
     {
       name: 'name',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'lastName',
       type: 'text',
     },
     {

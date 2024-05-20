@@ -14,31 +14,34 @@ type FetchedCountry = {
 }
 
 export const createCountries = async () => {
-  const countries = (
-    (await (
-      await fetch('https://restcountries.com/v3.1/all?fields=name,flags,cca2')
-    ).json()) as FetchedCountry[]
-  ).filter(({ cca2 }) => cca2.toLowerCase() !== 'ru')
+  try {
+    const countries = (
+      (await (
+        await fetch('https://restcountries.com/v3.1/all?fields=name,flags,cca2')
+      ).json()) as FetchedCountry[]
+    ).filter(({ cca2 }) => cca2.toLowerCase() !== 'ru')
 
-  const createdCountries = await Promise.all(
-    countries.map(({ name, cca2, flags }) =>
-      payload.create({
-        collection: 'countries',
-        data: {
-          slug: cca2.toLowerCase(),
-          label: name.common,
-          flag: {
-            ...flags,
+    const createdCountries = await Promise.all(
+      countries.map(({ name, cca2, flags }) =>
+        payload.create({
+          collection: 'countries',
+          data: {
+            slug: cca2.toLowerCase(),
+            label: name.common,
+            flag: {
+              ...flags,
+            },
           },
-          products: [],
-        },
-      }),
-    ),
-  )
+        }),
+      ),
+    )
 
-  payload.logger.info('> Created countries')
+    payload.logger.info('> Created countries')
 
-  return createdCountries
+    return createdCountries
+  } catch (err) {
+    return []
+  }
 }
 
 export type Countries = Awaited<ReturnType<typeof createCountries>>

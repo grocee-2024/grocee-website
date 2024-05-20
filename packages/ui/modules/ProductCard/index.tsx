@@ -91,7 +91,7 @@ export const ProductCard: FC<ProductCardProps> = props => {
       </div>
 
       <div className='flex items-center justify-between gap-1 rounded-[1000px] bg-white pl-6'>
-        <span className='gilroy-md text-center text-gray-900'>{product.price.amount} UAH</span>
+        <span className='gilroy-md text-center text-gray-900'>{product.price.amount} {product.price.currency.text}</span>
 
         {productButtons.addToCartButton ? (
           <Button standartButton onClick={onAddToCart}>

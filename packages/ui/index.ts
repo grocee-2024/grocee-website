@@ -25,6 +25,8 @@ export * from './modules/Banner'
 export * from './modules/ProductCard'
 export * from './modules/Cooperation'
 export * from './modules/HelpBlock'
+export * from './modules/ProductPageSlider'
+export * from './modules/ProductControls'
 
 export { Show } from './utils/Show'
 export { Each } from './utils/Each'

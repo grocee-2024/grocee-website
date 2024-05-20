@@ -16,6 +16,7 @@ import { createUnits } from './content/units'
 import { createSubcategories } from './content/subcategories'
 import { createCategories } from './content/categories'
 import { createCountries } from './content/countries'
+import { createCurrencies } from './content/currencies'
 
 export const seedLocalData = async () => {
   await dropDatabase()
@@ -53,19 +54,20 @@ async function createData() {
   try {
     await createUsers()
 
-    const [images, units, subcategories, pages, countries] = await Promise.all([
+    const [images, subcategories, pages] = await Promise.all([
       createImages(),
-      createUnits(),
       createSubcategories(),
       createPages(),
+      createUnits(),
       createCountries(),
+      createCurrencies(),
     ])
 
     const categories = await createCategories(subcategories)
 
     const [news, products] = await Promise.all([
       createNews(images),
-      createProducts(images, units, categories, subcategories),
+      createProducts(images, categories, subcategories),
     ])
 
     const productPages = await createProductPages(products)

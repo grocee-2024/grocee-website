@@ -81,7 +81,6 @@ export const ProductList: FC<Props> = ({ categoryId }) => {
         locale,
         page,
       })
-
       const products = await mapCMSProductsForProductCard(docs, locale)
 
       totalPagesCount.current = totalPages

@@ -16,10 +16,10 @@ export const getProductsCountByFilters: PayloadHandler = async (req, res) => {
   } = body as Record<string, string | string[]>
 
   const filterParams = {
-    categories: {
+    category: {
       categoryId,
     },
-    'subcategories.slug': {
+    'subcategory.slug': {
       subcategorySlug,
     },
     'productDetails.tag.slug': {

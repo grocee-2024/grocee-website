@@ -13,9 +13,9 @@ import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Breadcrumbs } from 'ui'
 import { mapBreadcrumbs, parseSearchParams } from 'ui/helpers'
-import { CategoryHeader } from '../components/CategoryHeader'
+import { CategoryHeader } from '@/components/CategoryPage/CategoryHeader'
 import { revalidateTag } from 'next/cache'
-import { ProductList } from '../components/ProductList'
+import { ProductList } from '@/components/CategoryPage/ProductList'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,10 +27,10 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ searchParams }: any) {
+export async function generateMetadata() {
   const locale = cookies().get('locale')?.value ?? 'en'
 
-  return await getMetadata('pages', 'category', { searchParams: { ...searchParams, locale } })
+  return await getMetadata('pages', 'category', { searchParams: { locale } })
 }
 
 export default async function CategoryPage({ params, searchParams }: NextRoute) {
@@ -38,7 +38,7 @@ export default async function CategoryPage({ params, searchParams }: NextRoute) 
 
   try {
     const [page, category] = await Promise.all([
-      getPage('pages', 'category', { searchParams: { locale } }),
+      getPage('pages', 'category', { searchParams: { locale }, throwOnNotFound: true }),
       getCollectionItemByUniqueField('categories', 'slug', params.slug),
     ])
 

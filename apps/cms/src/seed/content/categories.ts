@@ -8,7 +8,7 @@ export const createCategories = async (subcategories: Subcategories) => {
       data: {
         slug: 'fruits-vegetables-pickles',
         label: 'Fruits, vegetables, pickles',
-        subcategories: [subcategories.fruitsId],
+        subcategories: [subcategories.fruitsId, subcategories.vegetablesId],
       },
     }),
   ])
