@@ -184,7 +184,7 @@ export function PayloadImage({
           ) : (
             <AnimatePresence>
               <motion.div
-                className='absolute inset-0 block min-h-full w-full'
+                className='absolute inset-0 bottom-[30px] block min-h-full w-full'
                 initial={{ opacity: 1 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 1 }}

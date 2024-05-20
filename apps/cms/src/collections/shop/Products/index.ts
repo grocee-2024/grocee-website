@@ -83,6 +83,15 @@ export const Products: CollectionConfig = {
           relationTo: 'countries',
         },
         {
+          name: 'taste',
+          type: 'relationship',
+          relationTo: 'tastes',
+        },
+        {
+          name: 'alcoholPercentage',
+          type: 'number',
+        },
+        {
           name: 'weight',
           type: 'number',
           admin: {
@@ -121,42 +130,57 @@ export const Products: CollectionConfig = {
           relationTo: 'units',
         },
         {
-          name: 'weightUnit',
-          type: 'relationship',
-          relationTo: 'units',
-          required: true,
-        },
-        {
           name: 'rating',
           type: 'number',
-          admin: {
-            step: 0.5,
-          },
-          min: 1,
+          defaultValue: 0,
+          min: 0,
           max: 5,
         },
       ],
     },
     {
-      name: 'categories',
+      name: 'nutritionalValue',
+      type: 'group',
+      fields: [
+        {
+          name: 'energyValue',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'proteins',
+          type: 'number',
+        },
+        {
+          name: 'fats',
+          type: 'number',
+        },
+        {
+          name: 'carbohydrates',
+          type: 'number',
+        },
+      ],
+    },
+    {
+      name: 'category',
       type: 'relationship',
       relationTo: 'categories',
-      hasMany: true,
       admin: {
         position: 'sidebar',
       },
+      required: true,
     },
     {
-      name: 'subcategories',
+      name: 'subcategory',
       type: 'relationship',
       relationTo: 'subcategories',
-      hasMany: true,
+      required: true,
       admin: {
         position: 'sidebar',
         components: {
           Field: SubcategorySelect,
         },
-        condition: (_, siblingData) => siblingData?.categories?.length > 0,
+        condition: (_, siblingData) => !!siblingData?.category,
       },
     },
     {

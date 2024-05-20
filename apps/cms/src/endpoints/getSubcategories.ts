@@ -15,10 +15,10 @@ export const getSubcategories: PayloadHandler = async (req, res) => {
   } = body as Record<string, string | string[]>
 
   const queryParams = {
-    categories: {
+    category: {
       categoryId,
     },
-    'subcategories.slug': {
+    'subcategory.slug': {
       subcategorySlug,
     },
     'productDetails.tag.slug': {
@@ -47,8 +47,8 @@ export const getSubcategories: PayloadHandler = async (req, res) => {
     }
 
     const { data: subcategories, totalProducts } = await calculateProductCountByFilter({
-      leftParam: 'subcategories.slug',
-      key: 'subcategories.slug',
+      leftParam: 'subcategory.slug',
+      key: 'subcategory',
       params: queryParams,
       payload,
     })
@@ -107,6 +107,7 @@ async function calculateProductCountByFilter<T>(args: {
 
   for (const product of products) {
     const doc = getNestedProperty(product, key) ?? []
+    const { id, name, category, subcategory } = product
 
     if (Array.isArray(doc) && doc.length > 0) {
       for (const nestedDoc of doc) {

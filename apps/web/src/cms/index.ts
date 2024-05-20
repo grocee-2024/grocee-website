@@ -5,6 +5,7 @@ import {
   Image,
   Page,
   Product,
+  ProductPage,
   Special,
   Subcategory,
   Tag,
@@ -55,6 +56,7 @@ const getCmsSearchParams = (searchParams: Record<string, string | string[]> = {}
 
 type PageTypes = {
   pages: Page
+  productPages: ProductPage
 }
 
 export const getPage = async <C extends keyof PageTypes>(

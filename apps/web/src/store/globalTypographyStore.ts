@@ -50,6 +50,7 @@ export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'created
     },
     productButtons: {
       addToCartButton: '',
+      addedToCartButton: '',
       buyNowButton: '',
     },
     newsCardButtons: {
@@ -103,6 +104,37 @@ export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'created
           success: '',
           pending: '',
         },
+      },
+    },
+    productPage: {
+      generalInfo: {
+        title: '',
+        country: '',
+        trademark: '',
+        taste: '',
+        alcoholPercentage: '',
+        numberOfUnits: '',
+        weight: '',
+      },
+      nutritionalValue: {
+        title: '',
+        energyValue: '',
+        proteins: '',
+        fats: '',
+        carbohydrates: '',
+      },
+      reviewsBlock: {
+        title: '',
+        logInToLeaveRivewLabel: '',
+        emptyReviewListLabel: '',
+      },
+      descriptionLabel: '',
+      quantityLabel: '',
+      deliveryBlock: {
+        title: '',
+        shop: '',
+        shippingCost: '',
+        fastestDeliveryTime: '',
       },
     },
   }),

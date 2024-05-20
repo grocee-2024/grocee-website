@@ -57,7 +57,7 @@ export const beforeProductChange: BeforeChangeHook = async ({ req, originalDoc, 
       newDoc.productDetails.weightStep = weightStep
     }
 
-    if (targetUnit) {
+    if (targetUnit && newDoc) {
       // @ts-ignore
       newDoc.productDetails.unit = targetUnit.id
     }

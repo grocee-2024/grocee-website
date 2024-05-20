@@ -1,13 +1,11 @@
 import payload from 'payload'
 
 import { Images } from './images'
-import { Units } from './units'
 import { Categories } from './categories'
 import { Subcategories } from './subcategories'
 
 export const createProducts = async (
   images: Images,
-  units: Units,
   categories: Categories,
   subcategories: Subcategories,
 ) => {
@@ -19,12 +17,16 @@ export const createProducts = async (
         description: 'Potato',
         productDetails: {
           image: images.potatoId,
-          rating: 4,
-          weightUnit: units.kgId,
           stripeProductID: 'prod_PzMCeis5cSASsB',
         },
-        categories: [categories.fruitsVegetablesPicklesId],
-        subcategories: [subcategories.vegetablesId],
+        nutritionalValue: {
+          energyValue: 10,
+          proteins: 10,
+          fats: 10,
+          carbohydrates: 10
+        },
+        category: categories.fruitsVegetablesPicklesId,
+        subcategory: subcategories.vegetablesId,
       },
     }),
     payload.create({
@@ -34,12 +36,16 @@ export const createProducts = async (
         description: 'Apple',
         productDetails: {
           image: images.appleId,
-          rating: 4,
-          weightUnit: units.kgId,
           stripeProductID: 'prod_Q3wRvzwRTIWpvW',
         },
-        categories: [categories.fruitsVegetablesPicklesId],
-        subcategories: [subcategories.fruitsId],
+        nutritionalValue: {
+          energyValue: 10,
+          proteins: 10,
+          fats: 10,
+          carbohydrates: 10
+        },
+        category: categories.fruitsVegetablesPicklesId,
+        subcategory: subcategories.fruitsId,
       },
     }),
     payload.create({
@@ -49,10 +55,16 @@ export const createProducts = async (
         description: 'Bread',
         productDetails: {
           image: images.breadId,
-          rating: 4,
-          weightUnit: units.kgId,
           stripeProductID: 'prod_Q3wSM2ngzIEYOH',
         },
+        nutritionalValue: {
+          energyValue: 10,
+          proteins: 10,
+          fats: 10,
+          carbohydrates: 10
+        },
+        category: categories.fruitsVegetablesPicklesId,
+        subcategory: subcategories.fruitsId,
       },
     }),
     payload.create({
@@ -62,10 +74,16 @@ export const createProducts = async (
         description: 'Milk',
         productDetails: {
           image: images.milkId,
-          rating: 4,
-          weightUnit: units.kgId,
           stripeProductID: 'prod_Q3wX9LLM7QxbaQ',
         },
+        nutritionalValue: {
+          energyValue: 10,
+          proteins: 10,
+          fats: 10,
+          carbohydrates: 10
+        },
+        category: categories.fruitsVegetablesPicklesId,
+        subcategory: subcategories.fruitsId,
       },
     }),
   ])

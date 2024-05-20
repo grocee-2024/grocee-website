@@ -103,6 +103,7 @@ export const createGlobalTypography = async (pages: Pages) => {
       },
       productButtons: {
         addToCartButton: 'Add to cart',
+        addedToCartButton: 'Added to cart',
         buyNowButton: 'Buy now',
       },
       newsCardButtons: {
@@ -187,6 +188,37 @@ export const createGlobalTypography = async (pages: Pages) => {
             success: 'The sorting parameters have been successfully updated',
             pending: 'Updating the sorting parameters...',
           },
+        },
+      },
+      productPage: {
+        generalInfo: {
+          title: 'General Info',
+          country: 'Country',
+          trademark: 'Trademark',
+          weight: 'Weight, kg',
+          numberOfUnits: 'Number of units',
+          taste: 'Taste',
+          alcoholPercentage: '% of alcohol',
+        },
+        nutritionalValue: {
+          title: 'Nutritional value per 100 g',
+          energyValue: 'Energy value',
+          proteins: 'Proteins',
+          fats: 'Fats',
+          carbohydrates: 'Carbohydrates',
+        },
+        reviewsBlock: {
+          title: 'Reviews',
+          logInToLeaveRivewLabel: 'Log in to leave review',
+          emptyReviewListLabel: 'There are no reviews here yet',
+        },
+        descriptionLabel: 'Description',
+        quantityLabel: 'Quantity',
+        deliveryBlock: {
+          title: 'Delivery',
+          shop: 'Shop',
+          fastestDeliveryTime: 'Fastest delivery time',
+          shippingCost: 'Shipping cost',
         },
       },
     },

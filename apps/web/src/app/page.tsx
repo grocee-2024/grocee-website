@@ -22,7 +22,7 @@ export default async function HomePage({ searchParams }: NextRoute) {
       )
     }
 
-    const page = await getPage('pages', 'home', { searchParams: { ...searchParams, locale } })
+    const page = await getPage('pages', 'home', { searchParams: { locale }, throwOnNotFound: true })
 
     return (
       <>

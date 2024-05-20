@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload/types'
 import { isAnyone } from '../../../access/isAnyone'
 import { slugField } from '../../../fields/slug'
+import { ALL_BLOCKS } from '../../../blocks'
 
 export const ProductPages: CollectionConfig = {
   slug: 'productPages',
@@ -27,6 +28,29 @@ export const ProductPages: CollectionConfig = {
       type: 'relationship',
       relationTo: 'products',
       hasMany: false,
+    },
+    {
+      name: 'productIntro',
+      type: 'group',
+      fields: [
+        {
+          name: 'images',
+          type: 'array',
+          fields: [
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'images',
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'layout',
+      type: 'blocks',
+      blocks: ALL_BLOCKS,
     },
   ],
 }
