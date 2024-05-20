@@ -23,7 +23,7 @@ export const createProducts = async (
           energyValue: 10,
           proteins: 10,
           fats: 10,
-          carbohydrates: 10
+          carbohydrates: 10,
         },
         category: categories.fruitsVegetablesPicklesId,
         subcategory: subcategories.vegetablesId,
@@ -42,7 +42,7 @@ export const createProducts = async (
           energyValue: 10,
           proteins: 10,
           fats: 10,
-          carbohydrates: 10
+          carbohydrates: 10,
         },
         category: categories.fruitsVegetablesPicklesId,
         subcategory: subcategories.fruitsId,
@@ -61,7 +61,7 @@ export const createProducts = async (
           energyValue: 10,
           proteins: 10,
           fats: 10,
-          carbohydrates: 10
+          carbohydrates: 10,
         },
         category: categories.fruitsVegetablesPicklesId,
         subcategory: subcategories.fruitsId,
@@ -80,7 +80,7 @@ export const createProducts = async (
           energyValue: 10,
           proteins: 10,
           fats: 10,
-          carbohydrates: 10
+          carbohydrates: 10,
         },
         category: categories.fruitsVegetablesPicklesId,
         subcategory: subcategories.fruitsId,
