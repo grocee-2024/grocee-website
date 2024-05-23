@@ -5,6 +5,53 @@ export const createGlobalTypography = async (pages: Pages) => {
   await payload.updateGlobal({
     slug: 'globalTypography',
     data: {
+      cart: {
+        minOrderPrice: {
+          uah: 25,
+        },
+        pageTitle: 'Cart',
+        minOrderPriceRequiredWarning:
+          'To create a checkout, you need to add items to your cart totaling {{min_price}} or more',
+        summary: {
+          title: 'Summary',
+          deliveyAmountLabel: 'Delivery',
+          goodsAmountLabel: 'Goods',
+          discountAmountLabel: 'Discount',
+          addPromocodeLabel: 'Promo code',
+          addCertificateLabel: 'Certificate',
+          totalSumLabel: 'Total',
+          addDiscountButtonLabel: 'Add',
+          checkoutButtonLabel: 'Checkout',
+          freeDeliveryLabel: 'Free Shipping',
+        },
+        afterPayment: {
+          buttons: {
+            backToHomeLink: 'On the main page',
+            backToCartLink: 'Back to cart',
+            downloadInvoiceButton: 'Download invoice',
+          },
+          success: {
+            title: 'Payment Successful!',
+            description:
+              'Payment successfully completed! Your order has been accepted for processing, expect a message with the status of your order.',
+            deliveryTime: 'Delivery time',
+            deliveryAddress: 'Delivery address',
+            totalSum: 'Sum',
+            checkoutLoadedError: 'An unknown error occurred',
+          },
+          canceled: {
+            title: 'An error occurred during the payment!',
+            description:
+              'There was an error during the payment! Try again later or contact our support.',
+          },
+        },
+        clearBasketLabel: 'Clear the basket',
+        createCheckoutError: 'An error occurred while creating a checkout',
+        emptyCartLabel: 'Your cart is still empty, add your first good :)',
+        addToCartSuccess: 'Successfully added to your cart',
+        addToCartError: 'An error occurred while adding to cart',
+        goodsAmountLessThanMinError: 'Add more items to your cart for the minimum order',
+      },
       orderDeliveryForm: {
         firstName: {
           label: 'Enter your first name',

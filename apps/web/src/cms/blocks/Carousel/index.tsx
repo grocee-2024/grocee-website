@@ -1,7 +1,7 @@
 import { CarouselBlock } from 'cms-types'
 import { CarouselClient } from './CarouselClient'
-import { mapCMSCards, mapCMSNewsCards, mapCMSProductsForProductCard } from '@/helpers'
-import { MappedCard, MappedNewsArticleCard, MappedProductForProductCard } from 'ui/types'
+import { mapCMSCards, mapCMSNewsCards, mapCMSProducts } from '@/helpers'
+import { MappedCard, MappedNewsArticleCard, MappedProduct } from 'ui/types'
 import { getCookies } from 'next-client-cookies/server'
 
 export async function Carousel({ settings, cards, products, title, newsCards }: CarouselBlock) {
@@ -10,11 +10,11 @@ export async function Carousel({ settings, cards, products, title, newsCards }: 
 
   const locale = cookies.get('locale') || 'en'
 
-  let mappedSlides: MappedProductForProductCard[] | MappedNewsArticleCard[] | MappedCard[]
+  let mappedSlides: MappedProduct[] | MappedNewsArticleCard[] | MappedCard[]
 
   switch (type) {
     case 'productCard':
-      mappedSlides = await mapCMSProductsForProductCard(products!, locale)
+      mappedSlides = await mapCMSProducts(products!, locale)
       break
 
     case 'newsCard':

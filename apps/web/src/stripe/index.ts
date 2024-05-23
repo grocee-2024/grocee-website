@@ -5,5 +5,6 @@ const client = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
 })
 
 export type CreateCheckoutProps = Stripe.Checkout.SessionCreateParams
+export type CheckoutSession = Stripe.Response<Stripe.Checkout.Session>
 
 export default client

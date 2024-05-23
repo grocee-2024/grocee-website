@@ -108,9 +108,17 @@ type NavigationProps = Pick<MainNavigation['header'], 'search'> &
         }
       }
     }
+    productsInCart?: number
   }
 
-export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, navLinks, ...props }) => {
+export const Navigation: FC<NavigationProps> = ({
+  logo,
+  logoUrl,
+  search,
+  navLinks,
+  productsInCart,
+  ...props
+}) => {
   const [startSearchLoading, setStartSearchLoading] = useState(false)
   const [burgerMenuOpened, setBurgerMenuOpened] = useState(false)
   const [searchBarOpened, setSearchBarOpened] = useState(false)
@@ -346,6 +354,7 @@ export const Navigation: FC<NavigationProps> = ({ logo, logoUrl, search, navLink
 
         <NavItems
           showNavItems={showEdgeNavItems}
+          productsInCart={productsInCart}
           links={navLinks}
           onSearchClick={toggleSearchBar}
           onLinkClick={() => {

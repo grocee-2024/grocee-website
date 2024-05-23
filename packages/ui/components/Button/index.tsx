@@ -49,6 +49,7 @@ export type ButtonProps<T> = PropsWithChildren<{
       | number
   }
   isLoading?: boolean
+  loaderWithoutChildren?: boolean
   isDisabled?: boolean
   href?: LinkProps['href']
   target?: '_self' | '_blank' | '_parent' | '_top'
@@ -56,7 +57,7 @@ export type ButtonProps<T> = PropsWithChildren<{
   standartButton?: boolean
   animationProps?: HTMLMotionProps<'div' | 'button'>
   variant?: 'primary' | 'secondary' | 'tertiary' | 'danger' | 'defaultLink'
-  type?: 'button' | 'submit' | 'reset'
+  type?: 'button' | 'submit' | 'reset' | 'form-button'
   tabIndex?: number
   isFocused?: boolean
   style?: CSSProperties
@@ -97,6 +98,7 @@ export function Button<T>(props: ButtonProps<T>) {
     onKeyPress = () => {},
     additionalRef,
     prefetch,
+    loaderWithoutChildren,
     tabIndex,
     ...restProps
   } = props
@@ -110,8 +112,13 @@ export function Button<T>(props: ButtonProps<T>) {
   const isButtonDisabled = isDisabled || isLoading
 
   const { buttonProps, isPressed: isButtonPressed } = useButton(
-    // @ts-ignore
-    { ...restProps, onPress: onClick, type, isDisabled: isButtonDisabled },
+    {
+      ...restProps,
+      // @ts-ignore
+      onPress: onClick,
+      type: type === 'form-button' ? 'submit' : type,
+      isDisabled: isButtonDisabled,
+    },
     refButton,
   )
   const { linkProps, isPressed: isLinkPressed } = useLink(
@@ -198,6 +205,7 @@ export function Button<T>(props: ButtonProps<T>) {
     if (isLoading) {
       return (
         <div className='flex items-center justify-center gap-2'>
+          {!loaderWithoutChildren && children}
           <Loader size={20} />
         </div>
       )
@@ -248,14 +256,14 @@ export function Button<T>(props: ButtonProps<T>) {
         {...mergeProps(restButtonProps, parentProps, hoverProps)}
         style={style}
         onPointerDown={event => {
-          if (event.button !== 0) {
+          if (event.button !== 0 || type === 'form-button') {
             return
           }
 
           onPointerDown && onPointerDown(event)
         }}
         onPointerUp={event => {
-          if (event.button !== 0) {
+          if (event.button !== 0 || type === 'form-button') {
             return
           }
 

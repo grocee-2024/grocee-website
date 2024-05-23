@@ -14,10 +14,6 @@ function Icon<T>({ icon }: { icon?: Props<T>['leftIcon'] }) {
   const { icon: MappedIcon, animateWhen, animationProps, value } = parseIcon(icon)
   const [scope, animate] = useAnimate()
 
-  if (!MappedIcon) {
-    return null
-  }
-
   const { width, height } = useMemo(() => {
     let width = 16
     let height = 24
@@ -53,7 +49,7 @@ function Icon<T>({ icon }: { icon?: Props<T>['leftIcon'] }) {
   }, [icon])
 
   useEffect(() => {
-    if (!animateWhen) {
+    if (!animateWhen || !MappedIcon) {
       return
     }
 
@@ -63,6 +59,10 @@ function Icon<T>({ icon }: { icon?: Props<T>['leftIcon'] }) {
       animate(scope.current, animationProps?.exit ?? {}, animationProps?.transition ?? {})
     }
   }, [animateWhen, value, animationProps])
+
+  if (!MappedIcon) {
+    return null
+  }
 
   return (
     <motion.div ref={scope}>

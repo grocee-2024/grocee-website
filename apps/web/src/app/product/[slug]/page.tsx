@@ -1,5 +1,5 @@
 import { getCollectionItem, getMetadata, getPage, getPaginatedCollection } from '@/cms'
-import { pageToUrl, resolveRelation } from '@/cms/helpers'
+import { pageToUrl, renderBlocks, resolveRelation } from '@/cms/helpers'
 import { SetupEdgeBlocksOnPage } from '@/components/SetupEdgeBlocksOnPage'
 import { NextRoute } from '@/types'
 import { Category, Product, Subcategory } from 'cms-types'
@@ -7,7 +7,7 @@ import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Breadcrumbs, Bredcrumb } from 'ui'
 import { ProductIntro } from './product-intro'
-import { mapCMSProductsForProductCard } from '@/helpers'
+import { mapCMSProducts } from '@/helpers'
 
 export const dynamic = 'force-dynamic'
 
@@ -46,7 +46,7 @@ export default async function ProductPage({ params, searchParams }: NextRoute) {
       image: resolveRelation(image)!,
     }))
 
-    const [{ weight, price }] = await mapCMSProductsForProductCard([product], locale)
+    const [mappedProduct] = await mapCMSProducts([product], locale)
 
     const breadcrumbs: Bredcrumb[] = [
       {
@@ -113,14 +113,19 @@ export default async function ProductPage({ params, searchParams }: NextRoute) {
     return (
       <>
         <SetupEdgeBlocksOnPage layout={productPage.layout ?? []} />
-        <div className='width-limit mb-8 mt-[120px] flex flex-col gap-8 tablet:mt-[150px]'>
+        <div className='width-limit mt-[120px] flex flex-col gap-8 tablet:mt-[150px]'>
           <Breadcrumbs breadcrumbs={breadcrumbs} />
           <ProductIntro
             fetchReviews={fetchReviews}
             productGallery={productGallery}
-            product={{ ...product, weight, price }}
+            product={mappedProduct}
           />
         </div>
+        {(productPage.layout?.length ?? 0) > 0 && (
+          <div className='mt-10 flex flex-col gap-16 laptop:mt-20 laptop:gap-20'>
+            {renderBlocks(productPage.layout)}
+          </div>
+        )}
       </>
     )
   } catch (err: unknown) {

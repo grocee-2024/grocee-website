@@ -9,7 +9,7 @@ import MainNavigation from '@/cms/globals/MainNavigation'
 import BottomNavigation from '@/cms/globals/BottomNavigation'
 import { Providers } from '@/components/Providers'
 import NextTopLoader from 'nextjs-toploader'
-import { QueryProvider } from '@/components/QueryProvider'
+import { ClientProviders } from '@/components/ClientProviders'
 
 export async function generateMetadata({ searchParams }: any) {
   const locale = cookies().get('locale')?.value ?? 'en'
@@ -36,7 +36,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className='overflow-x-hidden bg-white desktop:mb-10'>
         <Providers>
-          <QueryProvider>
+          <ClientProviders>
             <NextTopLoader color='#5E5E5E' height={4} initialPosition={0.3} showSpinner={false} />
             <div className='burgermenu-bottom-modal-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
             <div className='searchbar-fade-container pointer-events-none fixed inset-0 w-screen bg-gray-900 opacity-0 transition-opacity duration-1000' />
@@ -47,7 +47,7 @@ export default async function RootLayout({
               <main className='grow laptop:mt-8'>{children}</main>
               <BottomNavigation {...bottomNavigation} />
             </div>
-          </QueryProvider>
+          </ClientProviders>
         </Providers>
       </body>
     </html>

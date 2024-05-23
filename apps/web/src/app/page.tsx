@@ -27,7 +27,9 @@ export default async function HomePage({ searchParams }: NextRoute) {
     return (
       <>
         <SetupEdgeBlocksOnPage layout={page.layout} />
-        <div className='flex flex-col gap-16 laptop:gap-20'>{renderBlocks(page.layout)}</div>
+        {(page?.layout?.length ?? 0) > 0 && (
+          <div className='flex flex-col gap-16 laptop:gap-20'>{renderBlocks(page.layout)}</div>
+        )}
       </>
     )
   } catch (err: unknown) {

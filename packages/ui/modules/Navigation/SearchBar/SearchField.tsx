@@ -4,7 +4,6 @@ import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { Button, Input, InputProps } from 'ui'
 import { useIsSSR } from 'react-aria'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { getSearchWith } from '../../../helpers'
 import { MainNavigation } from 'cms-types'
 import clsx from 'clsx'
 import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion'
@@ -46,10 +45,7 @@ export const SearchField = forwardRef(
       (search?: string) => {
         onStartLoading()
 
-        const params = getSearchWith(searchParams, { search: search ?? searchValue })
-        const paramsStr = params.toString() ? `?${params.toString()}` : ''
-
-        router.push(`/${paramsStr}`)
+        router.push(`/?search=${search ?? searchValue}`)
       },
       [searchParams, isSSR, searchValue],
     )
@@ -122,6 +118,7 @@ export const SearchField = forwardRef(
                       isLoading={isStartLoading}
                       disableBorder
                       standartButton
+                      loaderWithoutChildren
                       animationProps={{
                         initial: { opacity: 0 },
                         animate: { opacity: 1 },

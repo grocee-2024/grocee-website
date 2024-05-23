@@ -4,7 +4,7 @@ import { ProductPages } from './product-pages'
 import { News } from './news'
 
 export const createPages = async () => {
-  const [homePage, categoryPage] = await Promise.all([
+  const [homePage, categoryPage, cartPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       data: {
@@ -22,8 +22,14 @@ export const createPages = async () => {
       data: {
         slug: 'category',
         breadcrumbsTitle: '{{category}}',
+      },
+    }),
+    payload.create({
+      collection: 'pages',
+      data: {
+        slug: 'cart',
         meta: {
-          title: 'Grocee - The freshest products with the fastest delivery.',
+          title: 'Grocee - Cart',
           description:
             'Grocee is an online platform for convenient and fast purchases of food and other goods online.',
         },
@@ -36,6 +42,7 @@ export const createPages = async () => {
   return {
     homePageId: homePage.id,
     categoryPageId: categoryPage.id,
+    cartPageId: cartPage.id,
   }
 }
 

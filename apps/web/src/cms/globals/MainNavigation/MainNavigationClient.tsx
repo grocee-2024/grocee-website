@@ -6,7 +6,7 @@ import { useScroll, useTransform, motion } from 'framer-motion'
 import { useWindowSize } from 'ui/hooks'
 import clsx from 'clsx'
 import { useSSR } from '@/hooks'
-import { useEdgeBlocksOnPage, useGlobalTypography } from '@/store'
+import { useEdgeBlocksOnPage, useGlobalTypography, useShoppingBasket } from '@/store'
 import { parsePayloadLink } from '@/helpers'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 
@@ -17,6 +17,7 @@ export function MainNavigationClient(props: Props) {
   const headerRef = useRef<HTMLElement>(null)
   const scrollOffset = useRef(0)
   const { account, support, backButton } = useGlobalTypography()
+  const { lineItems } = useShoppingBasket()
   const { firstBlockOnPage } = useEdgeBlocksOnPage()
 
   const { scrollY } = useScroll()
@@ -26,6 +27,18 @@ export function MainNavigationClient(props: Props) {
     () => firstBlockOnPage === 'Banner' || firstBlockOnPage === 'MainSlider',
     [firstBlockOnPage],
   )
+
+  const lineItemsCount = useMemo(() => {
+    if (!lineItems.length) {
+      return
+    }
+
+    const count = lineItems.reduce((acc, lineItem) => {
+      return acc + (lineItem.quantity ?? 1)
+    }, 0)
+
+    return count
+  }, [lineItems])
 
   const { headerOffsetTop, minusOffset } = useMemo(() => {
     const offsetTop = {
@@ -140,6 +153,7 @@ export function MainNavigationClient(props: Props) {
         backButton={mappedBackButton}
         accountField={mappedAccountField}
         support={mappedSupport}
+        productsInCart={lineItemsCount}
       />
     </motion.header>
   )

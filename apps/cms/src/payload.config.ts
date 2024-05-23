@@ -29,6 +29,7 @@ import { Units } from './collections/shop/Units'
 import { Currencies } from './collections/shop/Currencies'
 import { Tastes } from './collections/shop/Tastes'
 import { Feedbacks } from './collections/shop/Feedbacks'
+import { ShippingRates } from './collections/shop/ShippingRates'
 
 import { Pages } from './collections/pages/Pages'
 import { ProductPages } from './collections/pages/ProductPages'
@@ -52,6 +53,7 @@ import { getPageSlug } from './utilities/getPageSlug'
 import { getProductsCountByFilters } from './endpoints/getProductsCountByFilters'
 import { getSubcategories } from './endpoints/getSubcategories'
 import { getFilteredProducts } from './endpoints/getFilteredProducts'
+import { shippingRatesProxy } from './endpoints/shipping-rates'
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}
@@ -74,12 +76,15 @@ export default buildConfig({
             dotenv: path.resolve(__dirname, './dotenv.js'),
             [path.resolve(__dirname, 'collections/shop/Products/hooks/beforeChange')]:
               mockModulePath,
+            [path.resolve(__dirname, 'collections/shop/ShippingRates/hooks/beforeChange')]:
+              mockModulePath,
             [path.resolve(__dirname, 'collections/admin/Users/hooks/createStripeCustomer')]:
               mockModulePath,
             [path.resolve(__dirname, 'collections/admin/Users/endpoints/customer')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/create-payment-intent')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/customers')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/products')]: mockModulePath,
+            [path.resolve(__dirname, 'endpoints/shipping-rates')]: mockModulePath,
             stripe: mockModulePath,
             express: mockModulePath,
           },
@@ -112,6 +117,7 @@ export default buildConfig({
     Currencies,
     Tastes,
     Feedbacks,
+    ShippingRates,
   ],
   globals: [MainNavigation, BottomNavigation, GlobalTypography, AllBlocks],
   typescript: {
@@ -194,6 +200,11 @@ export default buildConfig({
       path: '/stripe/products',
       method: 'get',
       handler: productsProxy,
+    },
+    {
+      path: '/stripe/shipping-rates',
+      method: 'get',
+      handler: shippingRatesProxy,
     },
     {
       path: '/products-count-by-filters',

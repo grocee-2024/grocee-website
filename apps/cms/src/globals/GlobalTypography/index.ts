@@ -15,6 +15,268 @@ export const GlobalTypography: GlobalConfig = {
   },
   fields: [
     {
+      name: 'cart',
+      type: 'group',
+      fields: [
+        {
+          label: 'Cart Labels',
+          type: 'collapsible',
+          fields: [
+            {
+              name: 'pageTitle',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'minOrderPrice',
+              type: 'group',
+              fields: [
+                {
+                  name: 'uah',
+                  label: 'UAH',
+                  type: 'number',
+                  required: true,
+                  min: 0,
+                },
+              ],
+            },
+            {
+              name: 'minOrderPriceRequiredWarning',
+              type: 'text',
+              localized: true,
+              required: true,
+              admin: {
+                description:
+                  'Use the template {{min_price}} to display the min order price for checkout',
+              },
+            },
+            {
+              name: 'addToCartSuccess',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'addToCartError',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'goodsAmountLessThanMinError',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
+            {
+              name: 'clearBasketLabel',
+              type: 'text',
+              localized: true,
+              required: true,
+            },
+            {
+              name: 'createCheckoutError',
+              type: 'text',
+              localized: true,
+            },
+            {
+              name: 'emptyCartLabel',
+              type: 'text',
+              localized: true,
+              required: true,
+            },
+            {
+              name: 'summary',
+              type: 'group',
+              fields: [
+                {
+                  label: 'Summary Block',
+                  type: 'collapsible',
+                  fields: [
+                    {
+                      name: 'title',
+                      type: 'text',
+                      localized: true,
+                      required: true,
+                    },
+                    {
+                      name: 'deliveyAmountLabel',
+                      type: 'text',
+                      localized: true,
+                      required: true,
+                    },
+                    {
+                      name: 'freeDeliveryLabel',
+                      type: 'text',
+                      localized: true,
+                      required: true,
+                    },
+                    {
+                      name: 'goodsAmountLabel',
+                      type: 'text',
+                      localized: true,
+                      required: true,
+                    },
+                    {
+                      name: 'discountAmountLabel',
+                      type: 'text',
+                      localized: true,
+                      required: true,
+                    },
+                    {
+                      name: 'addPromocodeLabel',
+                      type: 'text',
+                      localized: true,
+                      required: true,
+                    },
+                    {
+                      name: 'addCertificateLabel',
+                      type: 'text',
+                      localized: true,
+                      required: true,
+                    },
+                    {
+                      name: 'addDiscountButtonLabel',
+                      type: 'text',
+                      required: true,
+                      localized: true,
+                    },
+                    {
+                      name: 'totalSumLabel',
+                      type: 'text',
+                      localized: true,
+                      required: true,
+                    },
+                    {
+                      name: 'checkoutButtonLabel',
+                      type: 'text',
+                      localized: true,
+                      required: true,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'afterPayment',
+              type: 'group',
+              fields: [
+                {
+                  label: 'After Payment Labels',
+                  type: 'collapsible',
+                  fields: [
+                    {
+                      name: 'buttons',
+                      type: 'group',
+                      fields: [
+                        {
+                          label: 'After Payment Button Labels',
+                          type: 'collapsible',
+                          fields: [
+                            {
+                              name: 'downloadInvoiceButton',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                            {
+                              name: 'backToHomeLink',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                            {
+                              name: 'backToCartLink',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      name: 'success',
+                      type: 'group',
+                      fields: [
+                        {
+                          label: 'After Payment Success Labels',
+                          type: 'collapsible',
+                          fields: [
+                            {
+                              name: 'title',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                            {
+                              name: 'description',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                            {
+                              name: 'checkoutLoadedError',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                            {
+                              name: 'deliveryTime',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                            {
+                              name: 'deliveryAddress',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                            {
+                              name: 'totalSum',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      name: 'canceled',
+                      type: 'group',
+                      fields: [
+                        {
+                          label: 'After Payment Canceled Labels',
+                          type: 'collapsible',
+                          fields: [
+                            {
+                              name: 'title',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                            {
+                              name: 'description',
+                              type: 'text',
+                              localized: true,
+                              required: true,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
       name: 'orderDeliveryForm',
       type: 'group',
       fields: [

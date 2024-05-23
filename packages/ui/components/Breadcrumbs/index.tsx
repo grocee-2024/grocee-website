@@ -14,12 +14,16 @@ export type Bredcrumb = {
 }
 
 type Props = {
-  breadcrumbs: Bredcrumb[]
+  breadcrumbs?: Bredcrumb[]
   className?: string
 }
 
-export const Breadcrumbs: FC<Props> = ({ breadcrumbs, className }) => {
+export const Breadcrumbs: FC<Props> = ({ breadcrumbs = [], className }) => {
   const pathname = usePathname()
+
+  if (!breadcrumbs?.length) {
+    return null
+  }
 
   return (
     <ul className={clsx('flex flex-wrap items-center gap-1 tablet:gap-2', className)}>

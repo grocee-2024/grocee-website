@@ -61,7 +61,7 @@ export const NavLink: FC<NavLinkType> = ({
           className,
         )}
       >
-        {badge && (
+        {(badge ?? 0) > 0 && (
           <span className='gilroy-xs absolute bottom-3 left-3 flex h-[18px] w-[18px] items-center justify-center rounded-[50%] border-[1px] border-white bg-error-500 font-light text-white'>
             {badge}
           </span>

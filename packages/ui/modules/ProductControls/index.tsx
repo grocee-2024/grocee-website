@@ -1,9 +1,9 @@
 'use client'
 
-import { Country, Feedback, Product, Taste, Trademark, Unit } from 'cms-types'
-import { FC, useMemo, useRef, useState } from 'react'
-import { MappedProductForProductCard } from '../../types'
-import { useGlobalTypography } from '../../../../apps/web/src/store'
+import { Country, Feedback, Taste, Trademark, Unit } from 'cms-types'
+import { FC, useCallback, useMemo, useRef, useState } from 'react'
+import { MappedProduct } from '../../types'
+import { useGlobalTypography, useShoppingBasket } from '../../../../apps/web/src/store'
 import { PoductControlsSkeleton } from '../../../../apps/web/src/components/ProductPageSkeletons'
 import { AccordionInfo } from './AccordionInfo'
 import { Heart, Minus, Plus } from '@oleksii-lavka/grocee-icons/icons'
@@ -11,10 +11,11 @@ import { ReviewsBlock } from './ReviewsBlock'
 import { Button } from '../..'
 import clsx from 'clsx'
 import { WithSkeletonLoader } from '../../hoc'
+import toast from 'react-hot-toast'
 
 type Props = {
   className?: string
-  product: Pick<MappedProductForProductCard, 'price' | 'weight'> & Product
+  product: MappedProduct
   // eslint-disable-next-line no-unused-vars
   fetchReviews: (page: number) => Promise<{
     docs: Feedback[]
@@ -38,11 +39,24 @@ export const ProductControls: FC<Props> = WithSkeletonLoader(
         : 1,
     )
 
-    const { productPage, productButtons } = useGlobalTypography()
+    const { productPage, productButtons, cart } = useGlobalTypography()
+    const { lineItems, addLineItem } = useShoppingBasket()
     const [quantity, setQuantity] = useState(quantityStep.current)
 
+    const isProductInCart = useMemo(() => {
+      return lineItems.some(lineItem => lineItem.id === product.id)
+    }, [lineItems, product])
+
+    const onAddToCartClick = useCallback(
+      (product: MappedProduct) => {
+        addLineItem({ ...product, quantity: quantity / quantityStep.current })
+        toast.success(cart.addToCartSuccess)
+      },
+      [lineItems, cart, quantity],
+    )
+
     const productName = !product.productDetails?.weight
-      ? `${product.name}, ${product.weight}`
+      ? `${product.name}, ${product.weightLabel}`
       : product.name
 
     const generalInfoOptions = useMemo(() => {
@@ -155,8 +169,15 @@ export const ProductControls: FC<Props> = WithSkeletonLoader(
             </div>
 
             <div className='flex flex-col gap-2 tablet:order-1'>
-              <Button variant='primary' standartButton>
-                {productButtons.addToCartButton}
+              <Button
+                onClick={() => onAddToCartClick(product)}
+                variant='primary'
+                standartButton
+                leftIcon={{ icon: isProductInCart ? 'PlusCircle' : null, size: 18 }}
+              >
+                {isProductInCart
+                  ? productButtons.addedToCartButton
+                  : productButtons.addToCartButton}
               </Button>
               <Button variant='secondary' standartButton>
                 {productButtons.buyNowButton}

@@ -37,6 +37,7 @@ export interface Config {
     currencies: Currency
     tastes: Taste
     feedbacks: Feedback
+    shippingRates: ShippingRate
     redirects: Redirect
     'payload-preferences': PayloadPreference
     'payload-migrations': PayloadMigration
@@ -730,6 +731,32 @@ export interface Feedback {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shippingRates".
+ */
+export interface ShippingRate {
+  id: string
+  shippingRateID: string
+  deactivated?: boolean | null
+  label?: string | null
+  minOrderPrice: number
+  amount?: number | null
+  currency?: (string | null) | Currency
+  title?: string | null
+  shippingRateJSON?:
+    | {
+        [k: string]: unknown
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null
+  skipSync?: boolean | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1056,6 +1083,50 @@ export interface BottomNavigation {
  */
 export interface GlobalTypography {
   id: string
+  cart: {
+    pageTitle: string
+    minOrderPrice: {
+      uah: number
+    }
+    minOrderPriceRequiredWarning: string
+    addToCartSuccess: string
+    addToCartError: string
+    goodsAmountLessThanMinError: string
+    clearBasketLabel: string
+    createCheckoutError?: string | null
+    emptyCartLabel: string
+    summary: {
+      title: string
+      deliveyAmountLabel: string
+      freeDeliveryLabel: string
+      goodsAmountLabel: string
+      discountAmountLabel: string
+      addPromocodeLabel: string
+      addCertificateLabel: string
+      addDiscountButtonLabel: string
+      totalSumLabel: string
+      checkoutButtonLabel: string
+    }
+    afterPayment: {
+      buttons: {
+        downloadInvoiceButton: string
+        backToHomeLink: string
+        backToCartLink: string
+      }
+      success: {
+        title: string
+        description: string
+        checkoutLoadedError: string
+        deliveryTime: string
+        deliveryAddress: string
+        totalSum: string
+      }
+      canceled: {
+        title: string
+        description: string
+      }
+    }
+  }
   orderDeliveryForm: {
     firstName: {
       label: string
