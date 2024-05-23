@@ -1,19 +1,21 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { searchInCollection } from '@/cms'
-import { mapCMSProductsForProductCard } from '@/helpers'
+import { mapCMSProducts } from '@/helpers'
 import { useCookies } from 'next-client-cookies'
 import { useQuery } from '@tanstack/react-query'
-import { useEdgeBlocksOnPage, useGlobalTypography, usePrevPath } from '@/store'
+import { useEdgeBlocksOnPage, useGlobalTypography, usePrevPath, useShoppingBasket } from '@/store'
 import { Pagination, ProductCard as ProductCardUI } from 'ui'
 import { useSearchParams } from 'next/navigation'
-import { useWindowSize } from 'ui/hooks'
 import { SearchPageSkeleton } from './SearchPageSkeleton'
 import { mapIcon } from '@oleksii-lavka/grocee-icons'
 import { FocusRing } from 'react-aria'
 import Link from 'next/link'
 import Skeleton from 'react-loading-skeleton'
+import stripe from '@/stripe'
+import { MappedProduct } from 'ui/types'
+import toast from 'react-hot-toast'
 
 type Props = {
   query: string
@@ -29,22 +31,20 @@ export function SearchPage({ query }: Props) {
   const [startPageChange, setStartPageChange] = useState(false)
   const { updateBlock } = useEdgeBlocksOnPage()
   const searchParams = useSearchParams()
-  const { windowSize } = useWindowSize()
-  const { searchPage, backButton } = useGlobalTypography()
+  const { searchPage, backButton, cart } = useGlobalTypography()
   const { prevPath } = usePrevPath()
 
+  const { lineItems, addLineItem } = useShoppingBasket()
+
+  const onAddToCartClick = useCallback(
+    (product: MappedProduct) => {
+      addLineItem(product)
+      toast.success(cart.addToCartSuccess)
+    },
+    [lineItems, cart],
+  )
+
   const page = +(searchParams.get('page') || 1)
-
-  const disableAddToCartButtonLabel = useMemo(() => {
-    const { width } = windowSize
-
-    return !(
-      (width >= 320 && width < 420) ||
-      (width >= 600 && width < 768) ||
-      (width >= 900 && width < 1280) ||
-      width >= 1440
-    )
-  }, [windowSize.width])
 
   const {
     data: products,
@@ -53,6 +53,7 @@ export function SearchPage({ query }: Props) {
     isLoading,
     isFetching,
     isPending,
+    isRefetching,
   } = useQuery({
     queryKey: ['products', query, page],
     queryFn: async () => {
@@ -67,7 +68,7 @@ export function SearchPage({ query }: Props) {
         },
         { searchParams: { locale } },
       ).then(async ({ docs = [], totalDocs, totalPages }) => {
-        const productsForProductCard = await mapCMSProductsForProductCard(docs, locale)
+        const productsForProductCard = await mapCMSProducts(docs, locale)
 
         totalPagesCount.current = totalPages
         totalProductsCount.current = totalDocs
@@ -146,7 +147,10 @@ export function SearchPage({ query }: Props) {
       !emptySearchResultTitle ||
       !searchResultTitle ||
       !productsCountTitle ||
-      !totalProductsCount.current ? (
+      isFetching ||
+      isLoading ||
+      isPending ||
+      isRefetching ? (
         <>
           <div className='mr-4 w-3/4 tablet:hidden'>
             <Skeleton height={44} />
@@ -159,10 +163,11 @@ export function SearchPage({ query }: Props) {
       ) : (
         <>
           <h1 className='helvetica font-light text-gray-900'>
-            {!totalProductsCount.current && !isFetching && !isLoading && !isPending
-              ? `${emptySearchResultTitle}`
-              : `${searchResultTitle} (${productsCountTitle})`}
+            {totalProductsCount.current > 0
+              ? `${searchResultTitle} (${productsCountTitle})`
+              : emptySearchResultTitle}
           </h1>
+
           {mappedBackButton && mappedBackButton}
         </>
       )}
@@ -179,7 +184,7 @@ export function SearchPage({ query }: Props) {
                 className='col-span-2 !p-2 laptop:col-span-4 laptop:!p-4 desktop:col-span-3'
                 key={`${product.id}-${idx}`}
                 product={product}
-                disableAddToCartButtonLabel={disableAddToCartButtonLabel}
+                onAddToCartClick={onAddToCartClick}
               />
             ))}
           </div>

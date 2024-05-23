@@ -2,7 +2,7 @@
 
 import { GlobalTypography } from 'cms-types'
 import { useEffect } from 'react'
-import { useGlobalTypography, useSearchHistory, usePrevPath } from '@/store'
+import { useGlobalTypography, useSearchHistory, usePrevPath, useShoppingBasket } from '@/store'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { Toaster } from 'react-hot-toast'
 
@@ -19,6 +19,7 @@ const SetupClientComponent = ({ globalTypography }: SetupClientComponentProps) =
     useGlobalTypography.setState(globalTypography)
     useSearchHistory.persist.rehydrate()
     usePrevPath.persist.rehydrate()
+    useShoppingBasket.persist.rehydrate()
   }, [globalTypography])
 
   useEffect(() => {

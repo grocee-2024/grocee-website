@@ -24,9 +24,6 @@ export async function Banner({ heading, previewImage }: BannerBlock) {
 async function mapBannerHeading(heading: BannerBlock['heading']) {
   const { type, info, orderDelivery, logo, title, links } = heading
 
-  // const [logo, title] =
-  //   type === 'info' ? [info?.logo, info?.title] : [orderDelivery?.logo, orderDelivery?.title]
-
   const mappedLinks = await Promise.all(
     (links ?? []).map(({ linkOrButton, id }) => {
       const { reference, url, linkType, ...restLink } = linkOrButton

@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios'
 import {
+  Category,
   Config,
   Country,
   Image,
@@ -57,6 +58,7 @@ const getCmsSearchParams = (searchParams: Record<string, string | string[]> = {}
 type PageTypes = {
   pages: Page
   productPages: ProductPage
+  categories: Category
 }
 
 export const getPage = async <C extends keyof PageTypes>(

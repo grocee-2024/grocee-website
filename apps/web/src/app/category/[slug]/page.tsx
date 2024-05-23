@@ -27,10 +27,10 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: NextRoute) {
   const locale = cookies().get('locale')?.value ?? 'en'
 
-  return await getMetadata('pages', 'category', { searchParams: { locale } })
+  return await getMetadata('categories', params.slug, { searchParams: { locale } })
 }
 
 export default async function CategoryPage({ params, searchParams }: NextRoute) {
@@ -88,7 +88,7 @@ export default async function CategoryPage({ params, searchParams }: NextRoute) 
     return (
       <>
         <SetupEdgeBlocksOnPage layout={page.layout ?? []} />
-        <div className='width-limit mb-8 mt-[120px] flex flex-col gap-8 tablet:mt-[150px]'>
+        <div className='width-limit mt-[120px] flex flex-col gap-8 tablet:mt-[150px]'>
           <Breadcrumbs breadcrumbs={mappedBreadcrumbs} />
           <CategoryHeader
             totalProducts={totalProducts}
@@ -99,9 +99,11 @@ export default async function CategoryPage({ params, searchParams }: NextRoute) 
           />
           <ProductList categoryId={category.id} />
         </div>
-        <div className='mt-10 flex flex-col gap-16 laptop:mt-20 laptop:gap-20'>
-          {renderBlocks(page.layout)}
-        </div>
+        {(page?.layout?.length ?? 0) > 0 && (
+          <div className='mt-10 flex flex-col gap-16 laptop:mt-20 laptop:gap-20'>
+            {renderBlocks(page.layout)}
+          </div>
+        )}
       </>
     )
   } catch (err: unknown) {

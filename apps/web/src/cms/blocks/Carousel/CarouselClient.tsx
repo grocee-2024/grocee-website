@@ -1,10 +1,14 @@
 'use client'
 
 import { parsePayloadLink } from '@/helpers'
+import { useGlobalTypography, useShoppingBasket } from '@/store'
+import { CreateCheckoutProps } from '@/stripe'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
+import axios from 'axios'
 import clsx from 'clsx'
-import { CarouselBlock, Image } from 'cms-types'
-import { FC, useMemo } from 'react'
+import { CarouselBlock } from 'cms-types'
+import { FC, useCallback, useMemo, useState } from 'react'
+import toast from 'react-hot-toast'
 import {
   Card as CardUI,
   Carousel as CarouselUI,
@@ -12,14 +16,14 @@ import {
   ProductCard as ProductCardUI,
 } from 'ui'
 import { parseIcon } from 'ui/helpers'
-import { MappedCard, MappedNewsArticleCard, MappedProductForProductCard } from 'ui/types'
+import { MappedCard, MappedNewsArticleCard, MappedProduct } from 'ui/types'
 
 type Settings = Omit<CarouselBlock['settings'], 'type'>
 
 type Props = Pick<CarouselBlock, 'title'> & { settings: Settings } & (
     | {
         type: 'productCard'
-        slides: MappedProductForProductCard[]
+        slides: MappedProduct[]
       }
     | {
         type: 'newsCard'
@@ -33,14 +37,30 @@ type Props = Pick<CarouselBlock, 'title'> & { settings: Settings } & (
 
 export const CarouselClient: FC<Props> = ({ title, settings, type, slides }) => {
   const { icon, link, linkText, loop, showLink, speed } = settings
+  const { lineItems, addLineItem } = useShoppingBasket()
+
+  const { addToCartSuccess } = useGlobalTypography(state => state.cart)
 
   const parsedIcon = parseIcon({ icon: (icon?.icon as AllIconNames) ?? undefined })
   const buttonLink = parsePayloadLink(link)
 
+  const onAddToCartClick = useCallback(
+    (product: MappedProduct) => {
+      addLineItem(product)
+      toast.success(addToCartSuccess)
+    },
+    [lineItems, addToCartSuccess],
+  )
+
   const mappedSlides = useMemo(() => {
     if (type === 'productCard') {
       return slides.map((product, idx) => (
-        <ProductCardUI key={`${product.id}-${idx}`} product={product} className='grow' />
+        <ProductCardUI
+          key={`${product.id}-${idx}`}
+          onAddToCartClick={onAddToCartClick}
+          product={product}
+          className='grow'
+        />
       ))
     }
 
@@ -64,7 +84,7 @@ export const CarouselClient: FC<Props> = ({ title, settings, type, slides }) => 
     }
 
     return null
-  }, [])
+  }, [lineItems, addToCartSuccess])
 
   return (
     <CarouselUI
@@ -79,6 +99,14 @@ export const CarouselClient: FC<Props> = ({ title, settings, type, slides }) => 
         'max-w-[212px] tablet:max-w-[292px]': type === 'simpleCard',
         'max-w-[292px]': type === 'productCard' || type === 'newsCard',
       })}
+      slideStyle={
+        type === 'productCard'
+          ? {
+              display: 'flex',
+              minHeight: '100%',
+            }
+          : undefined
+      }
     >
       {mappedSlides}
     </CarouselUI>

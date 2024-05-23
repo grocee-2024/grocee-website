@@ -1,15 +1,16 @@
 'use client'
 
-import { FC, useRef, useMemo } from 'react'
+import { FC, useRef, useCallback } from 'react'
 import { getFilteredProducts } from '@/cms'
-import { useGlobalTypography } from '@/store'
+import { useGlobalTypography, useShoppingBasket } from '@/store'
 import { useQuery } from '@tanstack/react-query'
 import { useCookies } from 'next-client-cookies'
 import { useSearchParams } from 'next/navigation'
 import { Button, Pagination, ProductCard } from 'ui'
-import { mapCMSProductsForProductCard } from '@/helpers'
+import { mapCMSProducts } from '@/helpers'
 import { ProductCardSkeleton } from 'ui/skeletons'
-import { useWindowSize } from 'ui/hooks'
+import toast from 'react-hot-toast'
+import { MappedProduct } from 'ui/types'
 
 type Props = {
   categoryId: string
@@ -17,8 +18,7 @@ type Props = {
 
 export const ProductList: FC<Props> = ({ categoryId }) => {
   const searchParams = useSearchParams()
-  const { categoryPage } = useGlobalTypography()
-  const { windowSize } = useWindowSize()
+  const { categoryPage, cart } = useGlobalTypography()
 
   const locale = useCookies().get('locale') || 'en'
 
@@ -39,16 +39,15 @@ export const ProductList: FC<Props> = ({ categoryId }) => {
   const totalPagesCount = useRef(0)
   const totalProductsCount = useRef(0)
 
-  const disableAddToCartButtonLabel = useMemo(() => {
-    const { width } = windowSize
+  const { lineItems, addLineItem } = useShoppingBasket()
 
-    return !(
-      (width >= 320 && width < 420) ||
-      (width >= 600 && width < 768) ||
-      (width >= 900 && width < 1280) ||
-      width >= 1440
-    )
-  }, [windowSize.width])
+  const onAddToCartClick = useCallback(
+    (product: MappedProduct) => {
+      addLineItem(product)
+      toast.success(cart.addToCartSuccess)
+    },
+    [lineItems, cart],
+  )
 
   const {
     data: products,
@@ -81,7 +80,7 @@ export const ProductList: FC<Props> = ({ categoryId }) => {
         locale,
         page,
       })
-      const products = await mapCMSProductsForProductCard(docs, locale)
+      const products = await mapCMSProducts(docs, locale)
 
       totalPagesCount.current = totalPages
       totalProductsCount.current = totalDocs
@@ -123,7 +122,7 @@ export const ProductList: FC<Props> = ({ categoryId }) => {
           <ProductCard
             key={`${product.id}-${idx}`}
             product={product}
-            disableAddToCartButtonLabel={disableAddToCartButtonLabel}
+            onAddToCartClick={onAddToCartClick}
             className='col-span-2 !p-2 laptop:col-span-4 laptop:!p-4 desktop:col-span-3'
           />
         ))}

@@ -13,9 +13,16 @@ type Props = {
   links: ComponentProps<typeof Navigation>['navLinks']
   onSearchClick: () => void
   showNavItems?: boolean
+  productsInCart?: number
 }
 
-export const NavItems: FC<Props> = ({ onLinkClick, onSearchClick, showNavItems, links }) => {
+export const NavItems: FC<Props> = ({
+  onLinkClick,
+  onSearchClick,
+  showNavItems,
+  productsInCart,
+  links,
+}) => {
   return (
     <motion.ul
       variants={{
@@ -43,7 +50,7 @@ export const NavItems: FC<Props> = ({ onLinkClick, onSearchClick, showNavItems, 
         <NavLink {...links.delivery} onClick={onLinkClick} className='pt-1' />
       </li>
       <li>
-        <NavLink {...links.cart} onClick={onLinkClick} />
+        <NavLink {...links.cart} onClick={onLinkClick} badge={productsInCart} />
       </li>
       <li className='hidden min-[375px]:block'>
         <NavLink {...links.profile} onClick={onLinkClick} />

@@ -3,6 +3,50 @@ import { create } from 'zustand'
 
 export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'createdAt' | 'updatedAt'>>(
   () => ({
+    cart: {
+      minOrderPrice: {
+        uah: 0,
+      },
+      minOrderPriceRequiredWarning: '',
+      pageTitle: '',
+      summary: {
+        title: '',
+        deliveyAmountLabel: '',
+        goodsAmountLabel: '',
+        discountAmountLabel: '',
+        addPromocodeLabel: '',
+        addCertificateLabel: '',
+        totalSumLabel: '',
+        addDiscountButtonLabel: '',
+        checkoutButtonLabel: '',
+        freeDeliveryLabel: '',
+      },
+      afterPayment: {
+        buttons: {
+          backToCartLink: '',
+          backToHomeLink: '',
+          downloadInvoiceButton: '',
+        },
+        success: {
+          title: '',
+          description: '',
+          deliveryTime: '',
+          deliveryAddress: '',
+          totalSum: '',
+          checkoutLoadedError: '',
+        },
+        canceled: {
+          title: '',
+          description: '',
+        },
+      },
+      clearBasketLabel: '',
+      createCheckoutError: '',
+      emptyCartLabel: '',
+      addToCartSuccess: '',
+      addToCartError: '',
+      goodsAmountLessThanMinError: '',
+    },
     orderDeliveryForm: {
       firstName: {
         label: '',

@@ -22,7 +22,7 @@ export const ProductIntro: FC<Props> = ({ productGallery, product, fetchReviews 
           className='mt-16 !hidden tablet:!flex'
           productId={product.id}
           fetchReviews={fetchReviews}
-          rating={product.productDetails.rating ?? 0}
+          rating={product.rating ?? 0}
         />
       </div>
       <ProductControls
