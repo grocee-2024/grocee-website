@@ -8,7 +8,6 @@ export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'created
         uah: 0,
       },
       minOrderPriceRequiredWarning: '',
-      pageTitle: '',
       summary: {
         title: '',
         deliveyAmountLabel: '',

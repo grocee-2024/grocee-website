@@ -41,6 +41,10 @@ export const AfterPaymentSuccess: FC = () => {
         })
       ).json()) as Checkout
 
+      if (!checkout?.invoice?.pdfUrl) {
+        getCheckout()
+      }
+
       setCheckout(checkout)
     }
 
@@ -73,16 +77,16 @@ export const AfterPaymentSuccess: FC = () => {
     return date.text?.value ?? '-'
   }, [checkout, isServer, checkoutId])
 
+  if (isError || (!isError && !isPending && !checkoutId)) {
+    return <AfterPaymentCancel toastMessage={afterPayment.success.checkoutLoadedError} />
+  }
+
   if (isServer || isPending || !checkout?.id) {
     return (
       <div className='mx-auto mt-[120px] flex min-h-[470px] max-w-[510px] items-center justify-center px-4 tablet:mt-[150px]'>
         <Loader size={64} className='text-success-600' />
       </div>
     )
-  }
-
-  if (isError) {
-    return <AfterPaymentCancel toastMessage={afterPayment.success.checkoutLoadedError} />
   }
 
   return (

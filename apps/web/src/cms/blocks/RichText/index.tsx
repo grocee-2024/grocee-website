@@ -1,20 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { RichTextBlock } from 'cms-types'
 
 import { richTextToJSX } from '@/helpers'
+import { useSSR } from '@/hooks'
+import { RichTextSkeleton } from 'ui/skeletons'
 
 export function RichText({ content }: RichTextBlock) {
-  const [mounted, setMounted] = useState(false)
+  const { isServer } = useSSR()
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return null
+  if (isServer) {
+    return <RichTextSkeleton />
   }
 
-  return <div className='width-limit'>{richTextToJSX(content)}</div>
+  return <div>{richTextToJSX(content)}</div>
 }

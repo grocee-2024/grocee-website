@@ -287,6 +287,9 @@ export interface Page {
   id: string
   slug: string
   breadcrumbsTitle?: string | null
+  title?: string | null
+  subtitle?: string | null
+  layoutHasWidthLimit?: boolean | null
   layout?:
     | (
         | MainSliderBlock
@@ -566,7 +569,8 @@ export interface AccordionBlock {
         id?: string | null
       }[]
     | null
-  link: {
+  withoutLink?: boolean | null
+  link?: {
     label: string
     icon: {
       icon?: string | null
@@ -1084,7 +1088,6 @@ export interface BottomNavigation {
 export interface GlobalTypography {
   id: string
   cart: {
-    pageTitle: string
     minOrderPrice: {
       uah: number
     }

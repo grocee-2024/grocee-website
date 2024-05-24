@@ -11,10 +11,11 @@ import Skeleton from 'react-loading-skeleton'
 
 type Props = {
   shippingRates: ShippingRate[]
+  pageTitle?: string
 }
 
-export const ShoppingBasket: FC<Props> = ({ shippingRates }) => {
-  const { pageTitle, clearBasketLabel, emptyCartLabel } = useGlobalTypography(state => state.cart)
+export const ShoppingBasket: FC<Props> = ({ shippingRates, pageTitle }) => {
+  const { clearBasketLabel, emptyCartLabel } = useGlobalTypography(state => state.cart)
   const { lineItems, clearLineItems } = useShoppingBasket()
   const { isServer } = useSSR()
 
@@ -74,9 +75,11 @@ export const ShoppingBasket: FC<Props> = ({ shippingRates }) => {
   if (!lineItems.length) {
     return (
       <>
-        <h1 className='helvetica-xs leading:[122%] font-light tracking-tightest text-gray-900 tablet:text-[36px]'>
-          {pageTitle}
-        </h1>
+        {pageTitle && (
+          <h1 className='helvetica-xs leading:[122%] font-light tracking-tightest text-gray-900 tablet:text-[36px]'>
+            {pageTitle}
+          </h1>
+        )}
         <h2 className='helvetica-xs text-center text-success-600'>{emptyCartLabel}</h2>
       </>
     )
@@ -85,13 +88,15 @@ export const ShoppingBasket: FC<Props> = ({ shippingRates }) => {
   return (
     <>
       <div className='flex items-center justify-between gap-2'>
-        <h1 className='helvetica-xs leading:[122%] font-light tracking-tightest text-gray-900 tablet:text-[36px]'>
-          {pageTitle}
-        </h1>
+        {pageTitle && (
+          <h1 className='helvetica-xs leading:[122%] font-light tracking-tightest text-gray-900 tablet:text-[36px]'>
+            {pageTitle}
+          </h1>
+        )}
         <Button
           onClick={() => clearLineItems()}
           variant='tertiary'
-          className='px-3 py-1'
+          className='ml-auto px-3 py-1'
           rightIcon={{ icon: 'CloseCircle', size: 18 }}
         >
           {clearBasketLabel}

@@ -12,6 +12,8 @@ import {
   lexicalEditor,
   HTMLConverterFeature,
   SlateToLexicalFeature,
+  BlocksFeature,
+  LinkFeature,
 } from '@payloadcms/richtext-lexical'
 import { buildConfig } from 'payload/config'
 import { Config } from 'cms-types'
@@ -54,6 +56,7 @@ import { getProductsCountByFilters } from './endpoints/getProductsCountByFilters
 import { getSubcategories } from './endpoints/getSubcategories'
 import { getFilteredProducts } from './endpoints/getFilteredProducts'
 import { shippingRatesProxy } from './endpoints/shipping-rates'
+import { ALL_BLOCKS } from './blocks'
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}
@@ -97,6 +100,11 @@ export default buildConfig({
       ...defaultFeatures,
       SlateToLexicalFeature({}),
       HTMLConverterFeature({}),
+      // ! Need to comment the line below for recreating cms types
+      BlocksFeature({ blocks: ALL_BLOCKS }),
+      LinkFeature({
+        enabledCollections: ['pages', 'categories', 'news', 'productPages'],
+      }),
     ],
   }),
   collections: [

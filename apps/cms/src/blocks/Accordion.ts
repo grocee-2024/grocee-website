@@ -24,6 +24,10 @@ export const Accordion: Block = {
         },
       ],
     },
+    {
+      name: 'withoutLink',
+      type: 'checkbox',
+    },
     link({
       fields: [
         {
@@ -38,6 +42,9 @@ export const Accordion: Block = {
           fields: [iconPicker],
         },
       ],
+      admin: {
+        condition: (_, siblingData) => !siblingData.withoutLink,
+      },
     }),
   ],
   imageURL: '/previews/accordion.png',
