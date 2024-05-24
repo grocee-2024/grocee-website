@@ -24,7 +24,7 @@ export default function Loading() {
           </div>
         </div>
 
-        <CarouselSkeleton type='productCard' />
+        <CarouselSkeleton disableWithLimit type='productCard' />
       </div>
     </div>
   )

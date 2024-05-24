@@ -8,11 +8,12 @@ import { ShoppingBasket } from '@/components/CartPage/ShoppingBasket'
 import { renderBlocks } from '@/cms/helpers'
 import { AfterPaymentSuccess } from '@/components/CartPage/AfterPaymentSuccess'
 import { AfterPaymentCancel } from '@/components/CartPage/AfterPaymentCancel'
+import { ResolvingMetadata } from 'next'
 
-export async function generateMetadata() {
+export async function generateMetadata(_: NextRoute, parent: ResolvingMetadata) {
   const locale = cookies().get('locale')?.value ?? 'en'
 
-  return await getMetadata('categories', 'cart', { searchParams: { locale } })
+  return await getMetadata('categories', 'cart', { searchParams: { locale } }, parent)
 }
 
 export default async function Cart({ searchParams }: NextRoute) {
@@ -44,7 +45,7 @@ export default async function Cart({ searchParams }: NextRoute) {
       <SetupEdgeBlocksOnPage layout={cartPage?.layout} />
       <div className='width-limit mt-[120px] flex grow flex-col gap-8 tablet:mt-[150px]'>
         <Breadcrumbs breadcrumbs={mappedBreadcrumbs} />
-        <ShoppingBasket shippingRates={shippingRates} />
+        <ShoppingBasket pageTitle={cartPage?.title ?? undefined} shippingRates={shippingRates} />
       </div>
       {(cartPage?.layout?.length ?? 0) > 0 && (
         <div className='mt-10 flex grow flex-col gap-16 laptop:mt-20 laptop:gap-20'>

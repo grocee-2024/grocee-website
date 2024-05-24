@@ -23,12 +23,6 @@ export const GlobalTypography: GlobalConfig = {
           type: 'collapsible',
           fields: [
             {
-              name: 'pageTitle',
-              type: 'text',
-              required: true,
-              localized: true,
-            },
-            {
               name: 'minOrderPrice',
               type: 'group',
               fields: [

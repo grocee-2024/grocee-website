@@ -28,6 +28,23 @@ export const Pages: CollectionConfig = {
       localized: true,
     },
     {
+      name: 'title',
+      type: 'text',
+      localized: true,
+    },
+    {
+      name: 'subtitle',
+      type: 'text',
+      localized: true,
+    },
+    {
+      name: 'layoutHasWidthLimit',
+      type: 'checkbox',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'layout',
       type: 'blocks',
       blocks: ALL_BLOCKS,

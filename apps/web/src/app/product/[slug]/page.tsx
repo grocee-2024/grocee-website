@@ -8,13 +8,14 @@ import { notFound } from 'next/navigation'
 import { Breadcrumbs, Bredcrumb } from 'ui'
 import { ProductIntro } from './product-intro'
 import { mapCMSProducts } from '@/helpers'
+import { ResolvingMetadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
-export async function generateMetadata({ params }: NextRoute) {
+export async function generateMetadata({ params }: NextRoute, parent: ResolvingMetadata) {
   const locale = cookies().get('locale')?.value ?? 'en'
 
-  return await getMetadata('productPages', params.slug, { searchParams: { locale } })
+  return await getMetadata('productPages', params.slug, { searchParams: { locale } }, parent)
 }
 
 export default async function ProductPage({ params, searchParams }: NextRoute) {

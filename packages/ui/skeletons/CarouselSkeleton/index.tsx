@@ -3,10 +3,13 @@
 import { CarouselBlock } from 'cms-types'
 import Skeleton from 'react-loading-skeleton'
 import { CardSkeleton, NewsCardSkeleton, ProductCardSkeleton } from '..'
+import clsx from 'clsx'
 
-type Props = Pick<CarouselBlock['settings'], 'type'>
+type Props = Pick<CarouselBlock['settings'], 'type'> & {
+  disableWithLimit?: boolean
+}
 
-export function CarouselSkeleton({ type }: Props) {
+export function CarouselSkeleton({ type, disableWithLimit }: Props) {
   const CARDS: Record<
     Props['type'],
     // eslint-disable-next-line no-unused-vars
@@ -20,7 +23,11 @@ export function CarouselSkeleton({ type }: Props) {
   const SkeletonCard = CARDS[type] || null
 
   return (
-    <div className='width-limit flex flex-col gap-6 tablet:gap-8'>
+    <div
+      className={clsx('flex flex-col gap-6 tablet:gap-8', {
+        'width-limit': !disableWithLimit,
+      })}
+    >
       <div className='flex w-full justify-between gap-6'>
         <Skeleton className='block h-[32px] min-w-[100px] tablet:h-[44px] tablet:min-w-[130px]' />
         <Skeleton className='block h-[32px] min-w-[70px] tablet:h-[44px] tablet:min-w-[170px]' />

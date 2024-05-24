@@ -157,13 +157,13 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
               )
 
             case 'heading':
-              if (node.children[0].type !== 'text' || !node?.tag.startsWith('h')) {
-                return null
+              if (node.children?.[0]?.type !== 'text' || !node?.tag.startsWith('h')) {
+                return <div className='my-8' />
               }
 
               const headingProps = (className?: string) => ({
                 className: clsx(
-                  'mb-8',
+                  'mb-4',
                   {
                     left: 'text-left',
                     center: 'text-center',
@@ -177,18 +177,7 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
               })
 
               switch (node?.tag) {
-                case 'h1': {
-                  return (
-                    <h1
-                      key={`${node.tag}-${index}`}
-                      {...headingProps(
-                        'helvetica-lg tablet:text-[60px] tablet:leading-[120%] laptop:text-[72px] laptop:leading-[125%] font-light text-gray-900',
-                      )}
-                    >
-                      {parse(node.children)}
-                    </h1>
-                  )
-                }
+                case 'h1':
                 case 'h2': {
                   return (
                     <h2
@@ -213,38 +202,16 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
                     </h3>
                   )
                 }
-                case 'h4': {
-                  return (
-                    <h4
-                      key={`${node.tag}-${index}`}
-                      {...headingProps(
-                        'helvetica-xs tablet:text-[32px] tablet:leading-[125%] laptop:text-[36px] laptop:leading-[122%] laptop:tracking-tightest font-light text-gray-900',
-                      )}
-                    >
-                      {parse(node.children)}
-                    </h4>
-                  )
-                }
-                case 'h5': {
-                  return (
-                    <h5
-                      key={`${node.tag}-${index}`}
-                      {...headingProps(
-                        'helvetica-xs tablet:text-[32px] tablet:leading-[125%] font-light text-gray-900',
-                      )}
-                    >
-                      {parse(node.children)}
-                    </h5>
-                  )
-                }
+                case 'h4':
+                case 'h5':
                 case 'h6': {
                   return (
-                    <h6
+                    <h4
                       key={`${node.tag}-${index}`}
                       {...headingProps('helvetica-xs font-light text-gray-900')}
                     >
                       {parse(node.children)}
-                    </h6>
+                    </h4>
                   )
                 }
               }
@@ -257,9 +224,14 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
               )
 
             case 'paragraph':
+              if (!node?.children.length) {
+                return <div className='h-8 w-full' />
+              }
+
               return (
                 <div
                   className={clsx(
+                    'mb-2',
                     {
                       left: 'text-left',
                       center: 'text-center',
@@ -268,7 +240,6 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
                   )}
                   style={{
                     paddingLeft: node.indent * 16 || undefined,
-                    marginBottom: '2rem',
                   }}
                   key={index}
                 >
@@ -281,7 +252,7 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
                 node.tag,
                 {
                   className: clsx(
-                    'flex flex-col gap-2.5',
+                    'flex flex-col gap-1',
                     {
                       bullet: 'list-disc',
                       number: 'list-decimal',

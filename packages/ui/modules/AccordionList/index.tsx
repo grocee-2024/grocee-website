@@ -25,10 +25,16 @@ type AccordionProps = {
       }
     }
   }
+  withoutLink: boolean
   className?: string
 }
 
-export const AccordionList: FC<AccordionProps> = ({ panels, link, className = '' }) => {
+export const AccordionList: FC<AccordionProps> = ({
+  panels,
+  link,
+  withoutLink,
+  className = '',
+}) => {
   const accodriodnId = useId()
   const [openedPanel, setOpenedPanel] = useState<number | null>(null)
   const [hovered, setHovered] = useState(false)
@@ -88,7 +94,7 @@ export const AccordionList: FC<AccordionProps> = ({ panels, link, className = ''
         })}
       </ul>
 
-      {link && (
+      {link && !withoutLink && (
         <Button
           variant='tertiary'
           href={link.href}

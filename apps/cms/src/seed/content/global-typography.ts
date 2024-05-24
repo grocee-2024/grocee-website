@@ -9,7 +9,6 @@ export const createGlobalTypography = async (pages: Pages) => {
         minOrderPrice: {
           uah: 25,
         },
-        pageTitle: 'Cart',
         minOrderPriceRequiredWarning:
           'To create a checkout, you need to add items to your cart totaling {{min_price}} or more',
         summary: {

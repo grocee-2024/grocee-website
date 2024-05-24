@@ -16,6 +16,7 @@ import { mapBreadcrumbs, parseSearchParams } from 'ui/helpers'
 import { CategoryHeader } from '@/components/CategoryPage/CategoryHeader'
 import { revalidateTag } from 'next/cache'
 import { ProductList } from '@/components/CategoryPage/ProductList'
+import { ResolvingMetadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,10 +28,10 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: NextRoute) {
+export async function generateMetadata({ params }: NextRoute, parent: ResolvingMetadata) {
   const locale = cookies().get('locale')?.value ?? 'en'
 
-  return await getMetadata('categories', params.slug, { searchParams: { locale } })
+  return await getMetadata('categories', params.slug, { searchParams: { locale } }, parent)
 }
 
 export default async function CategoryPage({ params, searchParams }: NextRoute) {
