@@ -7,7 +7,7 @@ import { ResolvingMetadata } from 'next'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Breadcrumbs } from 'ui'
-import { mapBreadcrumbs, parseSearchParams } from 'ui/helpers'
+import { mapBreadcrumbs } from 'ui/helpers'
 
 export async function generateMetadata({ params }: NextRoute, parent: ResolvingMetadata) {
   const locale = cookies().get('locale')?.value ?? 'en'
@@ -30,10 +30,10 @@ export default async function Page({ params }: NextRoute) {
     const mappedBreadcrumbs = mapBreadcrumbs(page.breadcrumbs)
 
     return (
-      <div className='width-limit mt-[120px] tablet:mt-[150px]'>
-        <SetupEdgeBlocksOnPage layout={page.layout ?? []} />
+      <div className='mt-[120px] tablet:mt-[150px]'>
+        <SetupEdgeBlocksOnPage layout={[]} />
 
-        <div className='flex flex-col gap-8'>
+        <div className='width-limit flex flex-col gap-8'>
           <Breadcrumbs breadcrumbs={mappedBreadcrumbs} />
           {(page?.title || page?.subtitle) && (
             <div className='flex flex-col gap-2'>

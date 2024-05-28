@@ -4,6 +4,7 @@ import {
   Config,
   Country,
   Image,
+  NewsPage,
   Page,
   Product,
   ProductPage,
@@ -59,6 +60,7 @@ type PageTypes = {
   pages: Page
   productPages: ProductPage
   categories: Category
+  newsPages: NewsPage
 }
 
 export const getPage = async <C extends keyof PageTypes>(

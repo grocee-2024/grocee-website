@@ -29,12 +29,14 @@ export type SliderProps = Pick<SwiperProps, 'autoplay' | 'loop' | 'speed' | 'eff
   className?: string
   slides: SlideProps[]
   slideClassName?: string
+  swiperClassName?: string
 }
 
 export const MainSlider: FC<SliderProps> = ({
   className = '',
   slideClassName = '',
   slides,
+  swiperClassName = '',
   ...props
 }) => {
   const [swiper, setSwiper] = useState<SwiperType | null>(null)
@@ -89,7 +91,7 @@ export const MainSlider: FC<SliderProps> = ({
             onUpdateDisableNavigation({ isBeginning, isEnd })
           }
         }}
-        className={'relative rounded-b-[32px] laptop:rounded-[32px]'}
+        className={clsx('relative rounded-b-[32px] laptop:rounded-[32px]', swiperClassName)}
         {...props}
       >
         {slides.map(({ id, ...slide }, idx) => {
@@ -146,9 +148,7 @@ function Slide({
                 </h3>
               )}
               {heading.description && (
-                <p className='gilroy-sm line-clamp-3 text-gray-700 tablet:line-clamp-none'>
-                  {heading.description}
-                </p>
+                <p className='gilroy-sm line-clamp-3 text-gray-700'>{heading.description}</p>
               )}
             </div>
 

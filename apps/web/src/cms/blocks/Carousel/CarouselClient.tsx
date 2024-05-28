@@ -71,14 +71,14 @@ export const CarouselClient: FC<Props> = ({ title, settings, type, slides }) => 
     }
 
     if (type === 'newsCard') {
-      return slides.map(({ id, pageUrl, previewImage, title, titleColor }, idx) => (
+      return slides.map(({ id, link, previewImage, title, titleColor, tag }, idx) => (
         <NewsCardUI
           key={`${id}-${idx}`}
-          link={pageUrl}
+          link={link}
           title={title}
           image={previewImage}
           titleColor={titleColor}
-          tag='Tag'
+          tag={tag}
         />
       ))
     }

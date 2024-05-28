@@ -37,7 +37,13 @@ export const link = (props?: Props): Field => ({
           name: 'reference',
           label: 'Document to link to',
           type: 'relationship',
-          relationTo: props?.relationTo ?? ['pages', 'categories'],
+          relationTo: props?.relationTo ?? [
+            'pages',
+            'categories',
+            'news',
+            'productPages',
+            'newsPages',
+          ],
           required: true,
           maxDepth: 1,
           admin: {

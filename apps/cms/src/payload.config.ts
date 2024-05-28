@@ -35,6 +35,7 @@ import { ShippingRates } from './collections/shop/ShippingRates'
 
 import { Pages } from './collections/pages/Pages'
 import { ProductPages } from './collections/pages/ProductPages'
+import { NewsPages } from './collections/pages/NewsPages'
 
 import { Countries } from './collections/filters/Countries'
 import { Trademarks } from './collections/filters/Trademarks'
@@ -117,6 +118,7 @@ export default buildConfig({
     Pages,
     Units,
     ProductPages,
+    NewsPages,
     News,
     Countries,
     Trademarks,
@@ -148,7 +150,7 @@ export default buildConfig({
       },
     }),
     seo({
-      collections: ['pages', 'categories', 'productPages'],
+      collections: ['pages', 'categories', 'productPages', 'newsPages'],
       uploadsCollection: 'images',
       tabbedUI: true,
     }),

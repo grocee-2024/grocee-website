@@ -448,24 +448,6 @@ export const GlobalTypography: GlobalConfig = {
       ],
     },
     {
-      name: 'newsCardButtons',
-      type: 'group',
-      fields: [
-        {
-          label: 'News Card Buttons Labels',
-          type: 'collapsible',
-          fields: [
-            {
-              name: 'reviewButton',
-              type: 'text',
-              localized: true,
-              required: true,
-            },
-          ],
-        },
-      ],
-    },
-    {
       name: 'backButton',
       type: 'group',
       fields: [
@@ -899,6 +881,18 @@ export const GlobalTypography: GlobalConfig = {
           type: 'text',
           required: true,
           localized: true,
+        },
+      ],
+    },
+    {
+      name: 'newsPage',
+      type: 'group',
+      fields: [
+        {
+          name: 'errorSearchResultTitle',
+          type: 'text',
+          localized: true,
+          required: true,
         },
       ],
     },

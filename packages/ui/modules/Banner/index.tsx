@@ -47,10 +47,7 @@ export const Banner: FC<BannerProps> = ({ heading, previewImage, type, className
   return (
     <section
       role='banner'
-      className={clsx(
-        'relative overflow-hidden px-4 py-8 tablet:px-8 laptop:mx-12 laptop:rounded-[32px] laptop:px-[68px] desktop:mx-[100px]',
-        className,
-      )}
+      className={clsx('relative overflow-hidden px-4 py-8 tablet:px-8 laptop:px-[68px]', className)}
     >
       <PayloadImage
         src={previewImage}

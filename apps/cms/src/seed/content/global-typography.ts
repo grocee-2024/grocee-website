@@ -152,9 +152,6 @@ export const createGlobalTypography = async (pages: Pages) => {
         addedToCartButton: 'Added to cart',
         buyNowButton: 'Buy now',
       },
-      newsCardButtons: {
-        reviewButton: 'Review',
-      },
       backButton: {
         label: 'Back',
         icon: {
@@ -266,6 +263,9 @@ export const createGlobalTypography = async (pages: Pages) => {
           fastestDeliveryTime: 'Fastest delivery time',
           shippingCost: 'Shipping cost',
         },
+      },
+      newsPage: {
+        errorSearchResultTitle: 'An error occurred while searching for news',
       },
     },
   })

@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
 import { FocusRing } from 'react-aria'
 
 export type Bredcrumb = {
-  id?: string
+  id?: string | null
   label: string
   url: string
 }

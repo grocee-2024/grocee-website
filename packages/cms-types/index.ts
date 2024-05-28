@@ -29,6 +29,7 @@ export interface Config {
     pages: Page
     units: Unit
     productPages: ProductPage
+    newsPages: NewsPage
     news: News
     countries: Country
     trademarks: Trademark
@@ -299,6 +300,7 @@ export interface Page {
         | AccordionBlock
         | HelpBlock
         | RichTextBlock
+        | ImageWithTextBlock
       )[]
     | null
   meta?: {
@@ -343,10 +345,27 @@ export interface MainSliderBlock {
             appearance?: ('defaultLink' | 'primary' | 'secondary' | 'tertiary' | 'danger') | null
             isStandartButton?: boolean | null
             linkType?: ('reference' | 'custom') | null
-            reference?: {
-              relationTo: 'pages'
-              value: string | Page
-            } | null
+            reference?:
+              | ({
+                  relationTo: 'pages'
+                  value: string | Page
+                } | null)
+              | ({
+                  relationTo: 'categories'
+                  value: string | Category
+                } | null)
+              | ({
+                  relationTo: 'news'
+                  value: string | News
+                } | null)
+              | ({
+                  relationTo: 'productPages'
+                  value: string | ProductPage
+                } | null)
+              | ({
+                  relationTo: 'newsPages'
+                  value: string | NewsPage
+                } | null)
             url?: string | null
             newTab?: boolean | null
             icons?: {
@@ -376,56 +395,43 @@ export interface MainSliderBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CarouselBlock".
+ * via the `definition` "news".
  */
-export interface CarouselBlock {
-  title?: string | null
-  settings: {
-    type: 'productCard' | 'newsCard' | 'simpleCard'
-    speed?: number | null
-    loop?: boolean | null
-    showLink?: boolean | null
-    linkText?: string | null
-    link?: {
-      type?: ('reference' | 'custom') | null
-      reference?:
-        | ({
-            relationTo: 'pages'
-            value: string | Page
-          } | null)
-        | ({
-            relationTo: 'categories'
-            value: string | Category
-          } | null)
-      url?: string | null
-    }
-    icon?: {
-      icon?: string | null
-      size: {
-        width: number
-        height: number
-      }
-    }
+export interface News {
+  id: string
+  title: string
+  titleColor: 'black' | 'white'
+  link: {
+    label: string
+    type?: ('reference' | 'custom') | null
+    reference?:
+      | ({
+          relationTo: 'pages'
+          value: string | Page
+        } | null)
+      | ({
+          relationTo: 'categories'
+          value: string | Category
+        } | null)
+      | ({
+          relationTo: 'news'
+          value: string | News
+        } | null)
+      | ({
+          relationTo: 'productPages'
+          value: string | ProductPage
+        } | null)
+      | ({
+          relationTo: 'newsPages'
+          value: string | NewsPage
+        } | null)
+    url?: string | null
   }
-  products?: ProductCardBlock[] | null
-  cards?: CardBlock[] | null
-  newsCards?: NewsCardBlock[] | null
-  id?: string | null
-  blockName?: string | null
-  blockType: 'Carousel'
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProductCardBlock".
- */
-export interface ProductCardBlock {
-  page: {
-    relationTo: 'productPages'
-    value: string | ProductPage
-  }
-  id?: string | null
-  blockName?: string | null
-  blockType: 'ProductCard'
+  previewImage: string | Image
+  tag?: (string | null) | Tag
+  updatedAt: string
+  createdAt: string
+  _status?: ('draft' | 'published') | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -452,6 +458,103 @@ export interface ProductPage {
         | AccordionBlock
         | HelpBlock
         | RichTextBlock
+        | ImageWithTextBlock
+      )[]
+    | null
+  meta?: {
+    title?: string | null
+    description?: string | null
+    image?: string | Image | null
+  }
+  updatedAt: string
+  createdAt: string
+  _status?: ('draft' | 'published') | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CarouselBlock".
+ */
+export interface CarouselBlock {
+  title?: string | null
+  settings: {
+    type: 'productCard' | 'newsCard' | 'simpleCard'
+    speed?: number | null
+    loop?: boolean | null
+    showLink?: boolean | null
+    linkText?: string | null
+    link?: {
+      type?: ('reference' | 'custom') | null
+      reference?:
+        | ({
+            relationTo: 'pages'
+            value: string | Page
+          } | null)
+        | ({
+            relationTo: 'categories'
+            value: string | Category
+          } | null)
+        | ({
+            relationTo: 'news'
+            value: string | News
+          } | null)
+        | ({
+            relationTo: 'productPages'
+            value: string | ProductPage
+          } | null)
+        | ({
+            relationTo: 'newsPages'
+            value: string | NewsPage
+          } | null)
+      url?: string | null
+    }
+    icon?: {
+      icon?: string | null
+      size: {
+        width: number
+        height: number
+      }
+    }
+  }
+  products?: ProductCardBlock[] | null
+  cards?: CardBlock[] | null
+  newsCards?: NewsCardBlock[] | null
+  id?: string | null
+  blockName?: string | null
+  blockType: 'Carousel'
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsPages".
+ */
+export interface NewsPage {
+  id: string
+  slug: string
+  news?: (string | null) | News
+  content?: {
+    root: {
+      type: string
+      children: {
+        type: string
+        version: number
+        [k: string]: unknown
+      }[]
+      direction: ('ltr' | 'rtl') | null
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
+      indent: number
+      version: number
+    }
+    [k: string]: unknown
+  } | null
+  layout?:
+    | (
+        | MainSliderBlock
+        | CarouselBlock
+        | BannerBlock
+        | CooperationBlock
+        | AccordionBlock
+        | HelpBlock
+        | RichTextBlock
+        | ImageWithTextBlock
       )[]
     | null
   meta?: {
@@ -485,6 +588,18 @@ export interface BannerBlock {
               relationTo: 'categories'
               value: string | Category
             } | null)
+          | ({
+              relationTo: 'news'
+              value: string | News
+            } | null)
+          | ({
+              relationTo: 'productPages'
+              value: string | ProductPage
+            } | null)
+          | ({
+              relationTo: 'newsPages'
+              value: string | NewsPage
+            } | null)
         url?: string | null
       }
     }
@@ -511,10 +626,27 @@ export interface BannerBlock {
         appearance?: ('defaultLink' | 'primary' | 'secondary' | 'tertiary' | 'danger') | null
         isStandartButton?: boolean | null
         linkType?: ('reference' | 'custom') | null
-        reference?: {
-          relationTo: 'pages'
-          value: string | Page
-        } | null
+        reference?:
+          | ({
+              relationTo: 'pages'
+              value: string | Page
+            } | null)
+          | ({
+              relationTo: 'categories'
+              value: string | Category
+            } | null)
+          | ({
+              relationTo: 'news'
+              value: string | News
+            } | null)
+          | ({
+              relationTo: 'productPages'
+              value: string | ProductPage
+            } | null)
+          | ({
+              relationTo: 'newsPages'
+              value: string | NewsPage
+            } | null)
         url?: string | null
         newTab?: boolean | null
         icons?: {
@@ -589,6 +721,18 @@ export interface AccordionBlock {
           relationTo: 'categories'
           value: string | Category
         } | null)
+      | ({
+          relationTo: 'news'
+          value: string | News
+        } | null)
+      | ({
+          relationTo: 'productPages'
+          value: string | ProductPage
+        } | null)
+      | ({
+          relationTo: 'newsPages'
+          value: string | NewsPage
+        } | null)
     url?: string | null
   }
   id?: string | null
@@ -633,6 +777,34 @@ export interface RichTextBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageWithTextBlock".
+ */
+export interface ImageWithTextBlock {
+  image: string | Image
+  content: {
+    text: string
+    id?: string | null
+  }[]
+  imagePosition: 'left' | 'right'
+  id?: string | null
+  blockName?: string | null
+  blockType: 'ImageWithText'
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductCardBlock".
+ */
+export interface ProductCardBlock {
+  page: {
+    relationTo: 'productPages'
+    value: string | ProductPage
+  }
+  id?: string | null
+  blockName?: string | null
+  blockType: 'ProductCard'
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CardBlock".
  */
 export interface CardBlock {
@@ -649,6 +821,18 @@ export interface CardBlock {
       | ({
           relationTo: 'categories'
           value: string | Category
+        } | null)
+      | ({
+          relationTo: 'news'
+          value: string | News
+        } | null)
+      | ({
+          relationTo: 'productPages'
+          value: string | ProductPage
+        } | null)
+      | ({
+          relationTo: 'newsPages'
+          value: string | NewsPage
         } | null)
     url?: string | null
   }
@@ -668,46 +852,6 @@ export interface NewsCardBlock {
   id?: string | null
   blockName?: string | null
   blockType: 'NewsCard'
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news".
- */
-export interface News {
-  id: string
-  slug: string
-  title: string
-  titleColor: 'black' | 'white'
-  previewImage: string | Image
-  content: {
-    root: {
-      type: string
-      children: {
-        type: string
-        version: number
-        [k: string]: unknown
-      }[]
-      direction: ('ltr' | 'rtl') | null
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-      indent: number
-      version: number
-    }
-    [k: string]: unknown
-  }
-  footerLayout?:
-    | (
-        | MainSliderBlock
-        | CarouselBlock
-        | BannerBlock
-        | CooperationBlock
-        | AccordionBlock
-        | HelpBlock
-        | RichTextBlock
-      )[]
-    | null
-  updatedAt: string
-  createdAt: string
-  _status?: ('draft' | 'published') | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -840,6 +984,18 @@ export interface MainNavigation {
               relationTo: 'categories'
               value: string | Category
             } | null)
+          | ({
+              relationTo: 'news'
+              value: string | News
+            } | null)
+          | ({
+              relationTo: 'productPages'
+              value: string | ProductPage
+            } | null)
+          | ({
+              relationTo: 'newsPages'
+              value: string | NewsPage
+            } | null)
         url?: string | null
       }
     }
@@ -876,6 +1032,18 @@ export interface MainNavigation {
                 relationTo: 'categories'
                 value: string | Category
               } | null)
+            | ({
+                relationTo: 'news'
+                value: string | News
+              } | null)
+            | ({
+                relationTo: 'productPages'
+                value: string | ProductPage
+              } | null)
+            | ({
+                relationTo: 'newsPages'
+                value: string | NewsPage
+              } | null)
           url?: string | null
         }
       }
@@ -905,6 +1073,18 @@ export interface MainNavigation {
                 relationTo: 'categories'
                 value: string | Category
               } | null)
+            | ({
+                relationTo: 'news'
+                value: string | News
+              } | null)
+            | ({
+                relationTo: 'productPages'
+                value: string | ProductPage
+              } | null)
+            | ({
+                relationTo: 'newsPages'
+                value: string | NewsPage
+              } | null)
           url?: string | null
         }
       }
@@ -933,6 +1113,18 @@ export interface MainNavigation {
             | ({
                 relationTo: 'categories'
                 value: string | Category
+              } | null)
+            | ({
+                relationTo: 'news'
+                value: string | News
+              } | null)
+            | ({
+                relationTo: 'productPages'
+                value: string | ProductPage
+              } | null)
+            | ({
+                relationTo: 'newsPages'
+                value: string | NewsPage
               } | null)
           url?: string | null
         }
@@ -964,6 +1156,18 @@ export interface MainNavigation {
                 | ({
                     relationTo: 'categories'
                     value: string | Category
+                  } | null)
+                | ({
+                    relationTo: 'news'
+                    value: string | News
+                  } | null)
+                | ({
+                    relationTo: 'productPages'
+                    value: string | ProductPage
+                  } | null)
+                | ({
+                    relationTo: 'newsPages'
+                    value: string | NewsPage
                   } | null)
               url?: string | null
             }
@@ -1012,6 +1216,18 @@ export interface MainNavigation {
             relationTo: 'categories'
             value: string | Category
           } | null)
+        | ({
+            relationTo: 'news'
+            value: string | News
+          } | null)
+        | ({
+            relationTo: 'productPages'
+            value: string | ProductPage
+          } | null)
+        | ({
+            relationTo: 'newsPages'
+            value: string | NewsPage
+          } | null)
       url?: string | null
     }
     id?: string | null
@@ -1038,6 +1254,18 @@ export interface BottomNavigation {
             relationTo: 'categories'
             value: string | Category
           } | null)
+        | ({
+            relationTo: 'news'
+            value: string | News
+          } | null)
+        | ({
+            relationTo: 'productPages'
+            value: string | ProductPage
+          } | null)
+        | ({
+            relationTo: 'newsPages'
+            value: string | NewsPage
+          } | null)
       url?: string | null
     }
     caption: string
@@ -1058,6 +1286,18 @@ export interface BottomNavigation {
                   | ({
                       relationTo: 'categories'
                       value: string | Category
+                    } | null)
+                  | ({
+                      relationTo: 'news'
+                      value: string | News
+                    } | null)
+                  | ({
+                      relationTo: 'productPages'
+                      value: string | ProductPage
+                    } | null)
+                  | ({
+                      relationTo: 'newsPages'
+                      value: string | NewsPage
                     } | null)
                 url?: string | null
               }
@@ -1192,6 +1432,18 @@ export interface GlobalTypography {
             relationTo: 'categories'
             value: string | Category
           } | null)
+        | ({
+            relationTo: 'news'
+            value: string | News
+          } | null)
+        | ({
+            relationTo: 'productPages'
+            value: string | ProductPage
+          } | null)
+        | ({
+            relationTo: 'newsPages'
+            value: string | NewsPage
+          } | null)
       url?: string | null
     }
   }
@@ -1210,6 +1462,18 @@ export interface GlobalTypography {
               relationTo: 'categories'
               value: string | Category
             } | null)
+          | ({
+              relationTo: 'news'
+              value: string | News
+            } | null)
+          | ({
+              relationTo: 'productPages'
+              value: string | ProductPage
+            } | null)
+          | ({
+              relationTo: 'newsPages'
+              value: string | NewsPage
+            } | null)
         url?: string | null
       }
     }
@@ -1218,9 +1482,6 @@ export interface GlobalTypography {
     addToCartButton: string
     addedToCartButton: string
     buyNowButton: string
-  }
-  newsCardButtons: {
-    reviewButton: string
   }
   backButton: {
     label: string
@@ -1310,6 +1571,9 @@ export interface GlobalTypography {
     quantityLabel: string
     descriptionLabel: string
   }
+  newsPage: {
+    errorSearchResultTitle: string
+  }
   updatedAt?: string | null
   createdAt?: string | null
 }
@@ -1328,6 +1592,7 @@ export interface AllBlock {
         | AccordionBlock
         | HelpBlock
         | RichTextBlock
+        | ImageWithTextBlock
       )[]
     | null
   updatedAt?: string | null
