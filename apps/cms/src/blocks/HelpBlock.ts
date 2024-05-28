@@ -1,7 +1,5 @@
 import { Block } from 'payload/types'
 import { Accordion } from './Accordion'
-import { link } from '../fields/link'
-import iconPicker from '../fields/iconPicker'
 
 export const HelpBlock: Block = {
   slug: 'HelpBlock',

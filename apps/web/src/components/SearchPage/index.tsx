@@ -1,9 +1,6 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { searchInCollection } from '@/cms'
-import { mapCMSProducts } from '@/helpers'
-import { useCookies } from 'next-client-cookies'
 import { useQuery } from '@tanstack/react-query'
 import { useEdgeBlocksOnPage, useGlobalTypography, usePrevPath, useShoppingBasket } from '@/store'
 import { Pagination, ProductCard as ProductCardUI } from 'ui'
@@ -13,20 +10,21 @@ import { mapIcon } from '@oleksii-lavka/grocee-icons'
 import { FocusRing } from 'react-aria'
 import Link from 'next/link'
 import Skeleton from 'react-loading-skeleton'
-import stripe from '@/stripe'
 import { MappedProduct } from 'ui/types'
 import toast from 'react-hot-toast'
 
 type Props = {
   query: string
+  fetchProducts: (page?: number) => Promise<{
+    products: MappedProduct[]
+    totalDocs: number
+    totalPages: number
+  }>
 }
 
-export function SearchPage({ query }: Props) {
-  const cookies = useCookies()
-  const locale = cookies.get('locale') || 'en'
-
-  const totalPagesCount = useRef(0)
-  const totalProductsCount = useRef(0)
+export function SearchPage({ query, fetchProducts }: Props) {
+  const cachedTotalPagesCount = useRef(0)
+  const cachedTotalProductsCount = useRef(0)
 
   const [startPageChange, setStartPageChange] = useState(false)
   const { updateBlock } = useEdgeBlocksOnPage()
@@ -57,26 +55,12 @@ export function SearchPage({ query }: Props) {
   } = useQuery({
     queryKey: ['products', query, page],
     queryFn: async () => {
-      const data = await searchInCollection(
-        'products',
-        {
-          key: 'name',
-          sort: 'name',
-          query,
-          limit: 12,
-          page,
-        },
-        { searchParams: { locale } },
-      ).then(async ({ docs = [], totalDocs, totalPages }) => {
-        const productsForProductCard = await mapCMSProducts(docs, locale)
+      const { products, totalDocs, totalPages } = await fetchProducts(page)
 
-        totalPagesCount.current = totalPages
-        totalProductsCount.current = totalDocs
+      cachedTotalPagesCount.current = totalPages
+      cachedTotalProductsCount.current = totalDocs
 
-        return productsForProductCard
-      })
-
-      return data
+      return products
     },
   })
 
@@ -87,7 +71,7 @@ export function SearchPage({ query }: Props) {
       const errorSearchResultTitle = searchPage.errorSearchResultTitle
       const productsCountTitle = searchPage.productsCountTitle.replace(
         '{{count}}',
-        `${totalProductsCount.current ?? 0}`,
+        `${cachedTotalProductsCount.current ?? 0}`,
       )
 
       return {
@@ -96,7 +80,7 @@ export function SearchPage({ query }: Props) {
         emptySearchResultTitle,
         errorSearchResultTitle,
       }
-    }, [searchPage, query, products, totalProductsCount.current])
+    }, [searchPage, query, products])
 
   const mappedBackButton = useMemo(() => {
     if (!backButton.icon.icon) {
@@ -163,7 +147,7 @@ export function SearchPage({ query }: Props) {
       ) : (
         <>
           <h1 className='helvetica font-light text-gray-900'>
-            {totalProductsCount.current > 0
+            {cachedTotalProductsCount.current > 0
               ? `${searchResultTitle} (${productsCountTitle})`
               : emptySearchResultTitle}
           </h1>
@@ -190,11 +174,11 @@ export function SearchPage({ query }: Props) {
           </div>
         </>
       )}
-      {(totalPagesCount.current ?? 0) > 1 && (
+      {(cachedTotalPagesCount.current ?? 0) > 1 && (
         <Pagination
           className='mt-4 laptop:mt-8'
           page={page}
-          totalPages={totalPagesCount.current ?? 0}
+          totalPages={cachedTotalPagesCount.current ?? 0}
         />
       )}
     </div>

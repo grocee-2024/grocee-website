@@ -68,5 +68,5 @@ export const renderBlock = (block: AnyBlock, key?: string | number) => {
 }
 
 export const renderBlocks = (layout?: AnyBlock[] | null) => {
-  return (layout ?? []).map((block, i) => renderBlock(block, i))
+  return (layout ?? []).map(block => renderBlock(block, crypto.randomUUID()))
 }

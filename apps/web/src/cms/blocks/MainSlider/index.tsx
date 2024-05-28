@@ -64,7 +64,6 @@ export async function MainSlider({ slides, settings }: MainSliderBlock) {
       loop={settings?.loop || false}
       speed={settings?.speed || 500}
       effect={settings?.effect || 'slide'}
-      className='laptop:px-8'
     />
   )
 }

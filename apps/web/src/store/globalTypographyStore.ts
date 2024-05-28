@@ -96,9 +96,6 @@ export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'created
       addedToCartButton: '',
       buyNowButton: '',
     },
-    newsCardButtons: {
-      reviewButton: '',
-    },
     backButton: {
       label: '',
       icon: {
@@ -179,6 +176,9 @@ export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'created
         shippingCost: '',
         fastestDeliveryTime: '',
       },
+    },
+    newsPage: {
+      errorSearchResultTitle: '',
     },
   }),
 )

@@ -36,8 +36,7 @@ export const ProductList: FC<Props> = ({ categoryId }) => {
 
   const page = searchParams.get('page') || '1'
 
-  const totalPagesCount = useRef(0)
-  const totalProductsCount = useRef(0)
+  const cachedTotalPagesCount = useRef(0)
 
   const { lineItems, addLineItem } = useShoppingBasket()
 
@@ -74,7 +73,7 @@ export const ProductList: FC<Props> = ({ categoryId }) => {
         order,
       } as Record<string, string | string[]>
 
-      const { docs, totalPages, totalDocs } = await getFilteredProducts({
+      const { docs, totalPages } = await getFilteredProducts({
         filterParams,
         sortParams,
         locale,
@@ -82,8 +81,7 @@ export const ProductList: FC<Props> = ({ categoryId }) => {
       })
       const products = await mapCMSProducts(docs, locale)
 
-      totalPagesCount.current = totalPages
-      totalProductsCount.current = totalDocs
+      cachedTotalPagesCount.current = totalPages
 
       return products
     },
@@ -127,11 +125,11 @@ export const ProductList: FC<Props> = ({ categoryId }) => {
           />
         ))}
       </div>
-      {(totalPagesCount.current ?? 0) > 1 && (
+      {(cachedTotalPagesCount.current ?? 0) > 1 && (
         <Pagination
           className='mt-4 laptop:mt-8'
           page={+page}
-          totalPages={totalPagesCount.current ?? 0}
+          totalPages={cachedTotalPagesCount.current ?? 0}
         />
       )}
     </>

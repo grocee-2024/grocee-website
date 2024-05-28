@@ -132,7 +132,7 @@ const linkOrButton: LinkType = ({
             name: 'reference',
             label: 'Document to link to',
             type: 'relationship',
-            relationTo: ['pages'],
+            relationTo: ['pages', 'categories', 'news', 'productPages', 'newsPages'],
             required: true,
             maxDepth: 1,
             admin: {

@@ -36,7 +36,7 @@ export const mapBreadcrumbs = (breadcrumbs?: Breadcrumb[] | null, replace?: Repl
     }
 
     return {
-      id: id!,
+      id,
       url: mappedUrl,
       label: mappedLabel,
     }

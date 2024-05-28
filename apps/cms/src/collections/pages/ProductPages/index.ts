@@ -2,6 +2,7 @@ import { CollectionConfig } from 'payload/types'
 import { isAnyone } from '../../../access/isAnyone'
 import { slugField } from '../../../fields/slug'
 import { ALL_BLOCKS } from '../../../blocks'
+import { isAdmin } from '../../../access/isAdmin'
 
 export const ProductPages: CollectionConfig = {
   slug: 'productPages',
@@ -20,6 +21,8 @@ export const ProductPages: CollectionConfig = {
   },
   access: {
     read: isAnyone,
+    create: isAdmin,
+    update: isAdmin,
   },
   fields: [
     slugField(),

@@ -7,17 +7,17 @@ import { Tag, Button, PayloadImage } from 'ui'
 import { HTMLMotionProps, motion } from 'framer-motion'
 import { useCanHover } from '../../hooks'
 import { useHover } from 'react-aria'
-import { useGlobalTypography } from '../../../../apps/web/src/store'
-import Skeleton from 'react-loading-skeleton'
 
 type Props = {
-  tag?: string
+  tag: string | null
   image?: PayloadImageType
   title: string
   titleColor?: 'white' | 'black'
-  height?: number
   minWidth?: number
-  link: string
+  link: {
+    url: string
+    label: string
+  }
   imageClassName?: string
   className?: string
   animationProps?: HTMLMotionProps<'div'>
@@ -31,7 +31,6 @@ export const NewsCard: FC<Props> = props => {
     titleColor = 'white',
     imageClassName = '',
     className = '',
-    height = 384,
     minWidth,
     animationProps = {},
     image,
@@ -39,14 +38,12 @@ export const NewsCard: FC<Props> = props => {
 
   const canHover = useCanHover()
   const { hoverProps, isHovered } = useHover({})
-  const { newsCardButtons } = useGlobalTypography()
 
   return (
     //@ts-ignore
     <motion.div
-      className={clsx('relative rounded-2xl', className)}
+      className={clsx('relative h-[364px] rounded-2xl laptop:h-[439px]', className)}
       style={{
-        height,
         minWidth,
       }}
       {...animationProps}
@@ -56,7 +53,7 @@ export const NewsCard: FC<Props> = props => {
         className='absolute left-0 top-0 z-10 h-full w-full rounded-2xl'
         style={{
           background:
-            'linear-gradient(180deg, rgba(32, 32, 32, 0.00) 55.99%, #999 263.93%, #202020 263.93%)',
+            'linear-gradient(0deg, rgba(32, 32, 32, 0.00) 55.99%, #999 263.93%, #202020 263.93%), linear-gradient(180deg, rgba(32, 32, 32, 0.00) 55.99%, #999 263.93%, #202020 263.93%)',
         }}
       />
 
@@ -86,21 +83,15 @@ export const NewsCard: FC<Props> = props => {
             {title}
           </h3>
 
-          {newsCardButtons.reviewButton ? (
-            <Button
-              href={link}
-              standartButton
-              variant='tertiary'
-              className='!inline-block'
-              linkClassName='max-w-fit'
-            >
-              {newsCardButtons.reviewButton}
-            </Button>
-          ) : (
-            <div className='min-h-12 w-[120px]'>
-              <Skeleton borderRadius={1000} className='inline-block min-h-full w-full' />
-            </div>
-          )}
+          <Button
+            href={link.url}
+            standartButton
+            variant='tertiary'
+            className='!inline-block'
+            linkClassName='max-w-fit'
+          >
+            {link.label}
+          </Button>
         </div>
       </div>
     </motion.div>

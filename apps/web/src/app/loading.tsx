@@ -10,18 +10,11 @@ import {
 export default function Loading() {
   const blocks = {
     MainSliderSkeleton,
-    CarouselSkeleton: <CarouselSkeleton type='simpleCard' />,
-    CarouselSkeleton2: <CarouselSkeleton type='productCard' />,
+    CarouselSkeletonCard: <CarouselSkeleton type='simpleCard' />,
+    CarouselSkeletonProductCard: <CarouselSkeleton type='productCard' />,
     BannerSkeleton,
-    CarouselSkeleton3: <CarouselSkeleton type='productCard' />,
-    CarouselSkeleton4: <CarouselSkeleton type='productCard' />,
-    CarouselSkeleton5: <CarouselSkeleton type='productCard' />,
-    CarouselSkeleton6: <CarouselSkeleton type='productCard' />,
-    CarouselSkeleton7: <CarouselSkeleton type='newsCard' />,
     CooperationSkeleton,
-    CarouselSkeleton8: <CarouselSkeleton type='productCard' />,
     HelpBlockSkeleton,
-    BannerSkeleton2: BannerSkeleton,
   }
 
   return (

@@ -40,14 +40,19 @@ export const SearchField = forwardRef(
 
     const router = useRouter()
     const searchParams = useSearchParams()
+    const query = searchParams.get('search') ?? ''
 
     const onSubmit = useCallback(
       (search?: string) => {
+        if ((search || searchValue) === query) {
+          return
+        }
+
         onStartLoading()
 
         router.push(`/?search=${search ?? searchValue}`)
       },
-      [searchParams, isSSR, searchValue],
+      [searchParams, isSSR, searchValue, query],
     )
 
     useEffect(() => {

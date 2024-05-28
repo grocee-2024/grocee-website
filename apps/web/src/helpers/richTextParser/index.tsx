@@ -87,7 +87,7 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
                 node.format & IS_SUBSCRIPT ? 'sub' : node.format & IS_SUPERSCRIPT ? 'sup' : 'p',
                 {
                   className: clsx(
-                    'inline',
+                    'gilroy-lg inline font-light',
                     node.format & IS_BOLD && 'font-bold',
                     node.format & IS_ITALIC && 'italic',
                     node.format & IS_UNDERLINE && 'underline',
@@ -225,7 +225,7 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
 
             case 'paragraph':
               if (!node?.children.length) {
-                return <div className='h-8 w-full' />
+                return <div key={index} className='h-8 w-full' />
               }
 
               return (
@@ -317,7 +317,12 @@ export function richTextToJSX(rootNode?: any, options?: Options) {
             case 'linebreak':
               return <br key={index} />
             case 'block':
-              return <div className='my-8'>{renderBlock(node.fields.data)}</div>
+              return (
+                <div key={index} className='my-8'>
+                  {/* @ts-ignore */}
+                  {renderBlock(node.fields)}
+                </div>
+              )
 
             default:
               return null

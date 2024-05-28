@@ -1,4 +1,4 @@
-import { getPage } from '@/cms'
+import { getPage, searchInCollection } from '@/cms'
 import { renderBlocks } from '@/cms/helpers'
 import { NextRoute } from '@/types'
 import { cookies } from 'next/headers'
@@ -7,6 +7,7 @@ import { SearchPage } from '@/components/SearchPage'
 import { parseSearchParams } from 'ui/helpers'
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
+import { mapCMSProducts } from '@/helpers'
 
 export default async function HomePage({ searchParams }: NextRoute) {
   const locale = cookies().get('locale')?.value || 'en'
@@ -15,9 +16,35 @@ export default async function HomePage({ searchParams }: NextRoute) {
     if ('search' in searchParams) {
       const query = parseSearchParams(searchParams, 'search')
 
+      const fetchProducts = async (page?: number) => {
+        'use server'
+
+        const data = await searchInCollection(
+          'products',
+          {
+            key: 'name',
+            sort: 'name',
+            query,
+            limit: 1,
+            page,
+          },
+          { searchParams: { locale } },
+        ).then(async ({ docs = [], totalDocs, totalPages }) => {
+          const mappedProducts = await mapCMSProducts(docs, locale)
+
+          return {
+            products: mappedProducts,
+            totalDocs,
+            totalPages,
+          }
+        })
+
+        return data
+      }
+
       return (
         <Suspense fallback={null}>
-          <SearchPage query={query} />
+          <SearchPage query={query} fetchProducts={fetchProducts} />
         </Suspense>
       )
     }
