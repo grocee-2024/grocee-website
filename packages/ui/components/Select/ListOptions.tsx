@@ -111,7 +111,7 @@ export function ListOptions<T>({
       const leftFullButtonOffset = buttonRect.right
       const rightFullButtonOffset = document.documentElement.clientWidth - buttonRect.left
 
-      const selectHeight = selectRect.bottom - selectRect.top + selectRect.height
+      const selectHeight = selectRect.bottom - selectRect.top + selectRect.height - 16
       const selectWidth = selectRect.right - selectRect.left + selectRect.width
       const buttonHeight = buttonRect.height
 

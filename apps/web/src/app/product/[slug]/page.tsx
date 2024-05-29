@@ -2,10 +2,10 @@ import { getCollectionItem, getMetadata, getPage, getPaginatedCollection } from 
 import { pageToUrl, renderBlocks, resolveRelation } from '@/cms/helpers'
 import { SetupEdgeBlocksOnPage } from '@/components/SetupEdgeBlocksOnPage'
 import { NextRoute } from '@/types'
-import { Category, Product, Subcategory } from 'cms-types'
+import { Category, Subcategory } from 'cms-types'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
-import { Breadcrumbs, Bredcrumb } from 'ui'
+import { Breadcrumbs, Breadcrumb } from 'ui'
 import { ProductIntro } from './product-intro'
 import { mapCMSProducts } from '@/helpers'
 import { ResolvingMetadata } from 'next'
@@ -49,7 +49,7 @@ export default async function ProductPage({ params, searchParams }: NextRoute) {
 
     const [mappedProduct] = await mapCMSProducts([product], locale)
 
-    const breadcrumbs: Bredcrumb[] = [
+    const breadcrumbs: Breadcrumb[] = [
       {
         label: homePage.breadcrumbsTitle!,
         url: '/',

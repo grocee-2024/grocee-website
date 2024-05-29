@@ -134,6 +134,8 @@ export interface Image {
   filesize?: number | null
   width?: number | null
   height?: number | null
+  focalX?: number | null
+  focalY?: number | null
   sizes?: {
     png_128px?: {
       url?: string | null
@@ -922,8 +924,12 @@ export interface Redirect {
           value: string | ProductPage
         } | null)
       | ({
-          relationTo: 'news'
-          value: string | News
+          relationTo: 'categories'
+          value: string | Category
+        } | null)
+      | ({
+          relationTo: 'newsPages'
+          value: string | NewsPage
         } | null)
     url?: string | null
   }
@@ -1370,6 +1376,21 @@ export interface GlobalTypography {
       }
     }
   }
+  sendMailLabels: {
+    success: string
+    error: string
+  }
+  formErrorLabels: {
+    textField: {
+      nonEmptyString: string
+      invalidEmail: string
+      invalidPhoneNumber: string
+    }
+    dateField: {
+      invalidTime: string
+      invalidDate: string
+    }
+  }
   orderDeliveryForm: {
     firstName: {
       label: string
@@ -1492,6 +1513,26 @@ export interface GlobalTypography {
         height: number
       }
     }
+  }
+  contactPage: {
+    subtitle?: string | null
+    fullName: {
+      label: string
+      placeholder: string
+    }
+    email: {
+      label: string
+      placeholder: string
+    }
+    subject: {
+      label: string
+      placeholder: string
+    }
+    comment: {
+      label: string
+      placeholder: string
+    }
+    sendButtonLabel: string
   }
   searchPage: {
     searchResultTitle: string

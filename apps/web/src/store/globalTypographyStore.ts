@@ -3,6 +3,21 @@ import { create } from 'zustand'
 
 export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'createdAt' | 'updatedAt'>>(
   () => ({
+    formErrorLabels: {
+      textField: {
+        invalidEmail: '',
+        invalidPhoneNumber: '',
+        nonEmptyString: '',
+      },
+      dateField: {
+        invalidDate: '',
+        invalidTime: '',
+      },
+    },
+    sendMailLabels: {
+      success: '',
+      error: '',
+    },
     cart: {
       minOrderPrice: {
         uah: 0,
@@ -105,6 +120,26 @@ export const useGlobalTypography = create<Omit<GlobalTypography, 'id' | 'created
           height: 16,
         },
       },
+    },
+    contactPage: {
+      fullName: {
+        label: '',
+        placeholder: '',
+      },
+      email: {
+        label: '',
+        placeholder: '',
+      },
+      subject: {
+        label: '',
+        placeholder: '',
+      },
+      comment: {
+        label: '',
+        placeholder: '',
+      },
+      subtitle: '',
+      sendButtonLabel: '',
     },
     searchPage: {
       productsCountTitle: '',

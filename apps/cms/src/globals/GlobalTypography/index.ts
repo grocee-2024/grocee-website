@@ -271,6 +271,78 @@ export const GlobalTypography: GlobalConfig = {
       ],
     },
     {
+      name: 'sendMailLabels',
+      type: 'group',
+      fields: [
+        {
+          name: 'success',
+          type: 'text',
+          localized: true,
+          required: true,
+        },
+        {
+          name: 'error',
+          type: 'text',
+          localized: true,
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'formErrorLabels',
+      type: 'group',
+      fields: [
+        {
+          label: 'Form Error Labels',
+          type: 'collapsible',
+          fields: [
+            {
+              name: 'textField',
+              type: 'group',
+              fields: [
+                {
+                  name: 'nonEmptyString',
+                  type: 'text',
+                  localized: true,
+                  required: true,
+                },
+                {
+                  name: 'invalidEmail',
+                  type: 'text',
+                  localized: true,
+                  required: true,
+                },
+                {
+                  name: 'invalidPhoneNumber',
+                  type: 'text',
+                  localized: true,
+                  required: true,
+                },
+              ],
+            },
+            {
+              name: 'dateField',
+              type: 'group',
+              fields: [
+                {
+                  name: 'invalidTime',
+                  type: 'text',
+                  localized: true,
+                  required: true,
+                },
+                {
+                  name: 'invalidDate',
+                  type: 'text',
+                  localized: true,
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
       name: 'orderDeliveryForm',
       type: 'group',
       fields: [
@@ -293,89 +365,83 @@ export const GlobalTypography: GlobalConfig = {
       type: 'group',
       fields: [
         {
-          label: 'Support Fields',
+          label: 'Support Links',
           type: 'collapsible',
           fields: [
             {
-              label: 'Support Links',
-              type: 'collapsible',
+              name: 'links',
+              type: 'array',
               fields: [
                 {
-                  name: 'links',
-                  type: 'array',
-                  fields: [
+                  name: 'type',
+                  type: 'select',
+                  options: [
                     {
-                      name: 'type',
-                      type: 'select',
-                      options: [
-                        {
-                          label: 'Email',
-                          value: 'email',
-                        },
-                        {
-                          label: 'Phone',
-                          value: 'phone',
-                        },
-                        {
-                          label: 'Location',
-                          value: 'location',
-                        },
-                      ],
+                      label: 'Email',
+                      value: 'email',
                     },
                     {
-                      type: 'row',
-                      fields: [
-                        {
-                          name: 'info',
-                          type: 'text',
-                          required: true,
-                          admin: {
-                            width: '45%',
-                          },
-                        },
-                        {
-                          name: 'caption',
-                          type: 'text',
-                          localized: true,
-                          required: true,
-                          admin: {
-                            width: '45%',
-                          },
-                        },
-                      ],
+                      label: 'Phone',
+                      value: 'phone',
                     },
                     {
-                      name: 'googleMapsLocation',
-                      type: 'text',
-                      required: true,
-                      admin: {
-                        condition: (_, siblingData) => siblingData?.type === 'location',
-                      },
-                    },
-                    {
-                      name: 'icon',
-                      type: 'group',
-                      fields: [iconPicker],
+                      label: 'Location',
+                      value: 'location',
                     },
                   ],
                 },
-                link({
+                {
+                  type: 'row',
                   fields: [
                     {
-                      name: 'label',
+                      name: 'info',
+                      type: 'text',
+                      required: true,
+                      admin: {
+                        width: '45%',
+                      },
+                    },
+                    {
+                      name: 'caption',
                       type: 'text',
                       localized: true,
                       required: true,
-                    },
-                    {
-                      name: 'icon',
-                      type: 'group',
-                      fields: [iconPicker],
+                      admin: {
+                        width: '45%',
+                      },
                     },
                   ],
-                }),
+                },
+                {
+                  name: 'googleMapsLocation',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.type === 'location',
+                  },
+                },
+                {
+                  name: 'icon',
+                  type: 'group',
+                  fields: [iconPicker],
+                },
               ],
             },
+            link({
+              fields: [
+                {
+                  name: 'label',
+                  type: 'text',
+                  localized: true,
+                  required: true,
+                },
+                {
+                  name: 'icon',
+                  type: 'group',
+                  fields: [iconPicker],
+                },
+              ],
+            }),
           ],
         },
       ],
@@ -465,6 +531,33 @@ export const GlobalTypography: GlobalConfig = {
               name: 'icon',
               type: 'group',
               fields: [iconPicker],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'contactPage',
+      type: 'group',
+      fields: [
+        {
+          label: 'Contact Page Labels',
+          type: 'collapsible',
+          fields: [
+            {
+              name: 'subtitle',
+              type: 'text',
+              localized: true,
+            },
+            localizedInput({ name: 'fullName' }),
+            localizedInput({ name: 'email' }),
+            localizedInput({ name: 'subject' }),
+            localizedInput({ name: 'comment' }),
+            {
+              name: 'sendButtonLabel',
+              type: 'text',
+              localized: true,
+              required: true,
             },
           ],
         },

@@ -42,8 +42,8 @@ export function Complex({ type, start, end, disableDivider, className = '' }: Co
       className={clsx(
         'flex gap-2 text-gray-800',
         {
-          'pr-2': type === 'left',
-          'pl-2': type === 'right',
+          'pr-2': type === 'left' && (start || end),
+          'pl-2': type === 'right' && (start || end),
           'mr-2 border-r-[1px] border-r-gray-100': type === 'left' && end && !disableDivider,
           'ml-2 border-l-[1px] border-l-gray-100': type === 'right' && end && !disableDivider,
         },

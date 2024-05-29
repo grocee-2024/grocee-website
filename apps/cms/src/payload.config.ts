@@ -165,7 +165,7 @@ export default buildConfig({
         ),
     }),
     redirects({
-      collections: ['pages', 'productPages', 'news'],
+      collections: ['pages', 'productPages', 'categories', 'newsPages'],
     }),
     payloadCloud(),
   ],
