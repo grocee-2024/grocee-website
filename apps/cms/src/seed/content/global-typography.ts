@@ -5,6 +5,21 @@ export const createGlobalTypography = async (pages: Pages) => {
   await payload.updateGlobal({
     slug: 'globalTypography',
     data: {
+      formErrorLabels: {
+        textField: {
+          invalidEmail: 'Invalid email address',
+          invalidPhoneNumber: 'Invalid phone number',
+          nonEmptyString: 'The field cannot be empty',
+        },
+        dateField: {
+          invalidDate: 'Invalid date',
+          invalidTime: 'Invalid time',
+        },
+      },
+      sendMailLabels: {
+        success: 'The message was sent successfully',
+        error: 'An error occurred while sending a message',
+      },
       cart: {
         minOrderPrice: {
           uah: 25,
@@ -161,6 +176,26 @@ export const createGlobalTypography = async (pages: Pages) => {
             height: 16,
           },
         },
+      },
+      contactPage: {
+        fullName: {
+          label: 'Your name',
+          placeholder: 'John Doe',
+        },
+        email: {
+          label: 'Your email',
+          placeholder: 'example@gmail.com',
+        },
+        subject: {
+          label: 'Subject of appeal',
+          placeholder: 'Subject',
+        },
+        comment: {
+          label: 'Your comment',
+          placeholder: 'Comment...',
+        },
+        subtitle: 'Need help?',
+        sendButtonLabel: 'Send',
       },
       searchPage: {
         searchResultTitle: 'Search results for "{{query}}"',

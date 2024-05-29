@@ -7,14 +7,14 @@ import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 import { FocusRing } from 'react-aria'
 
-export type Bredcrumb = {
+export type Breadcrumb = {
   id?: string | null
   label: string
   url: string
 }
 
 type Props = {
-  breadcrumbs?: Bredcrumb[]
+  breadcrumbs?: Breadcrumb[]
   className?: string
 }
 

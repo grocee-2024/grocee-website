@@ -11,10 +11,10 @@ import { Providers } from '@/components/Providers'
 import NextTopLoader from 'nextjs-toploader'
 import { ClientProviders } from '@/components/ClientProviders'
 
-export async function generateMetadata({ searchParams }: any) {
+export async function generateMetadata() {
   const locale = cookies().get('locale')?.value ?? 'en'
 
-  return await getMetadata('pages', 'home', { searchParams: { ...searchParams, locale } })
+  return await getMetadata('pages', 'home', { searchParams: { locale } })
 }
 
 export default async function RootLayout({
