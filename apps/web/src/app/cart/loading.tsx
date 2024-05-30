@@ -3,7 +3,7 @@ import { BreadcrumbsSkeleton, CarouselSkeleton } from 'ui/skeletons'
 
 export default function Loading() {
   return (
-    <div className='mt-[120px] tablet:mt-[150px]'>
+    <div className='mb-[200px] mt-[120px] tablet:mt-[150px]'>
       <BreadcrumbsSkeleton />
 
       <div className='width-limit mt-8 flex grow flex-col gap-8'>
