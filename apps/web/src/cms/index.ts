@@ -15,7 +15,6 @@ import {
 } from 'cms-types'
 import { Metadata, ResolvedMetadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
-import { Where } from 'payload/types'
 
 import { resolveRelation } from './helpers'
 
@@ -344,7 +343,9 @@ export const searchInCollection = async <T extends keyof Config['collections']>(
   }
 }
 
-export const getProductsCountByFilters = async (params: Record<string, string | string[]>) => {
+export const getProductsCountByFilters = async (
+  params: Record<string, string | string[] | Record<string, string | string[]>>,
+) => {
   const url = `${CMS_URL}/api/products-count-by-filters`
 
   const response = await fetch(url, {
@@ -376,7 +377,7 @@ export const getProductsCountByFilters = async (params: Record<string, string | 
 }
 
 export const getProductsCountBySubcategories = async (
-  params: Record<string, string | string[]>,
+  params: Record<string, string | string[] | Record<string, string | string[]>>,
 ) => {
   const url = `${CMS_URL}/api/products-count-by-subcategories`
 

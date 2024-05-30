@@ -26,7 +26,7 @@ export const getFilteredProducts: PayloadHandler = async (req, res) => {
       category: {
         categoryId,
       },
-      'subcategory.slug': {
+      'subcategories.slug': {
         subcategorySlug,
       },
       'productDetails.tag.slug': {
@@ -70,7 +70,7 @@ export const getFilteredProducts: PayloadHandler = async (req, res) => {
 function mapSortParams(product: Product, params: { sort?: string; order?: 'asc' | 'desc' }) {
   const { sort = 'id', order = 'asc' } = params
 
-  const { category, skipSync, subcategory, productDetails, ...restProduct } = product
+  const { category, skipSync, subcategories, productDetails, ...restProduct } = product
   const { image, stripeProductID, unit, weightStep, weight, priceJSON, ...restProductDetails } =
     productDetails
 

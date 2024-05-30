@@ -1,6 +1,6 @@
 import { Payload } from 'payload'
 import { PayloadHandler } from 'payload/config'
-import { PayloadRequest, Where } from 'payload/types'
+import { Where } from 'payload/types'
 
 export const getSubcategories: PayloadHandler = async (req, res) => {
   const { payload, body } = req
@@ -12,13 +12,14 @@ export const getSubcategories: PayloadHandler = async (req, res) => {
     specials = [],
     countries = [],
     trademarks = [],
+    price = { min: '', max: '' },
   } = body as Record<string, string | string[]>
 
   const queryParams = {
     category: {
       categoryId,
     },
-    'subcategory.slug': {
+    'subcategories.slug': {
       subcategorySlug,
     },
     'productDetails.tag.slug': {
@@ -32,6 +33,9 @@ export const getSubcategories: PayloadHandler = async (req, res) => {
     },
     'productDetails.trademark.slug': {
       trademarks,
+    },
+    'productDetails.price': {
+      price,
     },
   }
 
@@ -47,8 +51,9 @@ export const getSubcategories: PayloadHandler = async (req, res) => {
     }
 
     const { data: subcategories, totalProducts } = await calculateProductCountByFilter({
-      leftParam: 'subcategory.slug',
-      key: 'subcategory',
+      leftParam: 'subcategories.slug',
+      key: 'subcategories',
+      //@ts-ignore
       params: queryParams,
       payload,
     })
@@ -63,6 +68,38 @@ export const getSubcategories: PayloadHandler = async (req, res) => {
 function mapWhereParams(params: Record<string, Record<string, string | string[]>>) {
   const and: Where[] = Object.entries(params).reduce((acc, param) => {
     const [productKey, whereParam] = param
+
+    if (productKey.includes('price')) {
+      const maxPrice = (whereParam.price as unknown as { min: string; max: string }).max
+      const minPrice = (whereParam.price as unknown as { min: string; max: string }).min
+
+      const priceQuery: Where[] = []
+
+      if (maxPrice && (+maxPrice || 0) > 0) {
+        const maxPriceQuery: Where = {
+          [productKey]: {
+            less_than_equal: maxPrice,
+          },
+        }
+
+        priceQuery.push(maxPriceQuery)
+      }
+
+      if (minPrice && (+minPrice || 0) > 0) {
+        const minPriceQuery: Where = {
+          [productKey]: {
+            greater_than_equal: minPrice,
+          },
+        }
+
+        priceQuery.push(minPriceQuery)
+      }
+
+      acc.push(...priceQuery)
+
+      return acc
+    }
+
     const [value] = Object.values(whereParam)
 
     if (!value?.length || !value) {
@@ -107,7 +144,6 @@ async function calculateProductCountByFilter<T>(args: {
 
   for (const product of products) {
     const doc = getNestedProperty(product, key) ?? []
-    const { id, name, category, subcategory } = product
 
     if (Array.isArray(doc) && doc.length > 0) {
       for (const nestedDoc of doc) {

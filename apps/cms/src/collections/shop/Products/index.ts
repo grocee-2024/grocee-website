@@ -171,10 +171,11 @@ export const Products: CollectionConfig = {
       required: true,
     },
     {
-      name: 'subcategory',
+      name: 'subcategories',
       type: 'relationship',
       relationTo: 'subcategories',
       required: true,
+      hasMany: true,
       admin: {
         position: 'sidebar',
         components: {

@@ -114,7 +114,7 @@ export interface Product {
     carbohydrates?: number | null
   }
   category: string | Category
-  subcategory?: (string | null) | Subcategory
+  subcategories?: (string | null) | Subcategory
   skipSync?: boolean | null
   updatedAt: string
   createdAt: string

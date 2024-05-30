@@ -18,17 +18,9 @@ export const ProductFieldToSortSelect: FC<Props> = ({ name, path = '', label }) 
 
       const [product] = data.docs as Product[]
 
-      const { categories, skipSync, subcategories, productDetails, ...restProduct } = product
-      const {
-        image,
-        weightUnit,
-        stripeProductID,
-        unit,
-        weightStep,
-        weight,
-        priceJSON,
-        ...restProductDetails
-      } = productDetails
+      const { category, skipSync, subcategories, productDetails, ...restProduct } = product
+      const { image, stripeProductID, unit, weightStep, weight, priceJSON, ...restProductDetails } =
+        productDetails
 
       const productOptions = Object.keys(restProduct).map(option => ({
         label: option[0].toUpperCase() + option.slice(1),
