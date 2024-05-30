@@ -7,7 +7,8 @@ import { notFound } from 'next/navigation'
 import { Breadcrumbs } from 'ui'
 import { mapBreadcrumbs } from 'ui/helpers'
 import { ResolvingMetadata } from 'next'
-import { parsePayloadLink, richTextToJSX } from '@/helpers'
+import { richTextToJSX } from '@/helpers/richTextParser'
+import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 
 export const dynamic = 'force-dynamic'
 

@@ -26,7 +26,7 @@ export const createProducts = async (
           carbohydrates: 10,
         },
         category: categories.fruitsVegetablesPicklesId,
-        subcategory: subcategories.vegetablesId,
+        subcategories: [subcategories.vegetablesId],
       },
     }),
     payload.create({
@@ -45,7 +45,7 @@ export const createProducts = async (
           carbohydrates: 10,
         },
         category: categories.fruitsVegetablesPicklesId,
-        subcategory: subcategories.fruitsId,
+        subcategories: [subcategories.fruitsId],
       },
     }),
     payload.create({
@@ -64,7 +64,7 @@ export const createProducts = async (
           carbohydrates: 10,
         },
         category: categories.fruitsVegetablesPicklesId,
-        subcategory: subcategories.fruitsId,
+        subcategories: [subcategories.fruitsId],
       },
     }),
     payload.create({
@@ -83,7 +83,7 @@ export const createProducts = async (
           carbohydrates: 10,
         },
         category: categories.fruitsVegetablesPicklesId,
-        subcategory: subcategories.fruitsId,
+        subcategories: [subcategories.fruitsId],
       },
     }),
   ])

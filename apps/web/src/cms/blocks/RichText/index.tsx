@@ -2,7 +2,7 @@
 
 import { RichTextBlock } from 'cms-types'
 
-import { richTextToJSX } from '@/helpers'
+import { richTextToJSX } from '@/helpers/richTextParser'
 import { useSSR } from '@/hooks'
 import { RichTextSkeleton } from 'ui/skeletons'
 

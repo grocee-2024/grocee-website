@@ -1,6 +1,7 @@
 import { MainNavigation } from 'cms-types'
 import { resolveRelation } from '../../helpers'
-import { mapCMSCards, parsePayloadLink } from '@/helpers'
+import { mapCMSCards } from '@/helpers/mapCMSCards'
+import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 import { MainNavigationClient } from './MainNavigationClient'
 import { cookies } from 'next/headers'

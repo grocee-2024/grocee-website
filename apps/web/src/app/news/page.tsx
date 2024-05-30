@@ -8,7 +8,7 @@ import { notFound } from 'next/navigation'
 import { Breadcrumbs } from 'ui'
 import { mapBreadcrumbs } from 'ui/helpers'
 import { NewsList } from './news-list'
-import { mapCMSNewsCards } from '@/helpers'
+import { mapCMSNewsCards } from '@/helpers/mapCMSNewsCards'
 
 export async function generateMetadata(route: any, parent: ResolvingMetadata) {
   const locale = cookies().get('locale')?.value ?? 'en'

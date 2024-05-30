@@ -1,10 +1,8 @@
 'use client'
 
-import { parsePayloadLink } from '@/helpers'
+import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 import { useGlobalTypography, useShoppingBasket } from '@/store'
-import { CreateCheckoutProps } from '@/stripe'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
-import axios from 'axios'
 import clsx from 'clsx'
 import { CarouselBlock } from 'cms-types'
 import { FC, useCallback, useMemo, useState } from 'react'

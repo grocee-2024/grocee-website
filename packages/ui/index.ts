@@ -1,3 +1,5 @@
+'use client'
+
 export * from './components/Loader'
 export { Button, type ButtonProps } from './components/Button'
 export * from './components/Input'

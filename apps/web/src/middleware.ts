@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 import { getCollection } from '@/cms'
-import { parsePayloadLink } from './helpers'
+import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 
 const ACCEPT_LANGUAGES = ['ua', 'en']
 
@@ -47,6 +47,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
+  runtime: 'experimental-edge',
+  unstable_allowDynamic: [
+    '**/node_modules/lodash/_root.js',
+    '**/node_modules/lodash.debounce/index.js',
+    '**/node_modules/lodash/lodash.js',
+    '**/node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js',
+  ],
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
