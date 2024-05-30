@@ -19,7 +19,7 @@ export const getProductsCountByFilters: PayloadHandler = async (req, res) => {
     category: {
       categoryId,
     },
-    'subcategory.slug': {
+    'subcategories.slug': {
       subcategorySlug,
     },
     'productDetails.tag.slug': {

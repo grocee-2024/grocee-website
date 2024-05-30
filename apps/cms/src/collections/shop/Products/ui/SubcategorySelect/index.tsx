@@ -6,7 +6,7 @@ import { Category, Subcategory } from 'cms-types'
 
 export const SubcategorySelect: FC<Props> = ({ path = '', name, hasMany, required, label }) => {
   const { value: categoryId } = useField<string>({ path: 'category' })
-  const { setValue: setSubcategoryId } = useField<string>({ path })
+  const { setValue: setSubcategoriesId } = useField<string[]>({ path })
 
   const [category, setCategory] = useState<Category | null>(null)
   const [finishLoading, setFinishLoading] = useState(true)
@@ -46,7 +46,7 @@ export const SubcategorySelect: FC<Props> = ({ path = '', name, hasMany, require
 
   useEffect(() => {
     if (category) {
-      setSubcategoryId(null)
+      setSubcategoriesId([])
     }
   }, [categoryId])
 

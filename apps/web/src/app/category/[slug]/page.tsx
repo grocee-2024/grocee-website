@@ -53,6 +53,8 @@ export default async function CategoryPage({ params, searchParams }: NextRoute) 
     const specials = decodeURIComponent((searchParams?.specials ?? '') as string) || ''
     const tags = decodeURIComponent((searchParams?.tags ?? '') as string) || ''
     const trademarks = decodeURIComponent((searchParams?.trademarks ?? '') as string) || ''
+    const minPrice = searchParams?.minPrice || ''
+    const maxPrice = searchParams?.maxPrice || ''
 
     const [{ filters }, { subcategories, totalProducts }] = await Promise.all([
       getProductsCountByFilters({
@@ -62,6 +64,10 @@ export default async function CategoryPage({ params, searchParams }: NextRoute) 
         specials,
         tags,
         trademarks,
+        price: {
+          min: minPrice,
+          max: maxPrice,
+        },
       }),
       getProductsCountBySubcategories({
         subcategorySlug: subcat,
@@ -70,6 +76,10 @@ export default async function CategoryPage({ params, searchParams }: NextRoute) 
         specials,
         tags,
         trademarks,
+        price: {
+          min: minPrice,
+          max: maxPrice,
+        },
       }),
     ])
 
