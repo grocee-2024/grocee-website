@@ -1,4 +1,4 @@
-import { MainNavigation } from 'cms-types'
+import { type MainNavigation as MainNavigationType } from 'cms-types'
 import { resolveRelation } from '../../helpers'
 import { mapCMSCards } from '@/helpers/mapCMSCards'
 import { parsePayloadLink } from '@/helpers/parsePayloadLink'
@@ -11,7 +11,7 @@ export default async function MainNavigation({
   navigation,
   helpNavigation,
   defaultMenuHeader,
-}: MainNavigation) {
+}: MainNavigationType) {
   const locale = cookies().get('locale')?.value || 'en'
 
   const { logo, navLinks, search } = header

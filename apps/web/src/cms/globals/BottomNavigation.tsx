@@ -1,6 +1,6 @@
 'use client'
 
-import { BottomNavigation, Image } from 'cms-types'
+import { type BottomNavigation as BottomNavigationType, type Image } from 'cms-types'
 import { resolveRelation } from '../helpers'
 import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 import { Footer } from 'ui'
@@ -12,7 +12,7 @@ export default function BottomNavigation({
   footerInfo,
   navGroups,
   subscribeSection,
-}: BottomNavigation) {
+}: BottomNavigationType) {
   const resolvedLogo = resolveRelation(logo.image)
   const logoUrl = parsePayloadLink(logo.page)
   const { lastBlockOnPage } = useEdgeBlocksOnPage()

@@ -172,7 +172,8 @@ function SelectWithItems<T>(props: SelectProps<T>) {
   }, [selectState.isOpen, selectState.isFocused])
 
   useEffect(() => {
-    const selectedVal = [...selectState.collection].find(
+    
+    const selectedVal = [...Array.from(selectState.collection)].find(
       collectionItem => selectedValue === collectionItem.key,
     ) as StatelyNode<T>
 
