@@ -1,6 +1,6 @@
 'use client'
 
-import { parsePayloadLink } from '@/helpers'
+import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 import { useGlobalTypography } from '@/store'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 import { FC, ComponentProps } from 'react'

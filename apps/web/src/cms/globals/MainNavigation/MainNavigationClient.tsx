@@ -7,7 +7,7 @@ import { useWindowSize } from 'ui/hooks'
 import clsx from 'clsx'
 import { useSSR } from '@/hooks'
 import { useEdgeBlocksOnPage, useGlobalTypography, useShoppingBasket } from '@/store'
-import { parsePayloadLink } from '@/helpers'
+import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 
 type Props = Omit<ComponentProps<typeof Navigation>, 'support' | 'accountField' | 'backButton'>

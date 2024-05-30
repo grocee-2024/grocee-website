@@ -1,7 +1,7 @@
 import { Image, MainSliderBlock } from 'cms-types'
 import { SlideProps as MainSlide, ButtonProps } from 'ui'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
-import { parsePayloadLink } from '@/helpers'
+import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 import { getCollectionItem } from '@/cms'
 import { MainSliderClient } from './MainSliderClient'
 

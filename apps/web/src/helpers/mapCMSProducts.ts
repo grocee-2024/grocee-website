@@ -1,6 +1,6 @@
-import { getCollectionItem, getCollectionItemByUniqueField, getPage } from '@/cms'
+import { getCollectionItem, getCollectionItemByUniqueField } from '@/cms'
 import { pageToUrl, resolveRelation } from '@/cms/helpers'
-import { Currency, Image, Product, ProductCardBlock, ProductPage, Unit } from 'cms-types'
+import { Currency, Image, Product, ProductCardBlock, ProductPage } from 'cms-types'
 import { StripePiceJSON } from 'ui/types'
 
 const CMS_URL = process.env.PAYLOAD_INTERNAL_URL ?? process.env.NEXT_PUBLIC_PAYLOAD_URL

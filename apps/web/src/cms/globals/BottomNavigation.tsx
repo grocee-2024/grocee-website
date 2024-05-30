@@ -2,7 +2,7 @@
 
 import { BottomNavigation, Image } from 'cms-types'
 import { resolveRelation } from '../helpers'
-import { parsePayloadLink } from '@/helpers'
+import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 import { Footer } from 'ui'
 import clsx from 'clsx'
 import { useEdgeBlocksOnPage } from '@/store'

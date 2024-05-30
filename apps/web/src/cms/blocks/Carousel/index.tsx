@@ -1,6 +1,8 @@
 import { CarouselBlock } from 'cms-types'
 import { CarouselClient } from './CarouselClient'
-import { mapCMSCards, mapCMSNewsCards, mapCMSProducts } from '@/helpers'
+import { mapCMSProducts } from '@/helpers/mapCMSProducts'
+import { mapCMSNewsCards } from '@/helpers/mapCMSNewsCards'
+import { mapCMSCards } from '@/helpers/mapCMSCards'
 import { MappedCard, MappedNewsArticleCard, MappedProduct } from 'ui/types'
 import { getCookies } from 'next-client-cookies/server'
 

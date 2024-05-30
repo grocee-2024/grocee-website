@@ -1,7 +1,7 @@
 import { getCollectionItem } from '@/cms'
 import { pageToUrl, resolveRelation } from '@/cms/helpers'
 import { News, NewsCardBlock } from 'cms-types'
-import { parsePayloadLink } from '.'
+import { parsePayloadLink } from './parsePayloadLink'
 
 export const mapCMSNewsCards = async (newsCards: NewsCardBlock[] | News[], locale: string) => {
   const mappedNewsCards = await Promise.all(

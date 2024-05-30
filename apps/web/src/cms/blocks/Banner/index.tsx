@@ -1,5 +1,5 @@
 import { getCollectionItem } from '@/cms'
-import { parsePayloadLink } from '@/helpers'
+import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 import { BannerBlock } from 'cms-types'
 import { BannerClient } from './BannerClient'
 

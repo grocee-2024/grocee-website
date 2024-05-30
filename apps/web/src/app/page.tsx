@@ -7,7 +7,7 @@ import { SearchPage } from '@/components/SearchPage'
 import { parseSearchParams } from 'ui/helpers'
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
-import { mapCMSProducts } from '@/helpers'
+import { mapCMSProducts } from '@/helpers/mapCMSProducts'
 
 export default async function HomePage({ searchParams }: NextRoute) {
   const locale = cookies().get('locale')?.value || 'en'

@@ -7,7 +7,7 @@ import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Breadcrumbs, Breadcrumb } from 'ui'
 import { ProductIntro } from './product-intro'
-import { mapCMSProducts } from '@/helpers'
+import { mapCMSProducts } from '@/helpers/mapCMSProducts'
 import { ResolvingMetadata } from 'next'
 
 export const dynamic = 'force-dynamic'
@@ -49,6 +49,14 @@ export default async function ProductPage({ params, searchParams }: NextRoute) {
 
     const [mappedProduct] = await mapCMSProducts([product], locale)
 
+    const firstSubcategory = (
+      typeof product.subcategories?.[0] === 'string'
+        ? await getCollectionItem(product.subcategories?.[0], 'subcategories', {
+            searchParams: { locale },
+          })
+        : product.subcategories?.[0]
+    )!
+
     const breadcrumbs: Breadcrumb[] = [
       {
         label: homePage.breadcrumbsTitle!,
@@ -59,8 +67,8 @@ export default async function ProductPage({ params, searchParams }: NextRoute) {
         url: pageToUrl({ relationTo: 'categories', value: product.category }) as string,
       },
       {
-        label: (product.subcategory as Subcategory).label,
-        url: `${pageToUrl({ relationTo: 'categories', value: product.category }) as string}?subcat=${(product.subcategory as Subcategory).slug}`,
+        label: firstSubcategory.label,
+        url: `${pageToUrl({ relationTo: 'categories', value: product.category }) as string}?subcat=${firstSubcategory.slug}`,
       },
       {
         label: product.name,

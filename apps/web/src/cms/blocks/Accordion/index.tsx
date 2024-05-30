@@ -1,4 +1,4 @@
-import { parsePayloadLink } from '@/helpers'
+import { parsePayloadLink } from '@/helpers/parsePayloadLink'
 import { AllIconNames } from '@oleksii-lavka/grocee-icons'
 import { AccordionBlock } from 'cms-types'
 import { AccordionClient } from './AccordionClient'
