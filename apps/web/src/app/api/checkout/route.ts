@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import stripe from '@/stripe'
-import { mapStripeCheckout } from '@/helpers'
+import { mapStripeCheckout } from '@/helpers/mapStripeCheckout'
 
 export const revalidate = 0
 
