@@ -104,7 +104,7 @@ export default buildConfig({
       // ! Need to comment the line below for recreating cms types
       BlocksFeature({ blocks: ALL_BLOCKS }),
       LinkFeature({
-        enabledCollections: ['pages', 'categories', 'news', 'productPages'],
+        enabledCollections: ['pages', 'categories', 'newsPages', 'news', 'productPages'],
       }),
     ],
   }),
