@@ -96,7 +96,7 @@ export const createGlobalTypography = async (pages: Pages) => {
         links: [
           {
             type: 'email',
-            info: 'info@grocee.com',
+            info: 'grocee.info2024@gmail.com',
             caption: 'Support Email',
             icon: {
               icon: 'Mail',
